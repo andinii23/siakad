@@ -116,13 +116,13 @@ class DosenPa {
     DosenPa({
         required this.idPegawai,
         required this.namaPegawai,
-        required this.gelarDepan,
+        this.gelarDepan,
         required this.gelarBelakang,
     });
 
     int idPegawai;
     String namaPegawai;
-    String gelarDepan;
+    dynamic gelarDepan;
     String gelarBelakang;
 
     factory DosenPa.fromJson(Map<String, dynamic> json) => DosenPa(
@@ -146,18 +146,21 @@ class Prodi {
         required this.namaProdi,
         required this.kelas,
         required this.fakultas,
+        required this.jurusan,
     });
 
     String idProdi;
     String namaProdi;
     String kelas;
     Fakultas fakultas;
+    Jurusan jurusan;
 
     factory Prodi.fromJson(Map<String, dynamic> json) => Prodi(
         idProdi: json["id_prodi"],
         namaProdi: json["nama_prodi"],
         kelas: json["kelas"],
         fakultas: Fakultas.fromJson(json["fakultas"]),
+        jurusan: Jurusan.fromJson(json["jurusan"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -165,6 +168,7 @@ class Prodi {
         "nama_prodi": namaProdi,
         "kelas": kelas,
         "fakultas": fakultas.toJson(),
+        "jurusan": jurusan.toJson(),
     };
 }
 
@@ -185,5 +189,25 @@ class Fakultas {
     Map<String, dynamic> toJson() => {
         "id_fakultas": idFakultas,
         "nama_fakultas": namaFakultas,
+    };
+}
+
+class Jurusan {
+    Jurusan({
+        required this.idJurusan,
+        required this.namaJurusan,
+    });
+
+    int idJurusan;
+    String namaJurusan;
+
+    factory Jurusan.fromJson(Map<String, dynamic> json) => Jurusan(
+        idJurusan: json["id_jurusan"],
+        namaJurusan: json["nama_jurusan"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id_jurusan": idJurusan,
+        "nama_jurusan": namaJurusan,
     };
 }

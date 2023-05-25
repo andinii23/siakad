@@ -134,8 +134,10 @@ class _HomePageState extends State<HomePage> {
                         height: 50,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Icon(
                                 Icons.account_circle,
@@ -152,8 +154,26 @@ class _HomePageState extends State<HomePage> {
                                   // fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              
                             ],
                           ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, 'GantiPassword');
+                                },
+                                child: Text(
+                                  "Ganti Password?",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: mainWhiteColor,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
                           // Expanded(child: Container()),
                           // SizedBox(
                           //   child: Row(
@@ -209,7 +229,12 @@ class _HomePageState extends State<HomePage> {
                               icon: 'assets/img/unja.png',
                               label: 'Siakad UNJA',
                               onTap: () {
-                                Navigator.pushNamed(context, 'Navbar');
+                                if (SpUtil.getString("usertype") ==
+                                    "mahasiswa") {
+                                  Navigator.pushNamed(context, 'Navbar');
+                                } else {
+                                  Navigator.pushNamed(context, 'HomeDosen');
+                                }
                               },
                             ),
                             cardApp(

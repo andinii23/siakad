@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:siakad/api/model/home_model.dart';
+import 'package:siakad/pages/home/chat/chat_mhs.dart';
 import 'package:siakad/utilites/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -22,6 +23,7 @@ class _HomeMhsState extends State<HomeMhs> {
     var response = await http.get(home, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
+      // print(response.body);
       return HomeModel.fromJson(data);
     } else {
       return HomeModel.fromJson(data);
@@ -112,47 +114,52 @@ class _HomeMhsState extends State<HomeMhs> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                snapshot.data!.data.list
-                                                    .noMahasiswa,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: mainWhiteColor),
-                                              ),
-                                              Text(
-                                                snapshot.data!.data.list.prodi
-                                                    .fakultas.namaFakultas,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: mainWhiteColor),
-                                              ),
-                                              Text(
-                                                snapshot.data!.data.list.prodi
-                                                    .namaProdi,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: mainWhiteColor),
-                                              ),
-                                              Text(
-                                                snapshot
-                                                    .data!.data.list.angkatan,
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: mainWhiteColor),
-                                              ),
-                                            ],
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width / 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  snapshot.data!.data.list
+                                                      .noMahasiswa,
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: mainWhiteColor),
+                                                ),
+                                                Text(
+                                                  snapshot.data!.data.list.prodi
+                                                      .fakultas.namaFakultas,
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: mainWhiteColor),
+                                                ),
+                                                Text("Prodi : ${snapshot.data!.data.list.prodi
+                                                      .namaProdi}",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: mainWhiteColor),
+                                                ),
+                                                Text("Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: mainWhiteColor),
+                                                ),
+                                                Text("Angkatan : ${snapshot
+                                                      .data!.data.list.angkatan}",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: mainWhiteColor),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(
                                               width: 100,
                                               height: 100,
-                                              child: Image(
-                                                  image: NetworkImage(snapshot
-                                                      .data!.data.list.foto)))
+                                              child: Image.network(snapshot
+                                                  .data!.data.list.foto)),
                                         ],
                                       ),
                                       const SizedBox(
@@ -171,29 +178,23 @@ class _HomeMhsState extends State<HomeMhs> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "${snapshot.data!.data.list.dosenPa.gelarDepan} ",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: mainWhiteColor),
-                                          ),
-                                          Text(
-                                            "${snapshot.data!.data.list.dosenPa.namaPegawai} ",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: mainWhiteColor),
-                                          ),
-                                          Text(
-                                            snapshot.data!.data.list.dosenPa
-                                                .gelarBelakang,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: mainWhiteColor),
-                                          ),
-                                        ],
+                                      if(snapshot.data!.data.list.dosenPa.gelarDepan != null)(
+                                      Text(
+                                        "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: mainWhiteColor),
+                                      )
                                       ),
+                                      if(snapshot.data!.data.list.dosenPa.gelarDepan == null)(
+                                      Text(
+                                        "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: mainWhiteColor),
+                                      )
+                                      ),
+                                      
                                     ],
                                   ),
                                 ),
@@ -209,19 +210,19 @@ class _HomeMhsState extends State<HomeMhs> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     StatusCard(
-                                      title: "IP\nSebelumnya",
+                                      title: "IPK",
+                                      data: snapshot.data!.data.list.ipk
+                                          .toString(),
+                                    ),
+                                    StatusCard(
+                                      title: "IP Semester\nSebelumnya",
                                       data: snapshot
                                           .data!.data.list.ipSebelumnya
                                           .toString(),
                                     ),
                                     StatusCard(
-                                      title: "Semester",
+                                      title: "Semester Saat Ini",
                                       data: snapshot.data!.data.list.semester
-                                          .toString(),
-                                    ),
-                                    StatusCard(
-                                      title: "IPK\nSementara",
-                                      data: snapshot.data!.data.list.ipk
                                           .toString(),
                                     ),
                                   ],
@@ -269,28 +270,9 @@ class _HomeMhsState extends State<HomeMhs> {
                                                 context, 'RegisterPage');
                                           },
                                           child: const menuAkademik(
-                                            image: "assets/img/transaction-history.png",
+                                            image:
+                                                "assets/img/transaction-history.png",
                                             title: "Riwayat\nRegistrasi",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'PresensiMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/kehadiran.png",
-                                            title: "Presensi",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'KurikulumMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/resume.png",
-                                            title: "Kurikulum",
                                           ),
                                         ),
                                         InkWell(
@@ -303,6 +285,26 @@ class _HomeMhsState extends State<HomeMhs> {
                                             title: "KHS",
                                           ),
                                         ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, 'KrsMhs');
+                                          },
+                                          child: const menuAkademik(
+                                            image: "assets/img/contract.png",
+                                            title: "KRS",
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, 'KurikulumMhs');
+                                          },
+                                          child: const menuAkademik(
+                                            image: "assets/img/resume.png",
+                                            title: "Kurikulum",
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     const SizedBox(
@@ -310,23 +312,42 @@ class _HomeMhsState extends State<HomeMhs> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        menuAkademik(
-                                          image: "assets/img/transaction-history.png",
-                                          title: "Riwayat\nRegistrasi",
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, 'PresensiMhs');
+                                          },
+                                          child: const menuAkademik(
+                                            image: "assets/img/kehadiran.png",
+                                            title: "Presensi",
+                                          ),
                                         ),
-                                        menuAkademik(
-                                          image: "assets/img/transaction-history.png",
-                                          title: "Riwayat\nRegistrasi",
+                                        // const SizedBox(
+                                        //   width: 60,
+                                        // ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, 'TagihanMhs');
+                                          },
+                                          child: const menuAkademik(
+                                            image: "assets/img/money.png",
+                                            title: "Tagihan",
+                                          ),
                                         ),
-                                        menuAkademik(
-                                          image: "assets/img/transaction-history.png",
-                                          title: "Riwayat\nRegistrasi",
-                                        ),
-                                        menuAkademik(
-                                          image: "assets/img/transaction-history.png",
-                                          title: "Riwayat\nRegistrasi",
+                                        // const SizedBox(
+                                        //   width: 60,
+                                        // ),
+                                        InkWell(
+                                          onTap: () {
+                                              _chatDosen(snapshot.data!.data.list.dosenPa.idPegawai.toString(), snapshot.data!.data.list.dosenPa.namaPegawai.toString());
+                                          },
+                                          child: const menuAkademik(
+                                            image: "assets/img/chat.png",
+                                            title: "Chat",
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -342,9 +363,16 @@ class _HomeMhsState extends State<HomeMhs> {
                   ],
                 );
               } else {
-                return const Text("Loading");
+                return const Center(
+                      child: CircularProgressIndicator(),
+                    );
               }
             }));
+  }
+  Future _chatDosen(String id_dosen, String nama_pegawai) async {
+    SpUtil.putString("id_dosen", id_dosen);
+    SpUtil.putString("nama_pegawai", nama_pegawai);
+    Navigator.pushNamed(context, 'ChatMhs');
   }
 }
 

@@ -1,0 +1,737 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:siakad/api/model/krs_model.dart';
+import 'package:sp_util/sp_util.dart';
+import 'package:http/http.dart' as http;
+import '../../../utilites/constants.dart';
+
+class KrsMhs extends StatefulWidget {
+  const KrsMhs({super.key});
+
+  @override
+  State<KrsMhs> createState() => _KrsMhsState();
+}
+
+class _KrsMhsState extends State<KrsMhs> {
+  Future<KrsModel> getKrsData() async {
+    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var response = await http.get(krs, headers: header);
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      // print(response.body);
+      return KrsModel.fromJson(data);
+    } else {
+      return KrsModel.fromJson(data);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "KRS Mahasiswa",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
+        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        leading: InkWell(
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, 'HomeMhsPage');
+          },
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+              child: FutureBuilder<KrsModel>(
+            future: getKrsData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 70, 159, 233),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        "Jadwal Kontrak KRS : ${snapshot.data!.data.list.awalKrs} - ${snapshot.data!.data.list.akhirKrs}",
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 0, 129, 235),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (snapshot.data!.data.list.status.toString() == "3")
+                      (Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 235, 100, 91),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: Color.fromARGB(255, 226, 73, 62),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          snapshot.data!.data.list.statusText,
+                          style: TextStyle(
+                              color: mainWhiteColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )),
+
+                    if (snapshot.data!.data.list.status.toString() == "1" ||
+                        snapshot.data!.data.list.status.toString() == "2")
+                      (Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 70, 159, 233),
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          snapshot.data!.data.list.statusText,
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 0, 129, 235),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    // pesan pembatalan
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    snapshot.data!.data.list.listPesanKrs.first
+                                        .pesan,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: mainBlackColor,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Text(
+                          "Riwayat Ajuan",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (snapshot.data!.data.list.statusText.toString() !=
+                            "Menunggu Persetujuan Dosen PA" &&
+                        snapshot.data!.data.list.statusText.toString() !=
+                            "Telah di Acc Dosen PA")
+                      if (snapshot.data!.data.list.jumlahSksKontrak != 24)
+                        (Row(
+                          children: [
+                            (GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, 'DaftarKelas');
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 5),
+                                width: 130,
+                                decoration: BoxDecoration(
+                                  color: mainOrange2Color,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      color: mainWhiteColor,
+                                    ),
+                                    const Text(
+                                      "KRS Reguler",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                            (GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, 'krsinbound');
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 5),
+                                width: 130,
+                                decoration: BoxDecoration(
+                                  color: mainOrange2Color,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add,
+                                      color: mainWhiteColor,
+                                    ),
+                                    const Text(
+                                      "KRS Inbound",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                          ],
+                        )),
+
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 15),
+                            decoration: BoxDecoration(
+                              color: mainBlueColor,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(5),
+                                topRight: Radius.circular(5),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.2,
+                                  child: Text(
+                                    "Total SKS Diambil / Jml Maks SKS : ${snapshot.data!.data.list.jumlahSksKontrak} / ${snapshot.data!.data.list.maxSks} SKS",
+                                    // textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: mainWhiteColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
+                                  child: Text(
+                                    "IP Semester Sebelumnya  : ${snapshot.data!.data.list.ipSebelumnya} SKS",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: mainWhiteColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF1E3B78)
+                                        .withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 4,
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      snapshot.data!.data.list.listKrs.length,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.8,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      snapshot
+                                                          .data!
+                                                          .data
+                                                          .list
+                                                          .listKrs[index]
+                                                          .matakuliah
+                                                          .kodeMatakuliah,
+                                                      style: TextStyle(
+                                                        color: mainOrange2Color,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      snapshot
+                                                          .data!
+                                                          .data
+                                                          .list
+                                                          .listKrs[index]
+                                                          .matakuliah
+                                                          .namaMatakuliah,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      style: TextStyle(
+                                                          color: mainBlueColor),
+                                                    ),
+                                                    Text(
+                                                      "SKS : ${snapshot.data!.data.list.listKrs[index].matakuliah.sksTotal}",
+                                                      style: TextStyle(
+                                                          color: mainBlueColor),
+                                                    ),
+                                                    Text(
+                                                      "Kelas : ${snapshot.data!.data.list.listKrs[index].kelas.kodeKelas}",
+                                                      style: TextStyle(
+                                                          color: mainBlueColor),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20),
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    5,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                title:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(8),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        mainBlueColor,
+                                                                    borderRadius:
+                                                                        const BorderRadius
+                                                                            .only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              5),
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  child: Text(
+                                                                    "Detail Jadwal Kuliah",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            mainWhiteColor,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                                content: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                      "${snapshot.data!.data.list.listKrs[index].kelas.hari}, ${snapshot.data!.data.list.listKrs[index].kelas.jamMulai} - ${snapshot.data!.data.list.listKrs[index].kelas.jamSelesai} \n ${snapshot.data!.data.list.listKrs[index].kelas.ruangKuliah.namaRuang}",
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              mainBlueColor),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Column(
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        Text(
+                                                                          "Dosen",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              color: mainOrange2Color,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height / 15,
+                                                                          width: MediaQuery.of(context)
+                                                                              .size
+                                                                              .width,
+                                                                          child: ListView.builder(
+                                                                              scrollDirection: Axis.vertical,
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.data!.data.list.listKrs[index].dosen.length,
+                                                                              itemBuilder: (context, dsn) {
+                                                                                if (snapshot.data!.data.list.listKrs[index].dosen[dsn].gelarDepan != null) {
+                                                                                  return Center(
+                                                                                    child: Text(
+                                                                                      "${snapshot.data!.data.list.listKrs[index].dosen[dsn].gelarDepan} ${snapshot.data!.data.list.listKrs[index].dosen[dsn].namaDosen} ${snapshot.data!.data.list.listKrs[index].dosen[dsn].gelarBelakang}",
+                                                                                      textAlign: TextAlign.center,
+                                                                                      style: TextStyle(
+                                                                                        color: mainOrange2Color,
+                                                                                        fontSize: 14,
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                } else {
+                                                                                  return Center(
+                                                                                    child: Text(
+                                                                                      "${snapshot.data!.data.list.listKrs[index].dosen[dsn].namaDosen} ${snapshot.data!.data.list.listKrs[index].dosen[dsn].gelarBelakang}",
+                                                                                      textAlign: TextAlign.center,
+                                                                                      style: TextStyle(
+                                                                                        color: mainOrange2Color,
+                                                                                        fontSize: 14,
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                }
+                                                                              }),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                actions: [
+                                                                  MaterialButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                      "OK",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              mainBlueColor),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              );
+                                                            });
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Icon(
+                                                            FontAwesomeIcons
+                                                                .circleInfo,
+                                                            color:
+                                                                mainBlueColor,
+                                                          ),
+                                                          Text(
+                                                            "Detail",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    mainBlueColor,
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            if (snapshot.data!.data.list
+                                                        .statusText
+                                                        .toString() !=
+                                                    "Menunggu Persetujuan Dosen PA" &&
+                                                snapshot.data!.data.list
+                                                        .statusText
+                                                        .toString() !=
+                                                    "Telah di Acc Dosen PA")
+                                              (GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: SizedBox(
+                                                            child: Text(
+                                                              "Apakah anda yakin akan menghapus matakuliah ini?",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      mainBlackColor,
+                                                                  fontSize: 18),
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                "Batal",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainOrange2Color),
+                                                              ),
+                                                            ),
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                _hapusKelas(snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list
+                                                                    .listKrs[
+                                                                        index]
+                                                                    .idKrs
+                                                                    .toString());
+                                                              },
+                                                              child: Text(
+                                                                "OK",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainOrange2Color),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.delete,
+                                                      color: mainBlueColor,
+                                                    ),
+                                                    Text(
+                                                      "Hapus",
+                                                      style: TextStyle(
+                                                          color: mainBlueColor,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                          ],
+                                        ),
+                                        Divider(
+                                          color: mainBlackColor,
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          //tombol kirim
+                          if (snapshot.data!.data.list.statusText.toString() !=
+                                  "Menunggu Persetujuan Dosen PA" &&
+                              snapshot.data!.data.list.statusText.toString() !=
+                                  "Telah di Acc Dosen PA")
+                            (GestureDetector(
+                              onTap: () {
+                                _ajukanKrs();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                    color: mainBlueColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Ajukan KRS",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )),
+                        ],
+                      ),
+                    ))
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ))
+        ],
+      ),
+    );
+  }
+
+  Future _hapusKelas(String id_krs) async {
+    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var response = await http.get(hapus_kelas + id_krs, headers: header);
+    if (response.statusCode == 200) {
+      print(response.body);
+      Navigator.pushNamed(context, 'KrsMhs');
+    } else {
+      print("gagal menambahkan kelas");
+      var body = jsonDecode(response.body);
+      print(body["error_message"]);
+    }
+  }
+
+  Future _ajukanKrs() async {
+    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var response = await http.post(
+      ajukan_krs,
+      headers: header,
+    );
+    if (response.statusCode == 200) {
+      print(response.body);
+      Navigator.pushNamed(context, 'KrsMhs');
+    } else {
+      print("gagal menambahkan kelas");
+      var body = jsonDecode(response.body);
+      print(body["error_message"]);
+    }
+  }
+}

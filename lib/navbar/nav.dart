@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:siakad/pages/biodata/biodata.dart';
+import 'package:siakad/pages/cetak/cetak.dart';
 import 'package:siakad/pages/home/home_mhs.dart';
 import 'package:siakad/pages/tagihan/tagihan.dart';
 
@@ -19,7 +20,7 @@ class _NavbarState extends State<Navbar> {
   int _selectedIndex = 0;
   static final List<Widget> _navScreen = <Widget>[
     const HomeMhs(),
-    const Tagihan(),
+    const CetakPage(),
     const BiodataMhs(),
   ];
   @override
@@ -54,8 +55,8 @@ class _NavbarState extends State<Navbar> {
                 text: "Home",
               ),
               GButton(
-                icon: Icons.money,
-                text: "Tagihan",
+                icon: Icons.print,
+                text: "Cetak",
               ),
               GButton(
                 icon: Icons.account_circle,

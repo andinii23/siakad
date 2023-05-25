@@ -16,7 +16,7 @@ class _MySplashState extends State<MySplash> {
       seconds: 5,
       navigateAfterSeconds: const WelcomePage(),
       imageBackground: Image.asset(
-        "assets/img/Logo.jpg",
+        "assets/img/Logo.png",
       ).image,
       useLoader: false,
       // loaderColor: Colors.black,

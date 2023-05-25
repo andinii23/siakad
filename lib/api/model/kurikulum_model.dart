@@ -68,6 +68,7 @@ class ListClass {
         required this.jumlahSksWajib,
         required this.jumlahSksPilihan,
         required this.totalSks,
+        required this.sksSelesai,
         required this.listMataKuliah,
     });
 
@@ -77,6 +78,7 @@ class ListClass {
     String jumlahSksWajib;
     String jumlahSksPilihan;
     String totalSks;
+    int sksSelesai; 
     List<ListMataKuliah> listMataKuliah;
 
     factory ListClass.fromJson(Map<String, dynamic> json) => ListClass(
@@ -86,6 +88,7 @@ class ListClass {
         jumlahSksWajib: json["jumlah_sks_wajib"],
         jumlahSksPilihan: json["jumlah_sks_pilihan"],
         totalSks: json["total_sks"],
+        sksSelesai: json["sks_selesai"],
         listMataKuliah: List<ListMataKuliah>.from(json["list_mata_kuliah"].map((x) => ListMataKuliah.fromJson(x))),
     );
 
@@ -96,6 +99,7 @@ class ListClass {
         "jumlah_sks_wajib": jumlahSksWajib,
         "jumlah_sks_pilihan": jumlahSksPilihan,
         "total_sks": totalSks,
+        "sks_selesai": sksSelesai,
         "list_mata_kuliah": List<dynamic>.from(listMataKuliah.map((x) => x.toJson())),
     };
 }
@@ -116,7 +120,7 @@ class ListMataKuliah {
     });
 
     String wajib;
-    String semester;
+    int semester;
     int idMatakuliah;
     String kodeMatakuliah;
     String namaMatakuliah;
@@ -154,4 +158,5 @@ class ListMataKuliah {
         "sks_lapangan": sksLapangan,
         "sks_simulasi": sksSimulasi,
     };
+    
 }

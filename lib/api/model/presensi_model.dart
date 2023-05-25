@@ -62,39 +62,42 @@ class Data {
 
 class ListElement {
     ListElement({
-        required this.idMatakuliah,
-        required this.kodeMatakuliah,
-        required this.namaMatakuliah,
+        required this.idKelas,
+        required this.kodeKelas,
         required this.jumlahPertemuan,
-        required this.sksTotal,
-        required this.krsStatus,
-        required this.kelas,
+        required this.hari,
+        required this.jamMulai,
+        required this.jamSelesai,
+        required this.ruangKuliah,
+        required this.matakuliah,
         required this.dosen,
         required this.jumlahMasuk,
         required this.jumlahIzin,
         required this.jumlahAbsen,
     });
 
-    int idMatakuliah;
-    String kodeMatakuliah;
-    String namaMatakuliah;
+    int idKelas;
+    String kodeKelas;
     int jumlahPertemuan;
-    String sksTotal;
-    String krsStatus;
-    Kelas kelas;
+    String hari;
+    String jamMulai;
+    String jamSelesai;
+    RuangKuliah ruangKuliah;
+    Matakuliah matakuliah;
     List<Dosen> dosen;
     int jumlahMasuk;
     int jumlahIzin;
     int jumlahAbsen;
 
     factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
-        idMatakuliah: json["id_matakuliah"],
-        kodeMatakuliah: json["kode_matakuliah"],
-        namaMatakuliah: json["nama_matakuliah"],
+        idKelas: json["id_kelas"],
+        kodeKelas: json["kode_kelas"],
         jumlahPertemuan: json["jumlah_pertemuan"],
-        sksTotal: json["sks_total"],
-        krsStatus: json["krs_status"],
-        kelas: Kelas.fromJson(json["kelas"]),
+        hari: json["hari"],
+        jamMulai: json["jam_mulai"],
+        jamSelesai: json["jam_selesai"],
+        ruangKuliah: RuangKuliah.fromJson(json["ruang_kuliah"]),
+        matakuliah: Matakuliah.fromJson(json["matakuliah"]),
         dosen: List<Dosen>.from(json["dosen"].map((x) => Dosen.fromJson(x))),
         jumlahMasuk: json["jumlah_masuk"],
         jumlahIzin: json["jumlah_izin"],
@@ -102,13 +105,14 @@ class ListElement {
     );
 
     Map<String, dynamic> toJson() => {
-        "id_matakuliah": idMatakuliah,
-        "kode_matakuliah": kodeMatakuliah,
-        "nama_matakuliah": namaMatakuliah,
+        "id_kelas": idKelas,
+        "kode_kelas": kodeKelas,
         "jumlah_pertemuan": jumlahPertemuan,
-        "sks_total": sksTotal,
-        "krs_status": krsStatus,
-        "kelas": kelas.toJson(),
+        "hari": hari,
+        "jam_mulai": jamMulai,
+        "jam_selesai": jamSelesai,
+        "ruang_kuliah": ruangKuliah.toJson(),
+        "matakuliah": matakuliah.toJson(),
         "dosen": List<dynamic>.from(dosen.map((x) => x.toJson())),
         "jumlah_masuk": jumlahMasuk,
         "jumlah_izin": jumlahIzin,
@@ -118,64 +122,76 @@ class ListElement {
 
 class Dosen {
     Dosen({
-        required this.idPegawai,
+        required this.idDosen,
         required this.namaPegawai,
         this.gelarDepan,
         required this.gelarBelakang,
     });
 
-    int idPegawai;
+    int idDosen;
     String namaPegawai;
     String? gelarDepan;
     String gelarBelakang;
 
     factory Dosen.fromJson(Map<String, dynamic> json) => Dosen(
-        idPegawai: json["id_pegawai"],
+        idDosen: json["id_dosen"],
         namaPegawai: json["nama_pegawai"],
         gelarDepan: json["gelar_depan"],
         gelarBelakang: json["gelar_belakang"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id_pegawai": idPegawai,
+        "id_dosen": idDosen,
         "nama_pegawai": namaPegawai,
         "gelar_depan": gelarDepan,
         "gelar_belakang": gelarBelakang,
     };
 }
 
-class Kelas {
-    Kelas({
-        required this.idKelas,
-        required this.kodeKelas,
-        required this.namaRuang,
-        required this.hari,
-        required this.jamMulai,
-        required this.jamSelesai,
+class Matakuliah {
+    Matakuliah({
+        required this.idMatakuliah,
+        required this.namaMatakuliah,
+        required this.kodeMatakuliah,
+        this.uploadNilai,
+        required this.sksTotal,
     });
 
-    int idKelas;
-    String kodeKelas;
-    String namaRuang;
-    String hari;
-    String jamMulai;
-    String jamSelesai;
+    int idMatakuliah;
+    String namaMatakuliah;
+    String kodeMatakuliah;
+    dynamic uploadNilai;
+    String sksTotal;
 
-    factory Kelas.fromJson(Map<String, dynamic> json) => Kelas(
-        idKelas: json["id_kelas"],
-        kodeKelas: json["kode_kelas"],
-        namaRuang: json["nama_ruang"],
-        hari: json["hari"],
-        jamMulai: json["jam_mulai"],
-        jamSelesai: json["jam_selesai"],
+    factory Matakuliah.fromJson(Map<String, dynamic> json) => Matakuliah(
+        idMatakuliah: json["id_matakuliah"],
+        namaMatakuliah: json["nama_matakuliah"],
+        kodeMatakuliah: json["kode_matakuliah"],
+        uploadNilai: json["upload_nilai"],
+        sksTotal: json["sks_total"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id_kelas": idKelas,
-        "kode_kelas": kodeKelas,
+        "id_matakuliah": idMatakuliah,
+        "nama_matakuliah": namaMatakuliah,
+        "kode_matakuliah": kodeMatakuliah,
+        "upload_nilai": uploadNilai,
+        "sks_total": sksTotal,
+    };
+}
+
+class RuangKuliah {
+    RuangKuliah({
+        required this.namaRuang,
+    });
+
+    String namaRuang;
+
+    factory RuangKuliah.fromJson(Map<String, dynamic> json) => RuangKuliah(
+        namaRuang: json["nama_ruang"],
+    );
+
+    Map<String, dynamic> toJson() => {
         "nama_ruang": namaRuang,
-        "hari": hari,
-        "jam_mulai": jamMulai,
-        "jam_selesai": jamSelesai,
     };
 }

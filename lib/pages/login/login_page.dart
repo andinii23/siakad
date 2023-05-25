@@ -105,9 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.orange),
+                                MaterialStateProperty.all(mainOrange2Color),
                           ),
-                          child: const Text(
+                         child: const Text(
                             "Login",
                             style: TextStyle(fontSize: 18),
                           ),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       "username": _usernameController.text,
       "password": _passwordController.text,
     });
-
+ 
     if (response.statusCode == 200) {
       // print(response.body);
       final loginModel = loginModelFromJson(response.body);
@@ -139,9 +139,8 @@ class _LoginPageState extends State<LoginPage> {
       SpUtil.putString("username", loginModel.data.list.user.username);
       SpUtil.putString("usertype", loginModel.data.list.user.usertype);
       SpUtil.putBool("isLogin", true);
-
-      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, 'HomePage');
+      
     } else {
       print("login gagal");
       var body = jsonDecode(response.body);

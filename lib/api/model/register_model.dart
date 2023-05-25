@@ -50,8 +50,7 @@ class Data {
         total: json["total"],
         perPage: json["per_page"],
         page: json["page"],
-        list: List<ListElement>.from(
-            json["list"].map((x) => ListElement.fromJson(x))),
+        list: List<ListElement>.from(json["list"].map((x) => ListElement.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +68,11 @@ class ListElement {
     required this.tglDaftar,
     required this.ipk,
     required this.ips,
+    required this.idTagihan,
+    required this.ukt,
+    required this.statusMahasiswa,
+    required this.statusMahasiswaText,
+
   });
 
   String idSemester;
@@ -76,6 +80,10 @@ class ListElement {
   DateTime tglDaftar;
   String ipk;
   String ips;
+  String idTagihan;
+  String ukt;
+  String statusMahasiswa;
+  String statusMahasiswaText;
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         idSemester: json["id_semester"],
@@ -83,6 +91,10 @@ class ListElement {
         tglDaftar: DateTime.parse(json["tgl_daftar"]),
         ipk: json["ipk"],
         ips: json["ips"],
+        idTagihan: json["id_tagihan"],
+        ukt: json["ukt"],
+        statusMahasiswa: json["status_mahasiswa"],
+        statusMahasiswaText: json["status_mahasiswa_text"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -91,5 +103,9 @@ class ListElement {
         "tgl_daftar": tglDaftar.toIso8601String(),
         "ipk": ipk,
         "ips": ips,
+        "id_tagihan": idTagihan,
+        "ukt": ukt,
+        "status_mahasiswa": statusMahasiswa,
+        "status_mahasiswa_text": statusMahasiswaText,
       };
 }

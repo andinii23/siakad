@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:siakad/utilites/constants.dart';
 
 import '../helpers/colors.dart';
 import '../helpers/strings.dart';
@@ -43,7 +44,7 @@ class _WelcomePageState extends State<WelcomePage> {
               child: Text(
                 "Skip",
                 style: TextStyle(
-                  color: ColorsDat.primary,
+                  color: mainBlueColor,
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -64,7 +65,7 @@ class _WelcomePageState extends State<WelcomePage> {
             controller: _pageController,
             children: <Widget>[
               makePage(
-                image: 'assets/img/information.png',
+                image: 'assets/img/info.png',
                 title: StringsDat.stepOneTitle,
                 content: StringsDat.stepOneContent,
               ),
@@ -94,59 +95,63 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   Widget makePage({image, title, content, reverse = false}) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.only(left: 50, right: 50, bottom: 60),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            !reverse
-                ? Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Image.asset(image),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-            Text(
-              title,
-              style: TextStyle(
-                color: ColorsDat.primary,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(left: 50, right: 50, bottom: 60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              !reverse
+                  ? Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(width: 150, height: 150,
+                            child: Image.asset(image)),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
+              Text(
+                title,
+                style: TextStyle(
+                  color: mainBlueColor,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              content,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: ColorsDat.gray,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            reverse
-                ? Column(
-                    children: <Widget>[
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Image.asset(image),
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-          ],
+              Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: mainBlackColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              reverse
+                  ? Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox( width: 100, height: 100,
+                            child: Image.asset(image)),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
+            ],
+          ),
         ),
       ),
     );
@@ -159,7 +164,7 @@ class _WelcomePageState extends State<WelcomePage> {
       width: isActive ? 30 : 8,
       margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
-          color: ColorsDat.secoundry, borderRadius: BorderRadius.circular(5)),
+          color: mainBlueColor, borderRadius: BorderRadius.circular(5)),
     );
   }
 

@@ -54,121 +54,161 @@ class _KurikulumMhsState extends State<KurikulumMhs> {
       body: Column(
         children: [
           Expanded(
-              child: FutureBuilder<KurikulumModel>(
-            future: getKurikulumData(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Container(
-                      // color: Colors.amber,
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Detail Kurikulum",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: mainBlueColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            snapshot.data!.data.list.namaKurikulum
-                                .toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: mainBlueColor,
-                              fontSize: 16,
+            child: FutureBuilder<KurikulumModel>(
+              future: getKurikulumData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Container(
+                        // color: Colors.amber,
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Text(
+                            //   "Daftar Kurikulum",
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //       color: mainBlueColor,
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.bold),
+                            // ),
+                            Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Nama Kurikulum",
+                                      style: TextStyle(
+                                          color: mainBlueColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                   
+                                    Text(
+                                      "SKS Wajib",
+                                      style: TextStyle(
+                                          color: mainBlueColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "SKS Pilihan",
+                                      style: TextStyle(
+                                          color: mainBlueColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                     Text(
+                                      "Total SKS",
+                                      style: TextStyle(
+                                          color: mainBlueColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Total SKS Selesai",
+                                      style: TextStyle(
+                                          color: mainBlueColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  children: const [
+                                    Text(":"),
+                                    Text(":"),
+                                    Text(":"),
+                                    Text(":"),
+                                    Text(":"),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      snapshot.data!.data.list.namaKurikulum
+                                          .toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    
+                                    Text(
+                                      snapshot.data!.data.list.jumlahSksWajib,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data!.data.list.jumlahSksPilihan,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data!.data.list.totalSks,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                     Text(
+                                      snapshot.data!.data.list.sksSelesai.toString(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    "Total SKS",
-                                    style: TextStyle(
-                                        color: mainOrange2Color,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    snapshot.data!.data.list.totalSks,
-                                    style: TextStyle(
-                                      color: mainOrange2Color,
-                                      fontSize: 14,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "SKS Wajib",
-                                    style: TextStyle(
-                                        color: mainOrange2Color,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    snapshot.data!.data.list.jumlahSksWajib,
-                                    style: TextStyle(
-                                      color: mainOrange2Color,
-                                      fontSize: 14,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "SKS Pilihan",
-                                    style: TextStyle(
-                                        color: mainOrange2Color,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    snapshot.data!.data.list.jumlahSksPilihan,
-                                    style: TextStyle(
-                                      color: mainOrange2Color,
-                                      fontSize: 14,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Divider(
+                              color: mainBlackColor,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text("Daftar Kurikulum Berdasarkan Semester", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: mainOrange2Color),),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount:
-                              snapshot.data!.data.list.listMataKuliah.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(16),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("1");
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(16),
-                                    topRight: Radius.circular(16),
-                                  ),
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       color: const Color(0xFF1E3B78)
@@ -180,244 +220,356 @@ class _KurikulumMhsState extends State<KurikulumMhs> {
                                     ),
                                   ],
                                 ),
-                                padding: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(10),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Text(
-                                      "SEMESTER : ${snapshot.data!.data.list.listMataKuliah[index].semester}",
-                                      textAlign: TextAlign.center,
+                                      "SEMESTER : 1",
+                                      textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          color: mainBlueColor,
-                                          fontSize: 18,
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    const SizedBox(height: 5,),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: mainBlueColor,
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(5),
-                                          topRight: Radius.circular(5),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            snapshot
-                                                .data!
-                                                .data
-                                                .list
-                                                .listMataKuliah[index]
-                                                .kodeMatakuliah,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: mainWhiteColor,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data!
-                                                .data
-                                                .list
-                                                .listMataKuliah[index]
-                                                .namaMatakuliah,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: mainWhiteColor,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 5,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 106,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Total SKS",
-                                                style: TextStyle(
-                                                    color: mainOrange2Color,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                snapshot
-                                                    .data!
-                                                    .data
-                                                    .list
-                                                    .listMataKuliah[index]
-                                                    .sksTotal,
-                                                style: TextStyle(
-                                                  color: mainOrange2Color,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 106,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "SKS\nTatap Muka",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: mainOrange2Color,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                snapshot
-                                                    .data!
-                                                    .data
-                                                    .list
-                                                    .listMataKuliah[index]
-                                                    .sksTatapMuka,
-                                                style: TextStyle(
-                                                  color: mainOrange2Color,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 106,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "SKS Praktek",
-                                                style: TextStyle(
-                                                    color: mainOrange2Color,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                snapshot
-                                                    .data!
-                                                    .data
-                                                    .list
-                                                    .listMataKuliah[index]
-                                                    .sksPraktek
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: mainOrange2Color,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Divider(
-                                      color: mainBlackColor,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "SKS Lapangan",
-                                              style: TextStyle(
-                                                  color: mainOrange2Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              snapshot
-                                                  .data!
-                                                  .data
-                                                  .list
-                                                  .listMataKuliah[index]
-                                                  .sksLapangan
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: mainOrange2Color,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          width: 50,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "SKS Simulasi",
-                                              style: TextStyle(
-                                                  color: mainOrange2Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              snapshot
-                                                  .data!
-                                                  .data
-                                                  .list
-                                                  .listMataKuliah[index]
-                                                  .sksSimulasi
-                                                  .toString(),
-                                              style: TextStyle(
-                                                color: mainOrange2Color,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    //semester
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   children: [
-                                    //     Text(
-                                    //         "Semester : ${snapshot.data!.data.list.listMataKuliah[index].semester}"),
-                                    //     Text(snapshot.data!.data.list
-                                    //         .listMataKuliah[index].wajib),
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ),
-                            );
-                          }),
-                    ),
-                  ],
-                );
-              } else {
-                return const Text("Loading");
-              }
-            },
-          )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("2");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 2",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("3");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER: 3",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("4");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 4",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("5");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 5",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("6");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 6",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("7");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 7",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailKur("8");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: mainBlueColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1E3B78)
+                                          .withOpacity(0.1),
+                                      spreadRadius: 5,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      "SEMESTER : 8",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: mainWhiteColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                } else {
+                   return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future _detailKur(String semester) async {
+    SpUtil.putString("semester", semester);
+    Navigator.pushNamed(context, 'DetailKur');
   }
 }

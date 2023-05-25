@@ -20,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var response = await http.get(register, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
+      // print(response.body);
       return RegisterModel.fromJson(data);
     } else {
       return RegisterModel.fromJson(data);
@@ -127,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       ),
                                       Text(
                                           snapshot
-                                              .data!.data.list[index].statusReg
+                                              .data!.data.list[index].statusMahasiswaText
                                               .toString(),
                                           style: const TextStyle(
                                               color: Color(0xFF1E3B78))),
@@ -193,7 +194,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       );
                     });
               } else {
-                return const Text("Loading");
+                 return const Center(
+                      child: CircularProgressIndicator(),
+                    );
               }
             },
           ))
