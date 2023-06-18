@@ -16,7 +16,7 @@ class DetailKurikulumMhs extends StatefulWidget {
 
 class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
   Future<DetailKurikulum> getDetailKurikulum() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(dkurikulum + SpUtil.getString("semester"),
         headers: header);
     var data = jsonDecode(response.body.toString());
@@ -60,27 +60,27 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                 if (snapshot.hasData) {
                   return Column(
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Daftar Kurikulum Semester ${snapshot.data!.data.list.listMataKuliah[0].semester}",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: mainBlueColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width,
+                      //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       const SizedBox(
+                      //         height: 20,
+                      //       ),
+                      //       Text(
+                      //         "Daftar Kurikulum Semester ${snapshot.data!.data.list.listMataKuliah[0].semester}",
+                      //         textAlign: TextAlign.start,
+                      //         style: TextStyle(
+                      //             color: mainBlueColor,
+                      //             fontSize: 16,
+                      //             fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -120,7 +120,7 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                  1.5,
+                                                  1.9,
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -148,7 +148,7 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                                         .list
                                                         .listMataKuliah[index]
                                                         .namaMatakuliah
-                                                        .toString(),
+                                                        .toUpperCase(),
                                                     style: TextStyle(
                                                         color: mainBlueColor,
                                                         fontSize: 14,
@@ -178,14 +178,18 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  "Jenis",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: mainOrange2Color),
-                                                ),
+                                                // SizedBox(
+                                                //   width: 60,
+                                                //   child: Text(
+                                                //     "Nilai\nTertinggi",
+                                                //     textAlign: TextAlign.center,
+                                                //     style: TextStyle(
+                                                //         fontSize: 14,
+                                                //         fontWeight:
+                                                //             FontWeight.bold,
+                                                //         color: mainOrange2Color),
+                                                //   ),
+                                                // ),
                                                 if (snapshot
                                                         .data!
                                                         .data
@@ -225,15 +229,18 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    Text(
-                                                      "Nilai",
-                                                      style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              mainOrange2Color),
-                                                    ),
+                                                    SizedBox(
+                                                  width: 60,
+                                                  child: Text(
+                                                    "Nilai\nTertinggi",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: mainOrange2Color),
+                                                  ),
+                                                ),
                                                     if (snapshot
                                                             .data!
                                                             .data

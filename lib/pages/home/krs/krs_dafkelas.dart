@@ -19,8 +19,10 @@ class DaftarKelasKrs extends StatefulWidget {
 
 class _DaftarKelasKrsState extends State<DaftarKelasKrs> {
   Future<KelasKrsModel> getKelasKrsData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-    var response = await http.get(krs_ruang_kelas + SpUtil.getString("id_matakuliah"), headers: header);
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(
+        krs_ruang_kelas + SpUtil.getString("id_matakuliah"),
+        headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -62,7 +64,6 @@ class _DaftarKelasKrsState extends State<DaftarKelasKrs> {
               if (snapshot.hasData) {
                 return Column(
                   children: [
-            
                     const SizedBox(
                       height: 10,
                     ),
@@ -142,7 +143,7 @@ class _DaftarKelasKrsState extends State<DaftarKelasKrs> {
                                                             .data
                                                             .list[index]
                                                             .matakuliah
-                                                            .namaMatakuliah,
+                                                            .namaMatakuliah.toUpperCase(),
                                                         textAlign:
                                                             TextAlign.start,
                                                         style: TextStyle(
@@ -188,7 +189,12 @@ class _DaftarKelasKrsState extends State<DaftarKelasKrs> {
                                                   ),
                                                   child: InkWell(
                                                     onTap: () {
-                                                      _idKelas(snapshot.data!.data.list[index].idKelas.toString());
+                                                      _idKelas(snapshot
+                                                          .data!
+                                                          .data
+                                                          .list[index]
+                                                          .idKelas
+                                                          .toString());
                                                     },
                                                     child: SizedBox(
                                                       width: 40,

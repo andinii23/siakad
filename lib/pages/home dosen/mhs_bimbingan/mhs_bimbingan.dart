@@ -217,6 +217,32 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
                                             ),
                                           ),
                                         )),
+                                        if (snapshot
+                                              .data!.data.list[index].statusKrs
+                                               ==
+                                          null)
+                                        (InkWell(
+                                          onTap: () {
+                                            _krsMhs(snapshot
+                                                .data!.data.list[index].idMhsPt
+                                                .toString());
+                                          },
+                                          child: Container(
+                                            width: 60,
+                                            padding: const EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: Text(
+                                              "-",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: mainWhiteColor
+                                                  , fontSize: 24),
+                                            ),
+                                          ),
+                                        )),
                                     ],
                                   ),
                                   Divider(

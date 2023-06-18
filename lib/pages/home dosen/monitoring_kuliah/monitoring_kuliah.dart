@@ -17,7 +17,7 @@ class MonitoringKuliah extends StatefulWidget {
 
 class _MonitoringKuliahState extends State<MonitoringKuliah> {
   Future<MonitoringKuliahModel> getMonitor() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
         .get(monitorkuliah + SpUtil.getString("id_semester"), headers: header);
     var data = jsonDecode(response.body.toString());
@@ -64,24 +64,24 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Monitoring Perkuliahan Semester ${snapshot.data!.data.list.idSemester}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: mainBlueColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width,
+                        //   padding: const EdgeInsets.symmetric(horizontal: 10),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Text(
+                        //         "Monitoring Perkuliahan Semester ${snapshot.data!.data.list.idSemester}",
+                        //         textAlign: TextAlign.center,
+                        //         style: TextStyle(
+                        //             color: mainBlueColor,
+                        //             fontSize: 16,
+                        //             fontWeight: FontWeight.bold),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Expanded(
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
@@ -338,48 +338,62 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
                                           height: 10,
                                         ),
                                         Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: mainOrange2Color,
-                                          borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(5),
-                                            bottomRight: Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: InkWell(
-                                          onTap: (
-                                          ) {
-                                           _detailMonitor(snapshot.data!.data.list.listKelas[index].idKelas.toString());
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Detail",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: mainWhiteColor,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  color: mainOrange2Color,
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(5),
+                                                    bottomRight:
+                                                        Radius.circular(5),
+                                                  ),
+                                                ),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    _detailMonitor(snapshot
+                                                        .data!
+                                                        .data
+                                                        .list
+                                                        .listKelas[index]
+                                                        .idKelas
+                                                        .toString());
+                                                  },
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Detail",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainWhiteColor,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        color: mainWhiteColor,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: mainWhiteColor,
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                                       ],
                                     ),
                                   ),
@@ -399,9 +413,9 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
       ),
     );
   }
-   Future _detailMonitor(String id_kelas) async {
-      SpUtil.putString("id_kelas", id_kelas);
-      Navigator.pushNamed(context, 'DetailMonitor');
-   
+
+  Future _detailMonitor(String id_kelas) async {
+    SpUtil.putString("id_kelas", id_kelas);
+    Navigator.pushNamed(context, 'monitorperkelas');
   }
 }

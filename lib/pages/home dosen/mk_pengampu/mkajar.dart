@@ -17,7 +17,7 @@ class MkAjar extends StatefulWidget {
 
 class _MkAjarState extends State<MkAjar> {
   Future<MkAjarModel> getMkAjar() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
         .get(matakuliahajar + SpUtil.getString("id_semester"), headers: header);
     var data = jsonDecode(response.body.toString());

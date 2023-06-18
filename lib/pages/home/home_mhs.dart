@@ -10,6 +10,8 @@ import 'package:siakad/utilites/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 
+import '../../api/model/userid_model.dart';
+
 class HomeMhs extends StatefulWidget {
   const HomeMhs({super.key});
 
@@ -19,7 +21,7 @@ class HomeMhs extends StatefulWidget {
 
 class _HomeMhsState extends State<HomeMhs> {
   Future<HomeModel> getHomeData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(home, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -30,48 +32,61 @@ class _HomeMhsState extends State<HomeMhs> {
     }
   }
 
+   
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: RichText(text: const TextSpan(text: "Hi, ",style: TextStyle(fontSize: 18), children: [
-        //     TextSpan(
-        //       text: "Nurandini. P",
-        //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        //     ),
-        //   ]), ),
-        //   automaticallyImplyLeading: false,
-        //   elevation: 0,
-        //   centerTitle:false,
-        //   backgroundColor: const Color(0xffE9561B),
-        // ),
         body: FutureBuilder<HomeModel>(
             future: getHomeData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Stack(
                   children: [
-                    ClipPath(
-                      clipper: ClipPathClass(),
-                      child: Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        color: const Color(0xffE9561B),
+                    SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: ClipPath(
+                        clipper: ClipPathClass(),
                         child: Container(
-                          margin: const EdgeInsets.only(top: 70, left: 29),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "Hi, ",
-                                style: const TextStyle(fontSize: 18),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        snapshot.data!.data.list.namaMahasiswa,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ]),
+                          height: 300,
+                          width: MediaQuery.of(context).size.width,
+                          color: const Color(0xffE9561B),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, "HomePage");
+                                },
+                                child: Container(
+                                    margin:
+                                        const EdgeInsets.only(top: 69, left: 29),
+                                    child: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: mainWhiteColor,
+                                    )),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: 70,
+                                ),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "Haii, ",
+                                      style: const TextStyle(fontSize: 18),
+                                      children: [
+                                        TextSpan(
+                                          text: snapshot
+                                              .data!.data.list.namaMahasiswa,
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -115,7 +130,10 @@ class _HomeMhsState extends State<HomeMhs> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           SizedBox(
-                                            width: MediaQuery.of(context).size.width / 2,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -125,7 +143,8 @@ class _HomeMhsState extends State<HomeMhs> {
                                                       .noMahasiswa,
                                                   style: TextStyle(
                                                       fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: mainWhiteColor),
                                                 ),
                                                 Text(
@@ -135,19 +154,20 @@ class _HomeMhsState extends State<HomeMhs> {
                                                       fontSize: 18,
                                                       color: mainWhiteColor),
                                                 ),
-                                                Text("Prodi : ${snapshot.data!.data.list.prodi
-                                                      .namaProdi}",
+                                                Text(
+                                                  "Prodi : ${snapshot.data!.data.list.prodi.namaProdi}",
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       color: mainWhiteColor),
                                                 ),
-                                                Text("Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
+                                                Text(
+                                                  "Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       color: mainWhiteColor),
                                                 ),
-                                                Text("Angkatan : ${snapshot
-                                                      .data!.data.list.angkatan}",
+                                                Text(
+                                                  "Angkatan : ${snapshot.data!.data.list.angkatan}",
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       color: mainWhiteColor),
@@ -178,23 +198,24 @@ class _HomeMhsState extends State<HomeMhs> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      if(snapshot.data!.data.list.dosenPa.gelarDepan != null)(
-                                      Text(
-                                        "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: mainWhiteColor),
-                                      )
-                                      ),
-                                      if(snapshot.data!.data.list.dosenPa.gelarDepan == null)(
-                                      Text(
-                                        "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: mainWhiteColor),
-                                      )
-                                      ),
-                                      
+                                      if (snapshot.data!.data.list.dosenPa
+                                              .gelarDepan !=
+                                          null)
+                                        (Text(
+                                          "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: mainWhiteColor),
+                                        )),
+                                      if (snapshot.data!.data.list.dosenPa
+                                              .gelarDepan ==
+                                          null)
+                                        (Text(
+                                          "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: mainWhiteColor),
+                                        )),
                                     ],
                                   ),
                                 ),
@@ -342,7 +363,13 @@ class _HomeMhsState extends State<HomeMhs> {
                                         // ),
                                         InkWell(
                                           onTap: () {
-                                              _chatDosen(snapshot.data!.data.list.dosenPa.idPegawai.toString(), snapshot.data!.data.list.dosenPa.namaPegawai.toString());
+                                            _chatDosen(
+                                                snapshot.data!.data.list.dosenPa
+                                                    .idPegawai
+                                                    .toString(),
+                                                snapshot.data!.data.list.dosenPa
+                                                    .namaPegawai
+                                                    .toString());
                                           },
                                           child: const menuAkademik(
                                             image: "assets/img/chat.png",
@@ -364,11 +391,12 @@ class _HomeMhsState extends State<HomeMhs> {
                 );
               } else {
                 return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                  child: CircularProgressIndicator(),
+                );
               }
             }));
   }
+
   Future _chatDosen(String id_dosen, String nama_pegawai) async {
     SpUtil.putString("id_dosen", id_dosen);
     SpUtil.putString("nama_pegawai", nama_pegawai);
@@ -419,6 +447,7 @@ class StatusCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
+        height: 80,
         padding: const EdgeInsets.all(10),
         width: MediaQuery.of(context).size.width * 0.27,
         child: Column(

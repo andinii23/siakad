@@ -17,7 +17,7 @@ class ChatMhs extends StatefulWidget {
 
 class _ChatMhsState extends State<ChatMhs> {
    Future<ChatModel> getDetailPresensi() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(chat + SpUtil.getString("id_dosen"),
         headers: header);
     var data = jsonDecode(response.body.toString());

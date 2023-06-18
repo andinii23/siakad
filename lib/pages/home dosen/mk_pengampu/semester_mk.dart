@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/semester_model.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../../api/model/khs_model.dart';
+import '../../../api/model/mkajar_model.dart';
 import '../../../utilites/constants.dart';
 
 class SemesterMk extends StatefulWidget {
@@ -17,15 +19,16 @@ class SemesterMk extends StatefulWidget {
 }
 
 class _SemesterMkState extends State<SemesterMk> {
-  Future<SemesterModel> getKhsData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-    var response = await http.get(semester, headers: header);
+  String? idSem;
+  Future<MkAjarModel> getMkAjar() async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(matakuliahajar + idSem!, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
-      return SemesterModel.fromJson(data);
+      return MkAjarModel.fromJson(data);
     } else {
-      return SemesterModel.fromJson(data);
+      return MkAjarModel.fromJson(data);
     }
   }
 
@@ -35,7 +38,7 @@ class _SemesterMkState extends State<SemesterMk> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Semester Matakuliah Ampu",
+          "Matakuliah Ampu",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -55,45 +58,63 @@ class _SemesterMkState extends State<SemesterMk> {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder<SemesterModel>(
-                future: getKhsData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Daftar Semester",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: mainBlueColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
+              child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              DropdownSearch<SemesterModel>(
+                mode: Mode.MENU,
+                // showSearchBox: true,
+                popupItemBuilder: (context, item, isSelected) => ListTile(
+                  title: Text(item.semesterText),
+                ),
+                onChanged: (value) => idSem = value?.idSemester,
+                dropdownBuilder: (context, selectedItem) =>
+                    Text(selectedItem?.semesterText ?? "Pilih Semester"),
+                onFind: (text) async {
+                  var header = {
+                    "Authorization": "Bearer ${SpUtil.getString("token")}"
+                  };
+                  var response = await http.get(semester, headers: header);
+                  if (response.statusCode != 200) {
+                    return [];
+                  }
+                  List allData = (json.decode(response.body)
+                      as Map<String, dynamic>)["data"]["list"];
+                  List<SemesterModel> allSemester = [];
+
+                  for (var element in allData) {
+                    allSemester.add(SemesterModel(
+                        idSemester: element["id_semester"],
+                        semesterText: element["semester_text"]));
+                  }
+                  setState(() {});
+                  return allSemester;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Stack(children: [
+                Positioned(
+                  child: FutureBuilder(
+                      future: getMkAjar(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              physics: ScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data.list.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        topRight: Radius.circular(16),
+                                      ),
                                       boxShadow: [
                                         BoxShadow(
                                           color: const Color(0xFF1E3B78)
@@ -105,57 +126,310 @@ class _SemesterMkState extends State<SemesterMk> {
                                         ),
                                       ],
                                     ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        _detailMkAjar(snapshot.data!.data.list[index].idSemester.toString());
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width:
-                                                MediaQuery.of(context).size.width,
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: mainWhiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Semester : ${snapshot.data!.data.list[index].idSemester.toString()}",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold
-                                                    ),
-                                              ),
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: mainOrange2Color,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(5),
+                                              topRight: Radius.circular(5),
                                             ),
                                           ),
-                                          
-                                        ],
-                                      ),
+                                          child: Text(
+                                            "JUMLAH KELAS : ${snapshot.data!.data.list[index].jumlahKelas}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: mainWhiteColor,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Column(
+                                          children: [
+                                            ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                shrinkWrap: true,
+                                                itemCount: snapshot
+                                                    .data!
+                                                    .data
+                                                    .list[index]
+                                                    .listKelas
+                                                    .length,
+                                                itemBuilder: (context, kls) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  16),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  16),
+                                                        ),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: const Color(
+                                                                    0xFF1E3B78)
+                                                                .withOpacity(
+                                                                    0.1),
+                                                            spreadRadius: 5,
+                                                            blurRadius: 4,
+                                                            offset: const Offset(
+                                                                0,
+                                                                3), // changes position of shadow
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              20),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(8),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        mainBlueColor,
+                                                                    borderRadius:
+                                                                        const BorderRadius
+                                                                            .only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              5),
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  child: Text(
+                                                                    "${snapshot.data!.data.list[index].listKelas[kls].matakuliah.kodeMatakuliah.toString()} : ${snapshot.data!.data.list[index].listKelas[kls].matakuliah.namaMatakuliah.toString()}",
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            mainWhiteColor,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Column(
+                                                            children: [
+                                                              Text(
+                                                                "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()} ${snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()}",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainBlueColor,
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Text(
+                                                                "Jumlah Mahasiswa : ${snapshot.data!.data.list[index].listKelas[kls].jumlahMahasiswa.toString()}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 16,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "Jumlah SKS : ${snapshot.data!.data.list[index].listKelas[kls].matakuliah.sksTotal.toString()}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "Program Studi : ${snapshot.data!.data.list[index].listKelas[kls].prodi.namaProdi.toString()}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Divider(
+                                                            color:
+                                                                mainBlackColor,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Column(
+                                                            children: [
+                                                              Text(
+                                                                "Jadwal",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainOrange2Color,
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Text(
+                                                                "${snapshot.data!.data.list[index].listKelas[kls].hari.toString()}, ${snapshot.data!.data.list[index].listKelas[kls].jamMulai.toString()} - ${snapshot.data!.data.list[index].listKelas[kls].jamSelesai.toString()}",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainOrange2Color,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list[index]
+                                                                    .listKelas[
+                                                                        kls]
+                                                                    .ruangKuliah
+                                                                    .namaRuang
+                                                                    .toString(),
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainOrange2Color,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(8),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color:
+                                                                        mainOrange2Color,
+                                                                    borderRadius:
+                                                                        const BorderRadius
+                                                                            .only(
+                                                                      bottomLeft:
+                                                                          Radius.circular(
+                                                                              5),
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              5),
+                                                                    ),
+                                                                  ),
+                                                                  child:
+                                                                      InkWell(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Text(
+                                                                          "Detail",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style: TextStyle(
+                                                                              color: mainWhiteColor,
+                                                                              fontSize: 18,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                        Icon(
+                                                                          Icons
+                                                                              .arrow_forward_ios,
+                                                                          color:
+                                                                              mainWhiteColor,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                })
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
-                              }),
-                        ),
-                      ],
-                    );
-                  } else {
-                     return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
-          ),
+                              });
+                        } else {
+                          return const Center(
+                            child: Text(""),
+                          );
+                        }
+                      }),
+                ),
+              ])
+            ],
+          ))
         ],
       ),
     );
   }
 
-   Future _detailMkAjar(String id_semester) async {
+  Future _detailMkAjar(String id_semester) async {
     SpUtil.putString("id_semester", id_semester);
     Navigator.pushNamed(context, 'MkAjar');
   }

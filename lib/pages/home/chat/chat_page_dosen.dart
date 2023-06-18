@@ -27,9 +27,9 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
   @override
   Widget build(BuildContext context) {
     Future<ChatModel> getChatData() async {
-      var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-      var response =
-          await http.get(chat_dosen , headers: header);
+      var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+      var response = await http.get(chat_dosen + SpUtil.getString("id_mhs_pt"),
+          headers: header);
       var data = jsonDecode(response.body.toString());
       if (response.statusCode == 200) {
         // print(response.body);
@@ -41,6 +41,7 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
 
     return Scaffold(
         backgroundColor: mainBlueColor,
+        // appBar: AppBar(title: Text("Chat Dosen"),),
         body: SafeArea(
           child: Stack(
             children: [
@@ -58,7 +59,7 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(context, 'HomeMhsPage');
+                                    Navigator.pop(context);
                                   },
                                   child: Icon(
                                     Icons.arrow_back_ios,
@@ -70,7 +71,7 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
                                   width:
                                       MediaQuery.of(context).size.width / 1.5,
                                   child: Text(
-                                    SpUtil.getString("nama_pegawai"),
+                                    SpUtil.getString("nama_mahasiswa"),
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -93,91 +94,96 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
                                   topLeft: Radius.circular(45),
                                   topRight: Radius.circular(45)),
                               color: mainWhiteColor),
-                          child: FutureBuilder<ChatModel>(
-                              future: getChatData(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return ListView.builder(
-                                      itemCount:
-                                          snapshot.data!.data.list.length,
-                                      itemBuilder: (context, index) {
-                                        return Row(
-                                          mainAxisAlignment: snapshot.data!.data
-                                                      .list[index].dariSaya ==
-                                                  true
-                                              ? MainAxisAlignment.end
-                                              : MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Container(
-                                                    width: 210,
-                                                    margin: const EdgeInsets.only(
-                                                        top: 10, bottom: 10),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    decoration: BoxDecoration(
-                                                        color: snapshot
-                                                                    .data!
-                                                                    .data
-                                                                    .list[index]
-                                                                    .dariSaya ==
-                                                                true
-                                                            ? Colors
-                                                                .indigo.shade100
-                                                            : Colors
-                                                                .indigo.shade50,
-                                                        borderRadius:
-                                                            snapshot
-                                                                        .data!
-                                                                        .data
-                                                                        .list[
-                                                                            index]
-                                                                        .dariSaya ==
-                                                                    true
-                                                                ? const BorderRadius
-                                                                    .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            30),
-                                                                  )
-                                                                : const BorderRadius
-                                                                    .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            30),
-                                                                  )),
-                                                    child: Text(snapshot
+                          child: SingleChildScrollView(
+                            physics: const ScrollPhysics(),
+                            reverse: true,
+                            child: FutureBuilder<ChatModel>(
+                                future: getChatData(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return ListView.builder(
+                                        physics: const ScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            snapshot.data!.data.list.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            mainAxisAlignment: snapshot
                                                         .data!
                                                         .data
                                                         .list[index]
-                                                        .pesan)),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              }),
+                                                        .dariSaya ==
+                                                    true
+                                                ? MainAxisAlignment.end
+                                                : MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                      width: 210,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              top: 10,
+                                                              bottom: 10),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15),
+                                                      decoration: BoxDecoration(
+                                                          color: snapshot
+                                                                      .data!
+                                                                      .data
+                                                                      .list[
+                                                                          index]
+                                                                      .dariSaya ==
+                                                                  true
+                                                              ? Colors.indigo
+                                                                  .shade100
+                                                              : Colors.indigo
+                                                                  .shade50,
+                                                          borderRadius: snapshot
+                                                                      .data!
+                                                                      .data
+                                                                      .list[index]
+                                                                      .dariSaya ==
+                                                                  true
+                                                              ? const BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                )
+                                                              : const BorderRadius.only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          30),
+                                                                )),
+                                                      child: Text(snapshot.data!.data.list[index].pesan)),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                }),
+                          ),
                         ),
                       ),
                       Container(
@@ -240,13 +246,13 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
   }
 
   Future _sendChat() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
-        .post(chat_dosen, headers: header, body: {
+        .post(chat + SpUtil.getString("id_mhs_pt"), headers: header, body: {
       "pesan": _chatController.text,
     });
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
     } else {
       print("gagal menambahkan kelas");
       var body = jsonDecode(response.body);
@@ -254,4 +260,3 @@ class _ChatPageDosenState extends State<ChatPageDosen> {
     }
   }
 }
-   

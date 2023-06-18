@@ -17,7 +17,7 @@ class KrsMhs extends StatefulWidget {
 
 class _KrsMhsState extends State<KrsMhs> {
   Future<KrsModel> getKrsData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(krs, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -65,7 +65,6 @@ class _KrsMhsState extends State<KrsMhs> {
                     const SizedBox(
                       height: 20,
                     ),
-
                     Container(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 10,
@@ -100,10 +99,10 @@ class _KrsMhsState extends State<KrsMhs> {
                             horizontal: 10, vertical: 10),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 235, 100, 91),
+                          color: const Color.fromARGB(255, 235, 100, 91),
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(
-                            color: Color.fromARGB(255, 226, 73, 62),
+                            color: const Color.fromARGB(255, 226, 73, 62),
                             width: 1,
                           ),
                         ),
@@ -143,126 +142,123 @@ class _KrsMhsState extends State<KrsMhs> {
                       height: 10,
                     ),
                     // pesan pembatalan
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(
-                                    snapshot.data!.data.list.listPesanKrs.first
-                                        .pesan,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: mainBlackColor,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Text(
-                          "Riwayat Ajuan",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
 
-                    const SizedBox(
-                      height: 10,
-                    ),
                     if (snapshot.data!.data.list.statusText.toString() !=
                             "Menunggu Persetujuan Dosen PA" &&
                         snapshot.data!.data.list.statusText.toString() !=
                             "Telah di Acc Dosen PA")
-                      if (snapshot.data!.data.list.jumlahSksKontrak != 24)
-                        (Row(
+                      if (snapshot.data!.data.list.jumlahSksKontrak <= 24)
+                        Column(
                           children: [
-                            (GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, 'DaftarKelas');
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                width: 130,
-                                decoration: BoxDecoration(
-                                  color: mainOrange2Color,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: mainWhiteColor,
+                            (Row(
+                              children: [
+                                (GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, 'DaftarKelas');
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 10,
                                     ),
-                                    const Text(
-                                      "KRS Reguler",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                      color: mainOrange2Color,
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                  ],
-                                ),
-                              ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: mainWhiteColor,
+                                        ),
+                                        const Text(
+                                          "KRS Reguler",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                                (GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, 'krsinbound');
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                      color: mainOrange2Color,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: mainWhiteColor,
+                                        ),
+                                        const Text(
+                                          "KRS Inbound",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                              ],
                             )),
-                            (GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, 'krsinbound');
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                width: 130,
-                                decoration: BoxDecoration(
-                                  color: mainOrange2Color,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      color: mainWhiteColor,
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            (Row(
+                              children: [
+                                (GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, 'krsoutbound');
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 10,
                                     ),
-                                    const Text(
-                                      "KRS Inbound",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                      color: mainOrange2Color,
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                  ],
-                                ),
-                              ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: mainWhiteColor,
+                                        ),
+                                        const Text(
+                                          "KRS Outbound",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                              ],
                             )),
                           ],
-                        )),
+                        ),
 
                     Expanded(
                         child: Padding(
@@ -378,7 +374,8 @@ class _KrsMhsState extends State<KrsMhs> {
                                                           .list
                                                           .listKrs[index]
                                                           .matakuliah
-                                                          .namaMatakuliah,
+                                                          .namaMatakuliah
+                                                          .toUpperCase(),
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
@@ -390,7 +387,7 @@ class _KrsMhsState extends State<KrsMhs> {
                                                           color: mainBlueColor),
                                                     ),
                                                     Text(
-                                                      "Kelas : ${snapshot.data!.data.list.listKrs[index].kelas.kodeKelas}",
+                                                      "Kelas : ${snapshot.data!.data.list.listKrs[index].kelas?.kodeKelas.toString()}",
                                                       style: TextStyle(
                                                           color: mainBlueColor),
                                                     ),
@@ -456,7 +453,7 @@ class _KrsMhsState extends State<KrsMhs> {
                                                                           .min,
                                                                   children: [
                                                                     Text(
-                                                                      "${snapshot.data!.data.list.listKrs[index].kelas.hari}, ${snapshot.data!.data.list.listKrs[index].kelas.jamMulai} - ${snapshot.data!.data.list.listKrs[index].kelas.jamSelesai} \n ${snapshot.data!.data.list.listKrs[index].kelas.ruangKuliah.namaRuang}",
+                                                                      "${snapshot.data!.data.list.listKrs[index].kelas?.hari}, ${snapshot.data!.data.list.listKrs[index].kelas?.jamMulai} - ${snapshot.data!.data.list.listKrs[index].kelas?.jamSelesai} \n ${snapshot.data!.data.list.listKrs[index].kelas?.ruangKuliah.namaRuang}",
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
@@ -656,39 +653,89 @@ class _KrsMhsState extends State<KrsMhs> {
                           const SizedBox(
                             height: 10,
                           ),
-                          //tombol kirim
-                          if (snapshot.data!.data.list.statusText.toString() !=
-                                  "Menunggu Persetujuan Dosen PA" &&
-                              snapshot.data!.data.list.statusText.toString() !=
-                                  "Telah di Acc Dosen PA")
-                            (GestureDetector(
-                              onTap: () {
-                                _ajukanKrs();
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: mainBlueColor,
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                    color: mainBlueColor,
-                                    width: 1,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(
+                                              snapshot.data!.data.list
+                                                  .listPesanKrs.first.pesan,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: mainBlackColor,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 10,
                                   ),
-                                ),
-                                child: const Text(
-                                  "Ajukan KRS",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const Text(
+                                    "Riwayat Ajuan",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
-                            )),
+                              //tombol kirim
+
+                              if (snapshot.data!.data.list.statusText
+                                          .toString() !=
+                                      "Menunggu Persetujuan Dosen PA" &&
+                                  snapshot.data!.data.list.statusText
+                                          .toString() !=
+                                      "Telah di Acc Dosen PA" &&
+                                  DateTime.now().isAfter(
+                                      snapshot.data!.data.list.akhirKprs))
+                                (GestureDetector(
+                                  onTap: () {
+                                    _ajukanKrs();
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: mainBlueColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: mainBlueColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      "Ajukan KRS",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                            ],
+                          ),
                         ],
                       ),
                     ))
@@ -706,11 +753,12 @@ class _KrsMhsState extends State<KrsMhs> {
     );
   }
 
-  Future _hapusKelas(String id_krs) async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-    var response = await http.get(hapus_kelas + id_krs, headers: header);
+  Future _hapusKelas(String idKrs) async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(hapus_kelas + idKrs, headers: header);
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
+      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, 'KrsMhs');
     } else {
       print("gagal menambahkan kelas");
@@ -720,13 +768,13 @@ class _KrsMhsState extends State<KrsMhs> {
   }
 
   Future _ajukanKrs() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.post(
       ajukan_krs,
       headers: header,
     );
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       Navigator.pushNamed(context, 'KrsMhs');
     } else {
       print("gagal menambahkan kelas");

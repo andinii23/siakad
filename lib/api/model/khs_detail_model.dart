@@ -9,15 +9,15 @@ KhsDetailModel khsDetailModelFromJson(String str) => KhsDetailModel.fromJson(jso
 String khsDetailModelToJson(KhsDetailModel data) => json.encode(data.toJson());
 
 class KhsDetailModel {
+    int code;
+    String errorMessage;
+    Data data;
+
     KhsDetailModel({
         required this.code,
         required this.errorMessage,
         required this.data,
     });
-
-    int code;
-    String errorMessage;
-    Data data;
 
     factory KhsDetailModel.fromJson(Map<String, dynamic> json) => KhsDetailModel(
         code: json["code"],
@@ -33,17 +33,17 @@ class KhsDetailModel {
 }
 
 class Data {
+    int total;
+    int perPage;
+    int page;
+    List<ListElement> list;
+
     Data({
         required this.total,
         required this.perPage,
         required this.page,
         required this.list,
     });
-
-    int total;
-    int perPage;
-    int page;
-    List<ListElement> list;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         total: json["total"],
@@ -61,20 +61,23 @@ class Data {
 }
 
 class ListElement {
+    int idSemester;
+    String semesterText;
+    String ip;
+    String sksSemester;
+    List<ListMataKuliah> listMataKuliah;
+
     ListElement({
         required this.idSemester,
+        required this.semesterText,
         required this.ip,
         required this.sksSemester,
         required this.listMataKuliah,
     });
 
-    int idSemester;
-    String ip;
-    String sksSemester;
-    List<ListMataKuliah> listMataKuliah;
-
     factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         idSemester: json["id_semester"],
+        semesterText: json["semester_text"],
         ip: json["ip"],
         sksSemester: json["sks_semester"],
         listMataKuliah: List<ListMataKuliah>.from(json["list_mata_kuliah"].map((x) => ListMataKuliah.fromJson(x))),
@@ -82,6 +85,7 @@ class ListElement {
 
     Map<String, dynamic> toJson() => {
         "id_semester": idSemester,
+        "semester_text": semesterText,
         "ip": ip,
         "sks_semester": sksSemester,
         "list_mata_kuliah": List<dynamic>.from(listMataKuliah.map((x) => x.toJson())),
@@ -89,32 +93,13 @@ class ListElement {
 }
 
 class ListMataKuliah {
-    ListMataKuliah({
-        required this.idKrs,
-        required this.status,
-        required this.idSemester,
-        this.nilai,
-        this.edom,
-        required this.idMatakuliah,
-        required this.namaMatakuliah,
-        required this.kodeMatakuliah,
-        required this.sksTotal,
-        required this.kodeKelas,
-        required this.idKelas,
-        required this.jamMulai,
-        required this.jamSelesai,
-        required this.hari,
-        required this.namaRuang,
-        this.idPaketMbkm,
-        this.namaPaketProgram,
-        this.namaProgramMbkm,
-    });
-
     int idKrs;
     String status;
     int idSemester;
-    dynamic nilai;
-    dynamic edom;
+    String nilai;
+    int idMhsPt;
+    String edom;
+    dynamic statusKrs;
     int idMatakuliah;
     String namaMatakuliah;
     String kodeMatakuliah;
@@ -124,17 +109,54 @@ class ListMataKuliah {
     String jamMulai;
     String jamSelesai;
     int hari;
+    int idKelasProdi;
+    String semester;
     String namaRuang;
     dynamic idPaketMbkm;
     dynamic namaPaketProgram;
     dynamic namaProgramMbkm;
+    String namaKelasProdi;
+    String idProdi;
+    String namaProdi;
+    String semesterText;
+
+    ListMataKuliah({
+        required this.idKrs,
+        required this.status,
+        required this.idSemester,
+        required this.nilai,
+        required this.idMhsPt,
+        required this.edom,
+        this.statusKrs,
+        required this.idMatakuliah,
+        required this.namaMatakuliah,
+        required this.kodeMatakuliah,
+        required this.sksTotal,
+        required this.kodeKelas,
+        required this.idKelas,
+        required this.jamMulai,
+        required this.jamSelesai,
+        required this.hari,
+        required this.idKelasProdi,
+        required this.semester,
+        required this.namaRuang,
+        this.idPaketMbkm,
+        this.namaPaketProgram,
+        this.namaProgramMbkm,
+        required this.namaKelasProdi,
+        required this.idProdi,
+        required this.namaProdi,
+        required this.semesterText,
+    });
 
     factory ListMataKuliah.fromJson(Map<String, dynamic> json) => ListMataKuliah(
         idKrs: json["id_krs"],
         status: json["status"],
         idSemester: json["id_semester"],
         nilai: json["nilai"],
+        idMhsPt: json["id_mhs_pt"],
         edom: json["edom"],
+        statusKrs: json["status_krs"],
         idMatakuliah: json["id_matakuliah"],
         namaMatakuliah: json["nama_matakuliah"],
         kodeMatakuliah: json["kode_matakuliah"],
@@ -144,10 +166,16 @@ class ListMataKuliah {
         jamMulai: json["jam_mulai"],
         jamSelesai: json["jam_selesai"],
         hari: json["hari"],
+        idKelasProdi: json["id_kelas_prodi"],
+        semester: json["semester"],
         namaRuang: json["nama_ruang"],
         idPaketMbkm: json["id_paket_mbkm"],
         namaPaketProgram: json["nama_paket_program"],
         namaProgramMbkm: json["nama_program_mbkm"],
+        namaKelasProdi: json["nama_kelas_prodi"],
+        idProdi: json["id_prodi"],
+        namaProdi: json["nama_prodi"],
+        semesterText: json["semester_text"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -155,7 +183,9 @@ class ListMataKuliah {
         "status": status,
         "id_semester": idSemester,
         "nilai": nilai,
+        "id_mhs_pt": idMhsPt,
         "edom": edom,
+        "status_krs": statusKrs,
         "id_matakuliah": idMatakuliah,
         "nama_matakuliah": namaMatakuliah,
         "kode_matakuliah": kodeMatakuliah,
@@ -165,9 +195,19 @@ class ListMataKuliah {
         "jam_mulai": jamMulai,
         "jam_selesai": jamSelesai,
         "hari": hari,
+        "id_kelas_prodi": idKelasProdi,
+        "semester": semester,
         "nama_ruang": namaRuang,
         "id_paket_mbkm": idPaketMbkm,
         "nama_paket_program": namaPaketProgram,
         "nama_program_mbkm": namaProgramMbkm,
+        "nama_kelas_prodi": namaKelasProdi,
+        "id_prodi": idProdi,
+        "nama_prodi": namaProdi,
+        "semester_text": semesterText,
     };
 }
+
+
+
+

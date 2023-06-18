@@ -27,7 +27,7 @@ class _ChatPageMhsState extends State<ChatPageMhs> {
   @override
   Widget build(BuildContext context) {
     Future<ChatModel> getChatData() async {
-      var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+      var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
       var response =
           await http.get(chat + SpUtil.getString("id_dosen"), headers: header);
       var data = jsonDecode(response.body.toString());
@@ -93,91 +93,98 @@ class _ChatPageMhsState extends State<ChatPageMhs> {
                                   topLeft: Radius.circular(45),
                                   topRight: Radius.circular(45)),
                               color: mainWhiteColor),
-                          child: FutureBuilder<ChatModel>(
-                              future: getChatData(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return ListView.builder(
-                                      itemCount:
-                                          snapshot.data!.data.list.length,
-                                      itemBuilder: (context, index) {
-                                        return Row(
-                                          mainAxisAlignment: snapshot.data!.data
-                                                      .list[index].dariSaya ==
-                                                  true
-                                              ? MainAxisAlignment.end
-                                              : MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Container(
-                                                    width: 210,
-                                                    margin: const EdgeInsets.only(
-                                                        top: 10, bottom: 10),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    decoration: BoxDecoration(
-                                                        color: snapshot
-                                                                    .data!
-                                                                    .data
-                                                                    .list[index]
-                                                                    .dariSaya ==
-                                                                true
-                                                            ? Colors
-                                                                .indigo.shade100
-                                                            : Colors
-                                                                .indigo.shade50,
-                                                        borderRadius:
-                                                            snapshot
-                                                                        .data!
-                                                                        .data
-                                                                        .list[
-                                                                            index]
-                                                                        .dariSaya ==
-                                                                    true
-                                                                ? const BorderRadius
-                                                                    .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            30),
-                                                                  )
-                                                                : const BorderRadius
-                                                                    .only(
-                                                                    topLeft: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    topRight: Radius
-                                                                        .circular(
-                                                                            30),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            30),
-                                                                  )),
-                                                    child: Text(snapshot
-                                                        .data!
-                                                        .data
-                                                        .list[index]
-                                                        .pesan)),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              }),
+                          child: SingleChildScrollView(
+                             physics: const ScrollPhysics(),
+                            reverse: true,
+                            child: FutureBuilder<ChatModel>(
+                                future: getChatData(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return ListView.builder(
+                                      physics: const ScrollPhysics(),
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                        itemCount:
+                                            snapshot.data!.data.list.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            mainAxisAlignment: snapshot.data!.data
+                                                        .list[index].dariSaya ==
+                                                    true
+                                                ? MainAxisAlignment.end
+                                                : MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                      width: 210,
+                                                      margin: const EdgeInsets.only(
+                                                          top: 10, bottom: 10),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              15),
+                                                      decoration: BoxDecoration(
+                                                          color: snapshot
+                                                                      .data!
+                                                                      .data
+                                                                      .list[index]
+                                                                      .dariSaya ==
+                                                                  true
+                                                              ? Colors
+                                                                  .indigo.shade100
+                                                              : Colors
+                                                                  .indigo.shade50,
+                                                          borderRadius:
+                                                              snapshot
+                                                                          .data!
+                                                                          .data
+                                                                          .list[
+                                                                              index]
+                                                                          .dariSaya ==
+                                                                      true
+                                                                  ? const BorderRadius
+                                                                      .only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              30),
+                                                                      topRight: Radius
+                                                                          .circular(
+                                                                              30),
+                                                                      bottomLeft:
+                                                                          Radius.circular(
+                                                                              30),
+                                                                    )
+                                                                  : const BorderRadius
+                                                                      .only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              30),
+                                                                      topRight: Radius
+                                                                          .circular(
+                                                                              30),
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              30),
+                                                                    )),
+                                                      child: Text(snapshot
+                                                          .data!
+                                                          .data
+                                                          .list[index]
+                                                          .pesan)),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                }),
+                          ),
                         ),
                       ),
                       Container(
@@ -240,13 +247,13 @@ class _ChatPageMhsState extends State<ChatPageMhs> {
   }
 
   Future _sendChat() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
         .post(chat + SpUtil.getString("id_dosen"), headers: header, body: {
       "pesan": _chatController.text,
     });
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
     } else {
       print("gagal mengirim pesan");
       var body = jsonDecode(response.body);

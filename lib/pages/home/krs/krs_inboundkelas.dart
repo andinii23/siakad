@@ -6,26 +6,28 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:siakad/api/model/krs_model.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
+import '../../../api/model/dafkelas_krs_model.dart';
+import '../../../api/model/dafkls_krsinbound.dart';
 import '../../../api/model/kelas_model.dart';
 import '../../../utilites/constants.dart';
 
-class KelasKontrak extends StatefulWidget {
-  const KelasKontrak({super.key});
+class DaftarKelasKrsInbound extends StatefulWidget {
+  const DaftarKelasKrsInbound({super.key});
 
   @override
-  State<KelasKontrak> createState() => _KelasKontrakState();
+  State<DaftarKelasKrsInbound> createState() => _DaftarKelasKrsInboundState();
 }
 
-class _KelasKontrakState extends State<KelasKontrak> {
-  Future<KelasKontrakModel> getKrsData() async {
-    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(krs_kelas, headers: header);
+class _DaftarKelasKrsInboundState extends State<DaftarKelasKrsInbound> {
+  Future<DaftarKelasInboundKrsModel> getKelasKrsInboundData() async {
+    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var response = await http.get("$krs_kelas_inbound${SpUtil.getString("id_matakuliah")}&kelas_mbkm=1", headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
-      return KelasKontrakModel.fromJson(data);
+      return DaftarKelasInboundKrsModel.fromJson(data);
     } else {
-      return KelasKontrakModel.fromJson(data);
+      return DaftarKelasInboundKrsModel.fromJson(data);
     }
   }
 
@@ -35,7 +37,7 @@ class _KelasKontrakState extends State<KelasKontrak> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Kelas KRS Mahasiswa",
+          "Kelas KRS Inbound Mahasiswa",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -55,8 +57,8 @@ class _KelasKontrakState extends State<KelasKontrak> {
       body: Column(
         children: [
           Expanded(
-              child: FutureBuilder<KelasKontrakModel>(
-            future: getKrsData(),
+              child: FutureBuilder<DaftarKelasInboundKrsModel>(
+            future: getKelasKrsInboundData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Column(
@@ -156,7 +158,7 @@ class _KelasKontrakState extends State<KelasKontrak> {
                                                         height: 10,
                                                       ),
                                                       Text(
-                                                        "SKS : ${snapshot.data!.data.list[index].matakuliah.sksTotal}",
+                                                        "Ruang : ${snapshot.data!.data.list[index].kodeKelas}",
                                                         style: TextStyle(
                                                             color:
                                                                 mainBlueColor),
@@ -187,7 +189,7 @@ class _KelasKontrakState extends State<KelasKontrak> {
                                                   ),
                                                   child: InkWell(
                                                     onTap: () {
-                                                      _idMatakuliah(snapshot.data!.data.list[index].matakuliah.idMatakuliah.toString());
+                                                      _idKelas(snapshot.data!.data.list[index].idKelas.toString());
                                                     },
                                                     child: SizedBox(
                                                       width: 40,
@@ -229,8 +231,8 @@ class _KelasKontrakState extends State<KelasKontrak> {
     );
   }
 
-  Future _idMatakuliah(String id_matakuliah) async {
-    SpUtil.putString("id_matakuliah", id_matakuliah);
-    Navigator.pushNamed(context, 'detailkelas');
+  Future _idKelas(String id_kelas) async {
+    SpUtil.putString("id_kelas", id_kelas);
+    Navigator.pushNamed(context, 'detailruangkelas');
   }
 }

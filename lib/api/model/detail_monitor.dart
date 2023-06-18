@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final detailMonitoringModel = detailMonitoringModelFromJson(jsonString);
+//     final detailMonitoringKuliahModel = detailMonitoringKuliahModelFromJson(jsonString);
 
 import 'dart:convert';
 
-DetailMonitoringModel detailMonitoringModelFromJson(String str) => DetailMonitoringModel.fromJson(json.decode(str));
+DetailMonitoringKuliahModel detailMonitoringKuliahModelFromJson(String str) => DetailMonitoringKuliahModel.fromJson(json.decode(str));
 
-String detailMonitoringModelToJson(DetailMonitoringModel data) => json.encode(data.toJson());
+String detailMonitoringKuliahModelToJson(DetailMonitoringKuliahModel data) => json.encode(data.toJson());
 
-class DetailMonitoringModel {
-    DetailMonitoringModel({
+class DetailMonitoringKuliahModel {
+    int code;
+    String errorMessage;
+    Data data;
+
+    DetailMonitoringKuliahModel({
         required this.code,
         required this.errorMessage,
         required this.data,
     });
 
-    int code;
-    String errorMessage;
-    Data data;
-
-    factory DetailMonitoringModel.fromJson(Map<String, dynamic> json) => DetailMonitoringModel(
+    factory DetailMonitoringKuliahModel.fromJson(Map<String, dynamic> json) => DetailMonitoringKuliahModel(
         code: json["code"],
         errorMessage: json["error_message"],
         data: Data.fromJson(json["data"]),
@@ -33,17 +33,17 @@ class DetailMonitoringModel {
 }
 
 class Data {
+    int total;
+    int perPage;
+    int page;
+    ListClass list;
+
     Data({
         required this.total,
         required this.perPage,
         required this.page,
         required this.list,
     });
-
-    int total;
-    int perPage;
-    int page;
-    ListClass list;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         total: json["total"],
@@ -61,6 +61,16 @@ class Data {
 }
 
 class ListClass {
+    int idMonitoringPerkuliahan;
+    int idKelas;
+    dynamic pertemuanKe;
+    DateTime tanggal;
+    String jamMulai;
+    String jamSelesai;
+    String materi;
+    String dosen;
+    List<Mahasiswa> mahasiswa;
+
     ListClass({
         required this.idMonitoringPerkuliahan,
         required this.idKelas,
@@ -72,16 +82,6 @@ class ListClass {
         required this.dosen,
         required this.mahasiswa,
     });
-
-    int idMonitoringPerkuliahan;
-    int idKelas;
-    dynamic pertemuanKe;
-    DateTime tanggal;
-    String jamMulai;
-    String jamSelesai;
-    String materi;
-    String dosen;
-    List<Mahasiswa> mahasiswa;
 
     factory ListClass.fromJson(Map<String, dynamic> json) => ListClass(
         idMonitoringPerkuliahan: json["id_monitoring_perkuliahan"],
@@ -109,6 +109,12 @@ class ListClass {
 }
 
 class Mahasiswa {
+    int idMhsPt;
+    String noMhs;
+    String angkatan;
+    String namaMahasiswa;
+    int kehadiran;
+
     Mahasiswa({
         required this.idMhsPt,
         required this.noMhs,
@@ -116,12 +122,6 @@ class Mahasiswa {
         required this.namaMahasiswa,
         required this.kehadiran,
     });
-
-    int idMhsPt;
-    String noMhs;
-    String angkatan;
-    String namaMahasiswa;
-    int kehadiran;
 
     factory Mahasiswa.fromJson(Map<String, dynamic> json) => Mahasiswa(
         idMhsPt: json["id_mhs_pt"],

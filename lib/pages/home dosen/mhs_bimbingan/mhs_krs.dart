@@ -350,7 +350,10 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                                 ),
                               ),
                             )),
-                          Expanded(
+                            if(snapshot.data!.data.list.krs.statusKrs
+                                  .toString() !=
+                              "3")
+                          (Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
@@ -514,7 +517,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                                 ),
                               ),
                             ),
-                          ),
+                          )),
                           if (snapshot.data!.data.list.krs.statusKrs
                                   .toString() ==
                               "1")
@@ -656,34 +659,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                           if (snapshot.data!.data.list.krs.statusKrs
                                   .toString() ==
                               "3")
-                            (Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      _terimaMk();
-                                    },
-                                    child: Container(
-                                        width: 80,
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: mainBlueColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Text(
-                                          "Terima",
-                                          textAlign: TextAlign.center,
-                                          style:
-                                              TextStyle(color: mainWhiteColor),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ))
+                            (Text(""))
                         ],
                       );
                     } else {
@@ -698,7 +674,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
   }
 
   Future _terimaMk() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.post(terima_krs, headers: header, body: {
       "id_mhs_pt": SpUtil.getString("id_mhs_pt"),
       "status": "2",
@@ -714,7 +690,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
   }
 
   Future _tolakMk() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.post(terima_krs, headers: header, body: {
       "id_mhs_pt": SpUtil.getString("id_mhs_pt"),
       "status": "3",

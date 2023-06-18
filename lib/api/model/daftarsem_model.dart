@@ -26,4 +26,8 @@ class DaftarSemModel {
         "id_semester": idSemester,
         "semester_text": semesterText,
     };
+
+    @override
+
+    String toString() => semesterText;
 }

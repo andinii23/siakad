@@ -1,5 +1,8 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -7,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/semester_model.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../../api/model/khs_model.dart';
+import '../../../api/model/monitor_kuliah_model.dart';
 import '../../../utilites/constants.dart';
 
 class SemMonitoring extends StatefulWidget {
@@ -17,15 +21,17 @@ class SemMonitoring extends StatefulWidget {
 }
 
 class _SemMonitoringState extends State<SemMonitoring> {
-  Future<SemesterModel> getKhsData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-    var response = await http.get(semester, headers: header);
+  String? idSem;
+  Future<MonitoringKuliahModel> getMonitor() async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(monitorkuliah + idSem!, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
-      return SemesterModel.fromJson(data);
+      SpUtil.putString("id_sem", idSem);
+      return MonitoringKuliahModel.fromJson(data);
     } else {
-      return SemesterModel.fromJson(data);
+      return MonitoringKuliahModel.fromJson(data);
     }
   }
 
@@ -35,7 +41,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Semester Monitoring Kuliah",
+          "Monitoring Kuliah",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -55,108 +61,411 @@ class _SemMonitoringState extends State<SemMonitoring> {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder<SemesterModel>(
-                future: getKhsData(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Daftar Semester",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    color: mainBlueColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.data.list.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0xFF1E3B78)
-                                              .withOpacity(0.1),
-                                          spreadRadius: 5,
-                                          blurRadius: 4,
-                                          offset: const Offset(0,
-                                              3), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        _detailMonitor(snapshot.data!.data.list[index].idSemester.toString());
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width:
-                                                MediaQuery.of(context).size.width,
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: mainWhiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                "Semester : ${snapshot.data!.data.list[index].idSemester.toString()}",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold
-                                                    ),
-                                              ),
-                                            ),
+            child: ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                DropdownSearch<SemesterModel>(
+                  mode: Mode.MENU,
+                  // showSearchBox: true,
+                  popupItemBuilder: (context, item, isSelected) => ListTile(
+                    title: Text(item.semesterText),
+                  ),
+                  onChanged: (value) => idSem = value?.idSemester,
+                  dropdownBuilder: (context, selectedItem) =>
+                      Text(selectedItem?.semesterText ?? "Pilih Semester"),
+                  onFind: (text) async {
+                    var header = {
+                      "Authorization": "Bearer ${SpUtil.getString("token")}"
+                    };
+                    var response = await http.get(semester, headers: header);
+                    if (response.statusCode != 200) {
+                      return [];
+                    }
+                    List allData = (json.decode(response.body)
+                        as Map<String, dynamic>)["data"]["list"];
+                    List<SemesterModel> allSemester = [];
+
+                    for (var element in allData) {
+                      allSemester.add(SemesterModel(
+                          idSemester: element["id_semester"],
+                          semesterText: element["semester_text"]));
+                    }
+                    setState(() {});
+                    return allSemester;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Stack(
+                  children: [
+                    Positioned(
+                      child: FutureBuilder(
+                          future: getMonitor(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      snapshot.data!.data.list.listKelas.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(16),
+                                            topRight: Radius.circular(16),
                                           ),
-                                          
-                                        ],
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0xFF1E3B78)
+                                                  .withOpacity(0.1),
+                                              spreadRadius: 5,
+                                              blurRadius: 4,
+                                              offset: const Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: mainBlueColor,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        topLeft:
+                                                            Radius.circular(5),
+                                                        topRight:
+                                                            Radius.circular(5),
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "${snapshot.data!.data.list.listKelas[index].matakuliah.kodeMatakuliah.toString()} : ${snapshot.data!.data.list.listKelas[index].matakuliah.namaMatakuliah.toString()}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: mainWhiteColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Dosen Pengampu",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: mainBlueColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                ListView.builder(
+                                                    scrollDirection:
+                                                        Axis.vertical,
+                                                    shrinkWrap: true,
+                                                    itemCount: snapshot
+                                                        .data!
+                                                        .data
+                                                        .list
+                                                        .listKelas[index]
+                                                        .dosen
+                                                        .length,
+                                                    itemBuilder:
+                                                        (context, dosen) {
+                                                      if (snapshot
+                                                              .data!
+                                                              .data
+                                                              .list
+                                                              .listKelas[index]
+                                                              .dosen[dosen]
+                                                              .gelarDepan !=
+                                                          null) {
+                                                        return Center(
+                                                          child: Text(
+                                                            "${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarDepan.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  mainBlueColor,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        return Center(
+                                                          child: Text(
+                                                            "${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  mainBlueColor,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                    }),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  "Ruang ${snapshot.data!.data.list.listKelas[index].kodeKelas.toString()} ${snapshot.data!.data.list.listKelas[index].kelasProdi.namaKelasProdi.toString()}",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: mainBlueColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  snapshot
+                                                      .data!
+                                                      .data
+                                                      .list
+                                                      .listKelas[index]
+                                                      .ruangKuliah
+                                                      .namaRuang
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    color: mainBlueColor,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Jumlah SKS : ${snapshot.data!.data.list.listKelas[index].matakuliah.sksTotal.toString()}",
+                                                  style: TextStyle(
+                                                    color: mainBlueColor,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Jumlah Mahasiswa : ${snapshot.data!.data.list.listKelas[index].jumlahMahasiswa.toString()}",
+                                                  style: TextStyle(
+                                                      color: mainBlueColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Divider(
+                                              color: mainBlackColor,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: 80,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Hari",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainOrange2Color,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        snapshot
+                                                            .data!
+                                                            .data
+                                                            .list
+                                                            .listKelas[index]
+                                                            .hari
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color:
+                                                              mainOrange2Color,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 106,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Jam Mulai",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainOrange2Color,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        snapshot
+                                                            .data!
+                                                            .data
+                                                            .list
+                                                            .listKelas[index]
+                                                            .jamMulai
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color:
+                                                              mainOrange2Color,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 106,
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        "Jam Selesai",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainOrange2Color,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        snapshot
+                                                            .data!
+                                                            .data
+                                                            .list
+                                                            .listKelas[index]
+                                                            .jamSelesai
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color:
+                                                              mainOrange2Color,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: mainOrange2Color,
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        bottomLeft:
+                                                            Radius.circular(5),
+                                                        bottomRight:
+                                                            Radius.circular(5),
+                                                      ),
+                                                    ),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        _detailMonitor(snapshot
+                                                            .data!
+                                                            .data
+                                                            .list
+                                                            .listKelas[index]
+                                                            .idKelas
+                                                            .toString());
+                                                      },
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            "Detail",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    mainWhiteColor,
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            color:
+                                                                mainWhiteColor,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ],
-                    );
-                  } else {
-                     return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
+                                    );
+                                  });
+                            } else {
+                              return const Center(
+                                child: Text(""),
+                              );
+                            }
+                          }),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-   Future _detailMonitor(String id_semester) async {
-    SpUtil.putString("id_semester", id_semester);
-    Navigator.pushNamed(context, 'Monitoring');
+  Future _detailMonitor(String idKelas) async {
+    SpUtil.putString("id_kelass", idKelas);
+    Navigator.pushNamed(context, 'monitorperkelas');
   }
 }

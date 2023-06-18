@@ -17,7 +17,7 @@ class DetailPresensiMhs extends StatefulWidget {
 
 class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
   Future<DetailPresensiModel> getDetailPresensi() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(detailpresensi + SpUtil.getString("id_kelas"),
         headers: header);
     var data = jsonDecode(response.body.toString());
@@ -215,177 +215,149 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
                                       height: 10,
                                     ),
                                     Column(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        // Text(
-                                        //   "Daftar Mahasiswa",
-                                        //   textAlign: TextAlign.center,
-                                        // style: TextStyle(
-                                        //     color: mainOrange2Color,
-                                        //     fontSize: 18,
-                                        //     fontWeight: FontWeight.bold),
-                                        // ),
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Nama",
-                                                  style: TextStyle(
-                                                      color: mainOrange2Color,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(
-                                                  snapshot
-                                                      .data!
-                                                      .data
-                                                      .list[index]
-                                                      .mahasiswa[8]
-                                                      .namaMahasiswa,
-                                                  style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 14,
+                                        ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            shrinkWrap: true,
+                                            itemCount: snapshot.data!.data
+                                                .list[index].mahasiswa.length,
+                                            itemBuilder: (context, mhs) {
+                                              return Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (snapshot
+                                                          .data!
+                                                          .data
+                                                          .list[index]
+                                                          .mahasiswa[mhs]
+                                                          .idMhsPt
+                                                          .toString() ==
+                                                      SpUtil.getString(
+                                                          "id_mhss_pt"))
+                                                    (Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              1.5,
+                                                          child: Text(
+                                                            snapshot
+                                                                .data!
+                                                                .data
+                                                                .list[index]
+                                                                .mahasiswa[mhs]
+                                                                .namaMahasiswa,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  mainBlueColor,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              "Ket",
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      mainOrange2Color,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            if (snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list[index]
+                                                                    .mahasiswa[
+                                                                        8]
+                                                                    .kehadiran
+                                                                    .toString() ==
+                                                                "0")
+                                                              (Text(
+                                                                "A",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              )),
+                                                            if (snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list[index]
+                                                                    .mahasiswa[
+                                                                        8]
+                                                                    .kehadiran
+                                                                    .toString() ==
+                                                                "1")
+                                                              (Text(
+                                                                "H",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              )),
+                                                            if (snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list[index]
+                                                                    .mahasiswa[
+                                                                        8]
+                                                                    .kehadiran
+                                                                    .toString() ==
+                                                                "2")
+                                                              (Text(
+                                                                "I",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color:
+                                                                      mainBlueColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              )),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    )),
+                                                  // if (snapshot
+                                                  //         .data!
+                                                  //         .data
+                                                  //         .list[index]
+                                                  //         .mahasiswa[mhs]
+                                                  //         .idMhsPt
+                                                  //         .toString() !=
+                                                  //     SpUtil.getString(
+                                                  //         "id_mhss_pt"))
+                                                  //   (Container()),
+                                                  const SizedBox(
+                                                    height: 10,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  "Ket",
-                                                  style: TextStyle(
-                                                      color: mainOrange2Color,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                if(snapshot
-                                                      .data!
-                                                      .data
-                                                      .list[index]
-                                                      .mahasiswa[8]
-                                                      .kehadiran
-                                                      .toString() == "0")(
-                                                        Text("Alfa",
-                                                  style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 14,
-                                                  ),)
-                                                      ),
-                                                      if(snapshot
-                                                      .data!
-                                                      .data
-                                                      .list[index]
-                                                      .mahasiswa[8]
-                                                      .kehadiran
-                                                      .toString() == "1")(
-                                                        Text("Hadir",
-                                                  style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 14,
-                                                  ),)
-                                                      ),
-                                                      if(snapshot
-                                                      .data!
-                                                      .data
-                                                      .list[index]
-                                                      .mahasiswa[8]
-                                                      .kehadiran
-                                                      .toString() == "0")(
-                                                        Text("Izin",
-                                                  style: TextStyle(
-                                                    color: mainBlueColor,
-                                                    fontSize: 14,
-                                                  ),)
-                                                      ),
-                                                
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                        // ListView.builder(
-                                        //     scrollDirection: Axis.vertical,
-                                        //     shrinkWrap: true,
-                                        //     itemCount: snapshot.data!.data
-                                        //         .list[index].mahasiswa.length,
-                                        //     itemBuilder: (context, mhs) {
-                                        //       return Column(
-                                        //         children: [
-                                        //           Row(
-                                        //             children: [
-                                        //               SizedBox(
-                                        //                 width: MediaQuery.of(
-                                        //                             context)
-                                        //                         .size
-                                        //                         .width /
-                                        //                     1.5,
-                                        //                 child: Column(
-                                        //                   mainAxisAlignment:
-                                        //                       MainAxisAlignment
-                                        //                           .start,
-                                        //                   crossAxisAlignment:
-                                        //                       CrossAxisAlignment
-                                        //                           .start,
-                                        //                   children: [
-                                        //                     Text(snapshot
-                                        //                         .data!
-                                        //                         .data
-                                        //                         .list[index]
-                                        //                         .mahasiswa[mhs]
-                                        //                         .noMhs,
-                                        //       style: TextStyle(
-                                        //         color: mainBlueColor,
-                                        //         fontWeight: FontWeight.bold,
-                                        //         fontSize: 14,
-                                        //       ),),
-                                        //                     Text(snapshot
-                                        //                         .data!
-                                        //                         .data
-                                        //                         .list[index]
-                                        //                         .mahasiswa[mhs]
-                                        //                         .namaMahasiswa,
-                                        //       style: TextStyle(
-                                        //         color: mainOrange2Color,
-                                        //         fontSize: 14,
-                                        //       ),),
-                                        //                   ],
-                                        //                 ),
-                                        //               ),
-                                        //               Column(
-                                        //                 children: [
-                                        //                   Text("Status",
-                                        //       style: TextStyle(
-                                        //          color: mainBlueColor,
-                                        //         fontWeight: FontWeight.bold,
-                                        //         fontSize: 14,
-                                        //       ),),
-                                        //                   Text(snapshot
-                                        //                       .data!
-                                        //                       .data
-                                        //                       .list[index]
-                                        //                       .mahasiswa[mhs]
-                                        //                       .kehadiran
-                                        //                       .toString(),
-                                        //       style: TextStyle(
-                                        //         color: mainOrange2Color,
-                                        //         fontSize: 14,
-                                        //       ),),
-                                        //                 ],
-                                        //               ),
-                                        //             ],
-                                        //           ),
-                                        //           const SizedBox(
-                                        //             height: 10,
-                                        //           ),
-                                        //         ],
-                                        //       );
-                                        //     }),
+                                                ],
+                                              );
+                                            }),
                                       ],
                                     ),
                                   ],
@@ -394,9 +366,9 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
                             );
                           });
                     } else {
-                       return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                   }))
         ],

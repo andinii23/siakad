@@ -4,9 +4,12 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 KrsModel krsModelFromJson(String str) => KrsModel.fromJson(json.decode(str));
 
 String krsModelToJson(KrsModel data) => json.encode(data.toJson());
+final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
 class KrsModel {
     int code;
@@ -111,10 +114,10 @@ class ListClass {
         "status": status,
         "status_text": statusText,
         "max_sks": maxSks,
-        "awal_krs": "${awalKrs.year.toString().padLeft(4, '0')}-${awalKrs.month.toString().padLeft(2, '0')}-${awalKrs.day.toString().padLeft(2, '0')}",
-        "akhir_krs": "${akhirKrs.year.toString().padLeft(4, '0')}-${akhirKrs.month.toString().padLeft(2, '0')}-${akhirKrs.day.toString().padLeft(2, '0')}",
-        "awal_kprs": "${awalKprs.year.toString().padLeft(4, '0')}-${awalKprs.month.toString().padLeft(2, '0')}-${awalKprs.day.toString().padLeft(2, '0')}",
-        "akhir_kprs": "${akhirKprs.year.toString().padLeft(4, '0')}-${akhirKprs.month.toString().padLeft(2, '0')}-${akhirKprs.day.toString().padLeft(2, '0')}",
+        "awal_krs": awalKrs.toIso8601String(),
+        "akhir_krs": akhirKrs.toIso8601String(),
+        "awal_kprs": awalKprs.toIso8601String(),
+        "akhir_kprs": akhirKprs.toIso8601String(),
         "list_pesan_krs": List<dynamic>.from(listPesanKrs.map((x) => x.toJson())),
         "list_krs": List<dynamic>.from(listKrs.map((x) => x.toJson())),
     };
@@ -125,7 +128,7 @@ class ListKr {
     String status;
     dynamic mbkm;
     Matakuliah matakuliah;
-    Kelas kelas;
+    Kelas? kelas;
     List<Dosen> dosen;
 
     ListKr({
@@ -133,7 +136,7 @@ class ListKr {
         required this.status,
         this.mbkm,
         required this.matakuliah,
-        required this.kelas,
+        this.kelas,
         required this.dosen,
     });
 
@@ -142,7 +145,7 @@ class ListKr {
         status: json["status"],
         mbkm: json["mbkm"],
         matakuliah: Matakuliah.fromJson(json["matakuliah"]),
-        kelas: Kelas.fromJson(json["kelas"]),
+        kelas: json["kelas"] == null ? null : Kelas.fromJson(json["kelas"]),
         dosen: List<Dosen>.from(json["dosen"].map((x) => Dosen.fromJson(x))),
     );
 
@@ -151,7 +154,7 @@ class ListKr {
         "status": status,
         "mbkm": mbkm,
         "matakuliah": matakuliah.toJson(),
-        "kelas": kelas.toJson(),
+        "kelas": kelas?.toJson(),
         "dosen": List<dynamic>.from(dosen.map((x) => x.toJson())),
     };
 }
@@ -159,7 +162,7 @@ class ListKr {
 class Dosen {
     int idDosen;
     String namaDosen;
-    dynamic gelarDepan;
+    String? gelarDepan;
     String gelarBelakang;
 
     Dosen({
@@ -264,6 +267,8 @@ class Matakuliah {
     };
 }
 
+
+
 class ListPesanKr {
     int idPengirim;
     int idPenerima;
@@ -295,3 +300,5 @@ class ListPesanKr {
         "pesan": pesan,
     };
 }
+
+

@@ -21,6 +21,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
     var response = await http.get(biodata, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
+      final bioMhsModel = bioMhsModelFromJson(response.body);
+      SpUtil.putString("id_mhs_ptt", bioMhsModel.data.list.idMhsPt.toString());
       // print(response.body);
       return BioMhsModel.fromJson(data);
     } else {

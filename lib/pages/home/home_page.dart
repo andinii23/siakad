@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sp_util/sp_util.dart';
-
+import 'package:http/http.dart' as http;
+import '../../api/model/userid_model.dart';
 import '../../utilites/config.dart';
 import '../../utilites/constants.dart';
 import 'card_app.dart';
@@ -13,6 +16,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<UserIdModel> getUserId() async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(userId, headers: header);
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      // print(response.body);
+      final userIdModel = userIdModelFromJson(response.body);
+      SpUtil.putString("id_mhss_pt", userIdModel.data.list.idMhsPt.toString());
+      return UserIdModel.fromJson(data);
+    } else {
+      return UserIdModel.fromJson(data);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -154,7 +171,6 @@ class _HomePageState extends State<HomePage> {
                                   // fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              
                             ],
                           ),
                           Row(
@@ -227,11 +243,14 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             cardApp(
                               icon: 'assets/img/unja.png',
-                              label: 'Siakad UNJA',
+                              label: 'Siakad',
                               onTap: () {
                                 if (SpUtil.getString("usertype") ==
                                     "mahasiswa") {
                                   Navigator.pushNamed(context, 'Navbar');
+                                  setState(() {
+                                    getUserId();
+                                  });
                                 } else {
                                   Navigator.pushNamed(context, 'HomeDosen');
                                 }
@@ -239,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             cardApp(
                               icon: 'assets/img/unja.png',
-                              label: 'Siakad UNJA',
+                              label: 'Elista',
                               onTap: () {
                                 Navigator.pushNamed(context, 'Navbar');
                               },

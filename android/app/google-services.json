@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "993962511916",
+    "project_id": "ws-unja",
+    "storage_bucket": "ws-unja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993962511916:android:8ccf77894403b758124b89",
+        "android_client_info": {
+          "package_name": "com.example.siakad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993962511916-emn89ekb4qr78nmhj51ee735fb78mkiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOte0q5469oCBwnHN6Yj8nP4yR-I__A94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993962511916-emn89ekb4qr78nmhj51ee735fb78mkiu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

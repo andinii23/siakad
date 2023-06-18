@@ -39,6 +39,11 @@ dependencies:
   qrscan: ^0.3.3
   permission_handler:
   dropdown_search: ^2.0.1
+  intl: ^0.18.1
+  firebase_core: ^1.6.0
+  firebase_messaging: ^10.0.7
+  flutter_local_notifications: ^8.2.0
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_test:

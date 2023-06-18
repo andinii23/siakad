@@ -36,7 +36,7 @@ class _KrsInboundState extends State<KrsInbound> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Kelas KRS Mahasiswa",
+          "Kelas KRS Inbound Mahasiswa",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -142,7 +142,7 @@ class _KrsInboundState extends State<KrsInbound> {
                                                             .data
                                                             .list[index]
                                                             .matakuliah
-                                                            .namaMatakuliah,
+                                                            .namaMatakuliah.toUpperCase(),
                                                         textAlign:
                                                             TextAlign.start,
                                                         style: TextStyle(
@@ -157,7 +157,7 @@ class _KrsInboundState extends State<KrsInbound> {
                                                         height: 10,
                                                       ),
                                                       Text(
-                                                        "SKS : ${snapshot.data!.data.list[index].matakuliah.sksTotal}",
+                                                        "Prodi : ${snapshot.data!.data.list[index].prodi.namaProdi}",
                                                         style: TextStyle(
                                                             color:
                                                                 mainBlueColor),
@@ -166,14 +166,23 @@ class _KrsInboundState extends State<KrsInbound> {
                                                         width: 10,
                                                       ),
                                                       Text(
-                                                        "Semester : ${snapshot.data!.data.list[index].semester}",
+                                                        "SKS : ${snapshot.data!.data.list[index].matakuliah.sksTotal}",
                                                         style: TextStyle(
                                                             color:
                                                                 mainBlueColor),
                                                       ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
+                                                      // const SizedBox(
+                                                      //   width: 10,
+                                                      // ),
+                                                      // Text(
+                                                      //   "Semester : ${snapshot.data!.data.list[index].semester}",
+                                                      //   style: TextStyle(
+                                                      //       color:
+                                                      //           mainBlueColor),
+                                                      // ),
+                                                      // const SizedBox(
+                                                      //   height: 10,
+                                                      // ),
                                                     ],
                                                   ),
                                                 ),
@@ -188,11 +197,11 @@ class _KrsInboundState extends State<KrsInbound> {
                                                   ),
                                                   child: InkWell(
                                                     onTap: () {
-                                                      _idKelas(snapshot
+                                                      _idMatakuliah(snapshot
                                                           .data!
                                                           .data
                                                           .list[index]
-                                                          .idKelas
+                                                          .matakuliah.idMatakuliah
                                                           .toString());
                                                     },
                                                     child: SizedBox(
@@ -235,8 +244,8 @@ class _KrsInboundState extends State<KrsInbound> {
     );
   }
 
-  Future _idKelas(String id_kelas) async {
-    SpUtil.putString("id_kelas", id_kelas);
-    Navigator.pushNamed(context, 'DetailKelas');
+  Future _idMatakuliah(String id_matakuliah) async {
+    SpUtil.putString("id_matakuliah", id_matakuliah);
+    Navigator.pushNamed(context, 'dafkrskelasinbound');
   }
 }

@@ -20,9 +20,8 @@ class PresensiMhs extends StatefulWidget {
 }
 
 class _PresensiMhsState extends State<PresensiMhs> {
-
   Future<PresensiModel> getPresensiData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(presensi, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -37,18 +36,18 @@ class _PresensiMhsState extends State<PresensiMhs> {
     var cameraStatus = await Permission.camera.status;
     if (cameraStatus.isGranted) {
       String? qrdata = await scanner.scan();
-       var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
-        var response = await http.post(presensi_mhs, headers: header, body: {
-          "id_monitoring_perkuliahan": qrdata,
-        });
-        if (response.statusCode == 200) {
-          print(response.body);
-          Navigator.pushNamed(context, 'KrsMhs');
-        } else {
-          print("gagal presensi"); 
-          var body = jsonDecode(response.body);
-          print(body["error_message"]);
-        }
+      var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+      var response = await http.post(presensi_mhs, headers: header, body: {
+        "id_monitoring_perkuliahan": qrdata,
+      });
+      if (response.statusCode == 200) {
+        // print(response.body);
+        Navigator.pushNamed(context, 'KrsMhs');
+      } else {
+        print("gagal presensi");
+        var body = jsonDecode(response.body);
+        print(body["error_message"]);
+      }
     } else {
       var isGrant = await Permission.camera.request();
 
@@ -65,21 +64,24 @@ class _PresensiMhsState extends State<PresensiMhs> {
       appBar: AppBar(
         centerTitle: true,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
               "Presensi Mahasiswa",
-              textAlign: TextAlign.start,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20,
                   color: mainBlackColor,
                   fontWeight: FontWeight.w700),
             ),
             GestureDetector(
-              onTap: () {
-                _qrScanner();
-              },
-              child: Icon(FontAwesomeIcons.qrcode, color: mainBlackColor,))
+                onTap: () {
+                  _qrScanner();
+                },
+                child: Icon(
+                  FontAwesomeIcons.qrcode,
+                  color: mainBlackColor,
+                ))
           ],
         ),
         elevation: 0.0,
@@ -452,8 +454,8 @@ class _PresensiMhsState extends State<PresensiMhs> {
     );
   }
 
-  Future _detailPresensi(String id_kelas) async {
-    SpUtil.putString("id_kelas", id_kelas);
+  Future _detailPresensi(String idKelas) async {
+    SpUtil.putString("id_kelas", idKelas);
     Navigator.pushNamed(context, 'DetailPresensi');
   }
 }
