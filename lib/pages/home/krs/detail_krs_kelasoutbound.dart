@@ -134,6 +134,7 @@ class _DetailKrsKlsOutboundState extends State<DetailKrsKlsOutbound> {
                                     ),
                                     Text(
                                       "${snapshot.data!.data.list.matakuliahKonversi.kodeMatakuliah} : ${snapshot.data!.data.list.matakuliahKonversi.namaMatakuliah}",
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: mainOrange2Color,

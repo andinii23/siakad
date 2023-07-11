@@ -1,13 +1,18 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:siakad/elista/home_dosen.dart';
+import 'package:siakad/elista/mhsbimbingan.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:siakad/navbar/nav.dart';
 import 'package:siakad/navbar/navbar_dosen.dart';
 import 'package:siakad/pages/cetak/cetak.dart';
+import 'package:siakad/pages/gerbang.dart';
 import 'package:siakad/pages/home%20dosen/home_dosen.dart';
 import 'package:siakad/pages/home%20dosen/mhs_bimbingan/chat_mhs_bimbingan.dart';
 import 'package:siakad/pages/home%20dosen/mhs_bimbingan/mhs_bimbingan.dart';
 import 'package:siakad/pages/home%20dosen/mhs_bimbingan/mhs_krs.dart';
+import 'package:siakad/pages/home%20dosen/mk_pengampu/detail_mkajar.dart';
 import 'package:siakad/pages/home%20dosen/mk_pengampu/mkajar.dart';
 import 'package:siakad/pages/home%20dosen/mk_pengampu/semester_mk.dart';
 import 'package:siakad/pages/home%20dosen/monitoring_kuliah/detailmonitor_kuliah.dart';
@@ -67,6 +72,10 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await FlutterDownloader.initialize();
+  // final fcmtoken = await FirebaseMessaging.instance.getToken();
+  // SpUtil.putString("fcm_token", fcmtoken);
+  // print('Token Data: $fcmtoken');
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -120,7 +129,6 @@ class _MyAppState extends State<MyApp> {
                 channel!.id,
                 channel!.name,
                 channel!.description,
-                
                 icon: 'launch_background',
               ),
             ));
@@ -133,6 +141,7 @@ class _MyAppState extends State<MyApp> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -185,6 +194,10 @@ class _MyAppState extends State<MyApp> {
         'chtmhsdosen': (context) => const ChatMhsBimbingan(),
         'detailmonitorkuliah': (context) => const DetailMonitorKuliah(),
         'tambahpertemuan': (context) => const TambahPertemuan(),
+        'detailmkajar': (context) => const DetailMkAjar(),
+        'gerbang': (context) => const Gerbang(),
+        'homedosenelista': (context) => const HomeDosenElista(),
+        'mhsbimbinganelista': (context) => const MhsBimbinganElista(),
       },
     );
   }

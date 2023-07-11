@@ -90,9 +90,31 @@ class _SemMonitoringState extends State<SemMonitoring> {
                           idSemester: element["id_semester"],
                           semesterText: element["semester_text"]));
                     }
-                    setState(() {});
+
                     return allSemester;
                   },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                InkWell(
+                  onTap: () {
+                    getMonitor();
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: mainOrangeColor),
+                    child: Text(
+                      "Get Monitoring",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: mainWhiteColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -105,6 +127,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return ListView.builder(
+                                physics: ScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount:
@@ -203,6 +226,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                                                         return Center(
                                                           child: Text(
                                                             "${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarDepan.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
+                                                            textAlign: TextAlign.center,
                                                             style: TextStyle(
                                                               color:
                                                                   mainBlueColor,
@@ -214,6 +238,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                                                         return Center(
                                                           child: Text(
                                                             "${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
+                                                            textAlign: TextAlign.center,
                                                             style: TextStyle(
                                                               color:
                                                                   mainBlueColor,

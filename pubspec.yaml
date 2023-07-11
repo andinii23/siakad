@@ -41,9 +41,15 @@ dependencies:
   dropdown_search: ^2.0.1
   intl: ^0.18.1
   firebase_core: ^1.6.0
-  firebase_messaging: ^10.0.7
+  firebase_messaging: ^13.1.0
   flutter_local_notifications: ^8.2.0
   firebase_core_platform_interface: 4.5.1
+  carousel_slider:
+  timer_builder:
+  path_provider: any
+  flutter_pdfview: ^1.3.1
+  dio: 
+  # flutter_downloader: ^1.10.4
 
 dev_dependencies:
   flutter_test:

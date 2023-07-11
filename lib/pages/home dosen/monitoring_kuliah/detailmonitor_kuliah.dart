@@ -19,7 +19,7 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
   Future<DetailMonitoringKuliahModel> getDetailMonitor() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahan"),
+        monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahann"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -78,28 +78,36 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                               ),
                             ),
                             Container(
-                              color: mainWhiteColor,
-                              padding: const EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width,
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF1E3B78)
+                                        .withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 4,
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              margin: const EdgeInsets.all(10),
                               child: Column(
                                 children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: mainBlueColor,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(5),
-                                        topRight: Radius.circular(5),
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "Mahasiswa",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: mainWhiteColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                  Text(
+                                    "Mahasiswa",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Divider(
+                                    thickness: 2,
+                                    color: mainBlueColor,
                                   ),
                                   ListView.builder(
                                       physics: const ScrollPhysics(),
@@ -116,22 +124,27 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.only(left:10.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5.0),
                                                     child: SizedBox(
-                                                      width: MediaQuery.of(context)
-                                                              .size
-                                                              .width /
-                                                          2,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              2,
                                                       child: Column(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
@@ -145,7 +158,8 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                                                 .namaMahasiswa,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight.bold,
+                                                                    FontWeight
+                                                                        .bold,
                                                                 color:
                                                                     mainOrange2Color),
                                                           ),
@@ -158,7 +172,8 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                                                 .noMhs,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight.bold,
+                                                                    FontWeight
+                                                                        .bold,
                                                                 color:
                                                                     mainBlueColor),
                                                           ),
@@ -167,19 +182,25 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                                     ),
                                                   ),
                                                   SizedBox(
-                                                    width: MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        3,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            4,
                                                     child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Text(
                                                           "Ket.",
                                                           style: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color:
                                                                   mainOrange2Color),
                                                         ),
@@ -200,7 +221,7 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                                                 color:
                                                                     mainBlueColor),
                                                           )),
-                                                          if (snapshot
+                                                        if (snapshot
                                                                 .data!
                                                                 .data
                                                                 .list
@@ -217,7 +238,7 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
                                                                 color:
                                                                     mainBlueColor),
                                                           )),
-                                                          if (snapshot
+                                                        if (snapshot
                                                                 .data!
                                                                 .data
                                                                 .list

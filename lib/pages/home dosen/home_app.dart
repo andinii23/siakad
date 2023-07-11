@@ -30,7 +30,7 @@ class _HomeAppDosenState extends State<HomeAppDosen> {
               Row(
                 children: [
                   const Text(
-                    "SuperApps",
+                    "MastrisApps",
                     style: TextStyle(
                         fontSize: 28,
                         color: Color(0xFF1E3B78),

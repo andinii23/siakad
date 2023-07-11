@@ -86,7 +86,7 @@ class _KurikulumOutboundKonfState extends State<KurikulumOutboundKonf> {
                             child: Column(
                               children: [
                                 Text(
-                                  "Pilih Matakuliah Konfersi",
+                                  "Pilih Matakuliah Konversi",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

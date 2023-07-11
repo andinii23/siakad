@@ -70,10 +70,10 @@ class ListClass {
     String status;
     String statusText;
     int maxSks;
-    DateTime awalKrs;
-    DateTime akhirKrs;
-    DateTime awalKprs;
-    DateTime akhirKprs;
+    String awalKrs;
+    String akhirKrs;
+    String awalKprs;
+    String akhirKprs;
     List<ListPesanKr> listPesanKrs;
     List<ListKr> listKrs;
 
@@ -99,10 +99,10 @@ class ListClass {
         status: json["status"],
         statusText: json["status_text"],
         maxSks: json["max_sks"],
-        awalKrs: DateTime.parse(json["awal_krs"]),
-        akhirKrs: DateTime.parse(json["akhir_krs"]),
-        awalKprs: DateTime.parse(json["awal_kprs"]),
-        akhirKprs: DateTime.parse(json["akhir_kprs"]),
+        awalKrs: json["awal_krs"],
+        akhirKrs: json["akhir_krs"],
+        awalKprs: json["awal_kprs"],
+        akhirKprs: json["akhir_kprs"],
         listPesanKrs: List<ListPesanKr>.from(json["list_pesan_krs"].map((x) => ListPesanKr.fromJson(x))),
         listKrs: List<ListKr>.from(json["list_krs"].map((x) => ListKr.fromJson(x))),
     );
@@ -114,10 +114,10 @@ class ListClass {
         "status": status,
         "status_text": statusText,
         "max_sks": maxSks,
-        "awal_krs": awalKrs.toIso8601String(),
-        "akhir_krs": akhirKrs.toIso8601String(),
-        "awal_kprs": awalKprs.toIso8601String(),
-        "akhir_kprs": akhirKprs.toIso8601String(),
+        "awal_krs": awalKrs,
+        "akhir_krs": akhirKrs,
+        "awal_kprs": awalKprs,
+        "akhir_kprs": akhirKprs,
         "list_pesan_krs": List<dynamic>.from(listPesanKrs.map((x) => x.toJson())),
         "list_krs": List<dynamic>.from(listKrs.map((x) => x.toJson())),
     };

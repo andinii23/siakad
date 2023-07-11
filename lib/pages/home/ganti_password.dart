@@ -18,6 +18,7 @@ class _GantiPasswordState extends State<GantiPassword> {
   TextEditingController _passwordlamaController = TextEditingController();
   TextEditingController _passwordbaruController = TextEditingController();
   TextEditingController _confpasswordController = TextEditingController();
+  final _formState = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -57,72 +58,92 @@ class _GantiPasswordState extends State<GantiPassword> {
             margin: const EdgeInsets.only(top: 30),
             padding: const EdgeInsets.all(20),
             child: Form(
+                key: _formState,
                 child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    controller: _passwordlamaController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "Password Lama",
-                        hintText: "Password Lama",
-                        border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                            onPressed: null,
-                            icon: Icon(Icons.remove_red_eye_sharp))),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    controller: _passwordbaruController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "Password Baru",
-                        hintText: "Password Baru",
-                        border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                            onPressed: null,
-                            icon: Icon(Icons.remove_red_eye_sharp))),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    controller: _confpasswordController,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "Konfirmasi Password",
-                        hintText: "Konfirmasi Password",
-                        border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                            onPressed: null,
-                            icon: Icon(Icons.remove_red_eye_sharp))),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _gantiPass();
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(mainBlueColor),
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _passwordlamaController,
+                        validator: (value) {
+                          if (value == '') {
+                            return "password lama harus diisi!!";
+                          }
+                        },
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            labelText: "Password Lama",
+                            hintText: "Password Lama",
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.remove_red_eye_sharp))),
                       ),
-                      child: const Text(
-                        "Ganti Password",
-                        style: TextStyle(fontSize: 18),
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                  )
-                ],
-              ),
-            )),
+                      TextFormField(
+                        controller: _passwordbaruController,
+                        validator: (value) {
+                          if (value == '') {
+                            return "password baru harus diisi!!";
+                          }
+                        },
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            labelText: "Password Baru",
+                            hintText: "Password Baru",
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.remove_red_eye_sharp))),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      TextFormField(
+                        controller: _confpasswordController,
+                        validator: (value) {
+                          if (value == '') {
+                            return "konfiramsi password harus diisi!!";
+                          }
+                        },
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            labelText: "Konfirmasi Password",
+                            hintText: "Konfirmasi Password",
+                            border: OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                                onPressed: null,
+                                icon: Icon(Icons.remove_red_eye_sharp))),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formState.currentState!.validate()) {
+                              _gantiPass();
+                            } else {
+                              print("validasi gagal");
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(mainBlueColor),
+                          ),
+                          child: const Text(
+                            "Ganti Password",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
           ),
         ),
       )),
@@ -145,5 +166,4 @@ class _GantiPasswordState extends State<GantiPassword> {
       print(body["error_message"]);
     }
   }
-  
 }

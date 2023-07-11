@@ -36,7 +36,7 @@ class _KrsInboundState extends State<KrsInbound> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Kelas KRS Inbound Mahasiswa",
+          "KRS Inbound Mahasiswa",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:siakad/api/model/detail_monitor.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -59,33 +60,33 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // Text(SpUtil.getString("id_sem"), style: TextStyle(color: mainBlackColor),),
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, 'tambahpertemuan');
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: mainOrange2Color,
-                borderRadius: BorderRadius.circular(5)
-              ),
-              padding: const EdgeInsets.all(5),
-              width: 170,
-              margin: const EdgeInsets.only(right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: mainWhiteColor,
-                  ),
-                  Text(
-                    "Tambah Pertemuan",
-                    style: TextStyle(color: mainWhiteColor),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.pushNamed(context, 'tambahpertemuan');
+          //   },
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       color: mainBlueColor,
+          //       borderRadius: BorderRadius.circular(5)
+          //     ),
+          //     padding: const EdgeInsets.all(5),
+          //     width: 170,
+          //     margin: const EdgeInsets.only(right: 10),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         Icon(
+          //           Icons.add,
+          //           color: mainWhiteColor,
+          //         ),
+          //         Text(
+          //           "Tambah Pertemuan",
+          //           style: TextStyle(color: mainWhiteColor),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: FutureBuilder<MonitorKuliahPerkelasModel>(
                 future: getDetailData(),
@@ -129,7 +130,7 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
-                                            padding: const EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                               color: mainBlueColor,
                                               borderRadius:
@@ -205,9 +206,10 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          Divider(
-                                            color: mainBlackColor,
-                                          ),
+                                          // Divider(
+                                          //   thickness: 1.5,
+                                          //   color: mainBlackColor,
+                                          // ),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -304,59 +306,115 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                           const SizedBox(
                                             height: 10,
                                           ),
+                                          Divider(
+                                            thickness: 1.5,
+                                            color: mainBlackColor,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
                                             children: [
-                                              Expanded(
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                    color: mainOrange2Color,
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(5),
-                                                      bottomRight:
-                                                          Radius.circular(5),
+                                              InkWell(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return AlertDialog(
+                                                          title: SizedBox(
+                                                            child: Text(
+                                                              "Apakah anda yakin akan menghapus pertemuan ini?",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      mainBlackColor,
+                                                                  fontSize: 18),
+                                                            ),
+                                                          ),
+                                                          actions: [
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                "Batal",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainBlackColor),
+                                                              ),
+                                                            ),
+                                                            MaterialButton(
+                                                              onPressed: () {
+                                                                deleteWithBody(snapshot
+                                                                    .data!
+                                                                    .data
+                                                                    .list[index]
+                                                                    .idMonitoringPerkuliahan
+                                                                    .toString());
+                                                              },
+                                                              child: Text(
+                                                                "OK",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainBlackColor),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.delete,
+                                                      color: mainBlueColor,
                                                     ),
-                                                  ),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      _idMonitor(snapshot
-                                                          .data!
-                                                          .data
-                                                          .list[index]
-                                                          .idMonitoringPerkuliahan
-                                                          .toString());
-                                                    },
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          "Detail",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  mainWhiteColor,
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        Icon(
-                                                          Icons
-                                                              .arrow_forward_ios,
-                                                          color: mainWhiteColor,
-                                                        ),
-                                                      ],
+                                                    Text(
+                                                      "Hapus",
+                                                      style: TextStyle(
+                                                          color: mainBlueColor,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-                                                  ),
+                                                  ],
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  _idMonitor(snapshot
+                                                      .data!
+                                                      .data
+                                                      .list[index]
+                                                      .idMonitoringPerkuliahan
+                                                      .toString());
+                                                },
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                        FontAwesomeIcons
+                                                            .circleInfo,
+                                                        color: mainBlueColor),
+                                                    Text(
+                                                      "Detail",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: mainBlueColor,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
@@ -365,6 +423,9 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                       )),
                                 );
                               }),
+                        ),
+                        const SizedBox(
+                          height: 60,
                         ),
                       ],
                     );
@@ -377,11 +438,49 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.pushNamed(context, 'tambahpertemuan');
+        },
+        label: const Text('Pertemuan'),
+        icon: const Icon(Icons.add),
+        backgroundColor: mainBlackColor,
+      ),
     );
   }
 
   Future _idMonitor(String idMonitoringPerkuliahan) async {
-    SpUtil.putString("id_monitoring_perkuliahan", idMonitoringPerkuliahan);
+    SpUtil.putString("id_monitoring_perkuliahann", idMonitoringPerkuliahan);
     Navigator.pushNamed(context, 'detailmonitorkuliah');
+  }
+
+  Future<void> deleteWithBody(String idMonitoringPerkuliahan) async {
+    final url = 'https://ws.unja.ac.id/api/siakad/monitoring-perkuliahan';
+
+    // Create a map representing the request body
+    final requestBody = {
+      'id_monitoring_perkuliahan': idMonitoringPerkuliahan,
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${SpUtil.getString("token")}',
+        'X-HTTP-Method-Override':
+            'DELETE', // Specify the intended method as DELETE
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      // Request was successful
+      Navigator.pushNamed(context, 'monitorperkelas');
+      print('DELETE request with body succeeded.');
+    } else {
+      // Request failed
+      print(
+          'DELETE request with body failed with status code: ${response.statusCode}');
+    }
   }
 }

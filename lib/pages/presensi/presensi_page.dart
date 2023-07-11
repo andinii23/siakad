@@ -81,7 +81,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                 child: Icon(
                   FontAwesomeIcons.qrcode,
                   color: mainBlackColor,
-                ))
+                ),),
           ],
         ),
         elevation: 0.0,
@@ -144,7 +144,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                           ),
                                         ),
                                         child: Text(
-                                          "${snapshot.data!.data.list[index].matakuliah.kodeMatakuliah} : ${snapshot.data!.data.list[index].matakuliah.namaMatakuliah.toUpperCase()}",
+                                          "${snapshot.data!.data.list[index].matakuliah.kodeMatakuliah.toString()} : ${snapshot.data!.data.list[index].matakuliah.namaMatakuliah.toUpperCase().toString()}",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: mainWhiteColor,
@@ -179,7 +179,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                               null) {
                                             return Center(
                                               child: Text(
-                                                "${snapshot.data!.data.list[index].dosen[dosen].gelarDepan} ${snapshot.data!.data.list[index].dosen[dosen].namaPegawai} ${snapshot.data!.data.list[index].dosen[dosen].gelarBelakang}",
+                                                "${snapshot.data!.data.list[index].dosen[dosen].gelarDepan.toString()} ${snapshot.data!.data.list[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list[index].dosen[dosen].gelarBelakang.toString()}",
                                                 style: TextStyle(
                                                   color: mainBlueColor,
                                                   fontSize: 14,
@@ -189,7 +189,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                           } else {
                                             return Center(
                                               child: Text(
-                                                "${snapshot.data!.data.list[index].dosen[dosen].namaPegawai} ${snapshot.data!.data.list[index].dosen[dosen].gelarBelakang}",
+                                                "${snapshot.data!.data.list[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list[index].dosen[dosen].gelarBelakang.toString()}",
                                                 style: TextStyle(
                                                   color: mainBlueColor,
                                                   fontSize: 14,
@@ -206,7 +206,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Ruang ${snapshot.data!.data.list[index].kodeKelas}",
+                                      "Ruang ${snapshot.data!.data.list[index].kodeKelas.toString()}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: mainBlueColor,
@@ -215,14 +215,14 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                     ),
                                     Text(
                                       snapshot.data!.data.list[index]
-                                          .ruangKuliah.namaRuang,
+                                          .ruangKuliah.namaRuang.toString(),
                                       style: TextStyle(
                                         color: mainBlueColor,
                                         fontSize: 14,
                                       ),
                                     ),
                                     Text(
-                                      "Jumlah SKS : ${snapshot.data!.data.list[index].matakuliah.sksTotal}",
+                                      "Jumlah SKS : ${snapshot.data!.data.list[index].matakuliah.sksTotal.toString()}",
                                       style: TextStyle(
                                         color: mainBlueColor,
                                         fontSize: 14,
@@ -256,7 +256,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                           ),
                                           Text(
                                             snapshot
-                                                .data!.data.list[index].hari,
+                                                .data!.data.list[index].hari.toString(),
                                             style: TextStyle(
                                               color: mainOrange2Color,
                                               fontSize: 14,
@@ -278,7 +278,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                           ),
                                           Text(
                                             snapshot.data!.data.list[index]
-                                                .jamMulai,
+                                                .jamMulai.toString(),
                                             style: TextStyle(
                                               color: mainOrange2Color,
                                               fontSize: 14,
@@ -300,7 +300,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                           ),
                                           Text(
                                             snapshot.data!.data.list[index]
-                                                .jamSelesai,
+                                                .jamSelesai.toString(),
                                             style: TextStyle(
                                               color: mainOrange2Color,
                                               fontSize: 14,

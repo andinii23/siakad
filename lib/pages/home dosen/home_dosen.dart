@@ -7,6 +7,7 @@ import 'package:siakad/api/model/home_dosen_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 
+import '../../utilites/config.dart';
 import '../../utilites/constants.dart';
 
 class HomeDosen extends StatefulWidget {
@@ -221,53 +222,69 @@ class _HomeDosenState extends State<HomeDosen> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    SizedBox(
+                                    width: SizeConfig.screenWidth,
+                                    child: Wrap(
+                                      runSpacing: 20.0,
+                                      spacing: 10.0,
+                                      alignment: WrapAlignment.start,
                                       children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'MahasiswaBimbingan');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/education.png",
-                                            title: "Mahasiswa\nBimbingan",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'SemMonitor');
-                                          },
-                                          child: const menuAkademik(
-                                            image:
-                                                "assets/img/transaction-history.png",
-                                            title: "Monitoring\nPerkuliahan",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'SemAjar');
-                                          },
-                                          child: const menuAkademik(
-                                            image:
-                                                "assets/img/transaction-history.png",
-                                            title: "Matakuliah\nPengampu",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'chtdosen');
-                                          },
-                                           child: const menuAkademik(
-                                              image: "assets/img/chat.png",
-                                              title: "Chat",
+                                        SizedBox(
+                                          width: 80,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'MahasiswaBimbingan');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/education.png",
+                                              title: "Mahasiswa\nBimbingan",
                                             ),
+                                          ),
                                         ),
-                                      ],
+                                        SizedBox(
+                                          width: 80,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'SemMonitor');
+                                            },
+                                            child: const menuAkademik(
+                                              image:
+                                                  "assets/img/pie-chart.png",
+                                              title: "Monitoring\nPerkuliahan",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 80,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'SemAjar');
+                                            },
+                                            child: const menuAkademik(
+                                              image:
+                                                  "assets/img/lecture.png",
+                                              title: "Matakuliah\nPengampu",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 80,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'chtdosen');
+                                            },
+                                             child: const menuAkademik(
+                                                image: "assets/img/chat.png",
+                                                title: "Chat",
+                                              ),
+                                          ),
+                                        ),
+                                      ]
+                                    ),
                                     ),
                                   ],
                                 ),

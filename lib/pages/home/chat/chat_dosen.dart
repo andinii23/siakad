@@ -59,70 +59,89 @@ class _ChatDosenState extends State<ChatDosen> {
                 future: getListChat(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data!.data.list.length,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              decoration: BoxDecoration(color: mainWhiteColor),
-                              child: InkWell(
-                                onTap: () {
-                                  _idMhs(
-                                      snapshot.data!.data.list[index].idMhsPt
-                                          .toString(),
-                                      snapshot
-                                          .data!.data.list[index].namaMahasiswa
-                                          .toString());
-                                },
-                                child: Card(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 20),
-                                    elevation: 0,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (snapshot.data!.data.list[index]
-                                                .lastMessage ==
-                                            null)
-                                          (const Text("")),
-                                        // ignore: unnecessary_null_comparison
-                                        if (snapshot.data!.data.list[index]
-                                                .lastMessage !=
-                                            null)
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              (Text(
-                                                snapshot.data!.data.list[index]
-                                                    .namaMahasiswa,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
+                    return SingleChildScrollView(
+                      physics: const ScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.data.list.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                decoration:
+                                    BoxDecoration(color: mainWhiteColor),
+                                child: InkWell(
+                                  onTap: () {
+                                    _idMhs(
+                                        snapshot.data!.data.list[index].idMhsPt
+                                            .toString(),
+                                        snapshot.data!.data.list[index]
+                                            .namaMahasiswa
+                                            .toString());
+                                  },
+                                  child: Card(
+                                      elevation: 0,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // ignore: unnecessary_null_comparison
+                                          if (snapshot.data!.data.list[index]
+                                                  .lastMessage !=
+                                              null)
+                                            (Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                Text(
+                                                  snapshot.data!.data
+                                                      .list[index].namaMahasiswa
+                                                      .toUpperCase()
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              )),
-                                              Text(
-                                                snapshot.data!.data.list[index]
-                                                    .lastMessage!.pesan
-                                                    .toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    color: Colors.black54,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              const Divider()
-                                            ],
-                                          ),
-                                      ],
-                                    )),
-                              ));
-                        });
+                                                Text(
+                                                  snapshot
+                                                      .data!
+                                                      .data
+                                                      .list[index]
+                                                      .lastMessage!
+                                                      .pesan
+                                                      .toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                      color: Colors.black54,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                const Divider(
+                                                  thickness: 1,
+                                                )
+                                              ],
+                                            )),
+                                          if (snapshot.data!.data.list[index]
+                                                  .lastMessage ==
+                                              null)
+                                            (const Text(""))
+                                        ],
+                                      )),
+                                ));
+                          }),
+                    );
                   } else {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -133,12 +152,12 @@ class _ChatDosenState extends State<ChatDosen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-      child: const Icon(Icons.message),
-      backgroundColor: mainBlueColor,
-      onPressed: (){
-      Navigator.pushNamed(context, 'chtmhsdosen');
-    },
-  ),
+        child: const Icon(Icons.message),
+        backgroundColor: mainBlueColor,
+        onPressed: () {
+          Navigator.pushNamed(context, 'chtmhsdosen');
+        },
+      ),
     );
   }
 

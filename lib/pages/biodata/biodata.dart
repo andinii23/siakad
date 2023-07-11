@@ -151,7 +151,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                       ],
                                     ),
                                     child: Text(
-                                      snapshot.data!.data.list.namaMahasiswa,
+                                      snapshot.data!.data.list.namaMahasiswa
+                                          .toString(),
                                       style: TextStyle(
                                         color: mainBlackColor,
                                         fontSize: 14,
@@ -199,7 +200,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                       ],
                                     ),
                                     child: Text(
-                                      snapshot.data!.data.list.tempatLahir,
+                                      snapshot.data!.data.list.tempatLahir
+                                          .toString(),
                                       style: TextStyle(
                                         color: mainBlackColor,
                                         fontSize: 14,
@@ -296,7 +298,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                       ],
                                     ),
                                     child: Text(
-                                      snapshot.data!.data.list.alamat,
+                                      snapshot.data!.data.list.alamat
+                                          .toString(),
                                       style: TextStyle(
                                         color: mainBlackColor,
                                         fontSize: 14,
@@ -344,7 +347,7 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                       ],
                                     ),
                                     child: Text(
-                                      snapshot.data!.data.list.email,
+                                      snapshot.data!.data.list.email.toString(),
                                       style: TextStyle(
                                         color: mainBlackColor,
                                         fontSize: 14,
@@ -403,7 +406,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.rt,
+                                            snapshot.data!.data.list.rt
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -459,7 +463,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.dusun,
+                                            snapshot.data!.data.list.dusun
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -520,7 +525,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.kelurahan,
+                                            snapshot.data!.data.list.kelurahan
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -576,7 +582,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.kodePos,
+                                            snapshot.data!.data.list.kodePos
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -637,7 +644,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.telepon1,
+                                            snapshot.data!.data.list.telepon1
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -756,7 +764,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.hobi,
+                                            snapshot.data!.data.list.hobi
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -813,7 +822,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                           ),
                                           child: Text(
                                             snapshot
-                                                .data!.data.list.golonganDarah,
+                                                .data!.data.list.golonganDarah
+                                                .toString(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -828,9 +838,9 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                           ),
                         );
                       } else {
-                         return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     },
                   ),
@@ -854,7 +864,6 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                   color:
                                       const Color.fromARGB(255, 241, 240, 240),
                                   borderRadius: BorderRadius.circular(10),
-                                  
                                 ),
                                 child: Column(
                                   children: [
@@ -927,7 +936,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.namaAyah,
+                                            snapshot.data!.data.list.namaAyah
+                                                .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1145,7 +1155,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                                 .data
                                                 .list
                                                 .jenjangPendidikanAyah
-                                                .namaJenjangPendidikan,
+                                                .namaJenjangPendidikan
+                                                .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1197,12 +1208,9 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot
-                                                .data!
-                                                .data
-                                                .list
-                                                .penghasilanAyah
-                                                .namaPenghasilan,
+                                            snapshot.data!.data.list
+                                                .penghasilanAyah.namaPenghasilan
+                                                .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1296,7 +1304,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.namaIbu,
+                                            snapshot.data!.data.list.namaIbu
+                                                .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1403,7 +1412,6 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                           ),
                                           child: Text(
                                             snapshot.data!.data.list.teleponIbu
-                                                .toString()
                                                 .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -1569,7 +1577,7 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                           ),
                                           child: Text(
                                             snapshot.data!.data.list
-                                                .penghasilanIbu.namaPenghasilan,
+                                                .penghasilanIbu.namaPenghasilan.toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1583,8 +1591,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                               ),
                               //Data Wali
                               const SizedBox(
-                                          height: 20,
-                                        ),
+                                height: 20,
+                              ),
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -1663,7 +1671,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list.namaWali.toString(),
+                                            snapshot.data!.data.list.namaWali
+                                                .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1715,8 +1724,8 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot
-                                                .data!.data.list.tanggalLahirWali
+                                            snapshot.data!.data.list
+                                                .tanggalLahirWali
                                                 .toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
@@ -1726,7 +1735,6 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    
                                     Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -1882,8 +1890,12 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                             ],
                                           ),
                                           child: Text(
-                                            snapshot.data!.data.list
-                                                .penghasilanWali.namaPenghasilan,
+                                            snapshot
+                                                .data!
+                                                .data
+                                                .list
+                                                .penghasilanWali
+                                                .namaPenghasilan.toString(),
                                             style: TextStyle(
                                               color: mainBlackColor,
                                               fontSize: 14,
@@ -1899,9 +1911,9 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                           ),
                         );
                       } else {
-                         return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }
                     },
                   ),

@@ -56,5 +56,15 @@ final simpan_kelasoutbound = main_url + "api/siakad/krs/store-mk-pertukaran";
 final tambah = main_url + "api/siakad/monitoring-perkuliahan/";
 
 final userId = main_url + "api/siakad/user-info";
+final ktm = main_url + "api/siakad/cetak-ktm";
 
+final detailmkajar = main_url + "api/siakad/matakuliah-ajar/";
+final fcmtoken = main_url + "api/siakad/fcm-token";
+final mhsmonitor = main_url + "api/siakad/monitoring-perkuliahan/detail-pertemuan/939820";
+final cetakkrs = main_url + "api/siakad/krs/cetak";
+final cetakkhs = main_url + "api/siakad/khs/cetak";
+final cetaktranskip = main_url + "api/siakad/cetak-transkrip";
+
+//elista
+final mhsbimelista = main_url + "api/elista/mahasiswa-bimbingan";
 

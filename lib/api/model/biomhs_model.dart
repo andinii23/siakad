@@ -113,7 +113,7 @@ class ListClass {
     int idMhsPt;
     String namaMahasiswa;
     String tempatLahir;
-    DateTime tanggalLahir;
+    String tanggalLahir;
     dynamic jenisKelamin;
     String alamat;
     String rt;
@@ -140,13 +140,13 @@ class ListClass {
     String fileKk;
     String fileAkte;
     String namaAyah;
-    DateTime tanggalLahirAyah;
+    String tanggalLahirAyah;
     String teleponAyah;
     Pekerjaan pekerjaanAyah;
     JenjangPendidikan jenjangPendidikanAyah;
     Penghasilan penghasilanAyah;
     String namaIbu;
-    DateTime tanggalLahirIbu;
+    String tanggalLahirIbu;
     dynamic teleponIbu;
     Pekerjaan pekerjaanIbu;
     JenjangPendidikan jenjangPendidikanIbu;
@@ -161,7 +161,7 @@ class ListClass {
         idMhsPt: json["id_mhs_pt"],
         namaMahasiswa: json["nama_mahasiswa"],
         tempatLahir: json["tempat_lahir"],
-        tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
+        tanggalLahir: json["tanggal_lahir"],
         jenisKelamin: json["jenis_kelamin"],
         alamat: json["alamat"],
         rt: json["rt"],
@@ -188,13 +188,13 @@ class ListClass {
         fileKk: json["file_kk"],
         fileAkte: json["file_akte"],
         namaAyah: json["nama_ayah"],
-        tanggalLahirAyah: DateTime.parse(json["tanggal_lahir_ayah"]),
+        tanggalLahirAyah: json["tanggal_lahir_ayah"],
         teleponAyah: json["telepon_ayah"],
         pekerjaanAyah: Pekerjaan.fromJson(json["pekerjaan_ayah"]),
         jenjangPendidikanAyah: JenjangPendidikan.fromJson(json["jenjang_pendidikan_ayah"]),
         penghasilanAyah: Penghasilan.fromJson(json["penghasilan_ayah"]),
         namaIbu: json["nama_ibu"],
-        tanggalLahirIbu: DateTime.parse(json["tanggal_lahir_ibu"]),
+        tanggalLahirIbu: json["tanggal_lahir_ibu"],
         teleponIbu: json["telepon_ibu"],
         pekerjaanIbu: Pekerjaan.fromJson(json["pekerjaan_ibu"]),
         jenjangPendidikanIbu: JenjangPendidikan.fromJson(json["jenjang_pendidikan_ibu"]),
@@ -210,7 +210,7 @@ class ListClass {
         "id_mhs_pt": idMhsPt,
         "nama_mahasiswa": namaMahasiswa,
         "tempat_lahir": tempatLahir,
-        "tanggal_lahir": "${tanggalLahir.year.toString().padLeft(4, '0')}-${tanggalLahir.month.toString().padLeft(2, '0')}-${tanggalLahir.day.toString().padLeft(2, '0')}",
+        "tanggal_lahir": tanggalLahir,
         "jenis_kelamin": jenisKelamin,
         "alamat": alamat,
         "rt": rt,
@@ -237,13 +237,13 @@ class ListClass {
         "file_kk": fileKk,
         "file_akte": fileAkte,
         "nama_ayah": namaAyah,
-        "tanggal_lahir_ayah": "${tanggalLahirAyah.year.toString().padLeft(4, '0')}-${tanggalLahirAyah.month.toString().padLeft(2, '0')}-${tanggalLahirAyah.day.toString().padLeft(2, '0')}",
+        "tanggal_lahir_ayah": tanggalLahirAyah,
         "telepon_ayah": teleponAyah,
         "pekerjaan_ayah": pekerjaanAyah.toJson(),
         "jenjang_pendidikan_ayah": jenjangPendidikanAyah.toJson(),
         "penghasilan_ayah": penghasilanAyah.toJson(),
         "nama_ibu": namaIbu,
-        "tanggal_lahir_ibu": "${tanggalLahirIbu.year.toString().padLeft(4, '0')}-${tanggalLahirIbu.month.toString().padLeft(2, '0')}-${tanggalLahirIbu.day.toString().padLeft(2, '0')}",
+        "tanggal_lahir_ibu": tanggalLahirIbu,
         "telepon_ibu": teleponIbu,
         "pekerjaan_ibu": pekerjaanIbu.toJson(),
         "jenjang_pendidikan_ibu": jenjangPendidikanIbu.toJson(),

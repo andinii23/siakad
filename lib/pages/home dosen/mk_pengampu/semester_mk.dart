@@ -87,10 +87,32 @@ class _SemesterMkState extends State<SemesterMk> {
                         idSemester: element["id_semester"],
                         semesterText: element["semester_text"]));
                   }
-                  setState(() {});
+                
                   return allSemester;
                 },
               ),
+              const SizedBox(
+                  height: 15,
+                ),
+                InkWell(
+                  onTap: () {
+                    getMkAjar();
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: mainOrangeColor),
+                    child: Text(
+                      "Get Matakuliah Ajar",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: mainWhiteColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               const SizedBox(
                 height: 10,
               ),
@@ -156,6 +178,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                         Column(
                                           children: [
                                             ListView.builder(
+                                              physics: ScrollPhysics(),
                                                 scrollDirection: Axis.vertical,
                                                 shrinkWrap: true,
                                                 itemCount: snapshot
@@ -371,7 +394,9 @@ class _SemesterMkState extends State<SemesterMk> {
                                                                   child:
                                                                       InkWell(
                                                                     onTap:
-                                                                        () {},
+                                                                        () {
+                                                                          _detailAjar(snapshot.data!.data.list[index].listKelas[kls].idKelas.toString());
+                                                                        },
                                                                     child: Row(
                                                                       crossAxisAlignment:
                                                                           CrossAxisAlignment
@@ -429,8 +454,8 @@ class _SemesterMkState extends State<SemesterMk> {
     );
   }
 
-  Future _detailMkAjar(String id_semester) async {
-    SpUtil.putString("id_semester", id_semester);
-    Navigator.pushNamed(context, 'MkAjar');
+ Future _detailAjar(String idKelas) async {
+    SpUtil.putString("id_kelas", idKelas);
+    Navigator.pushNamed(context, 'detailmkajar');
   }
 }

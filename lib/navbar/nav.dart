@@ -40,36 +40,39 @@ class _NavbarState extends State<Navbar> {
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: GNav(
-            gap: 8,
-            backgroundColor: Colors.white,
-            color: const Color(0xFF1E3B78),
-            activeColor: const Color(0xFF1E3B78),
-            tabBackgroundColor: Colors.grey.shade200,
-            padding: const EdgeInsets.all(16),
-            tabs: const [
-              GButton(
-                icon: Icons.home,
-                text: "Home",
-              ),
-              GButton(
-                icon: Icons.print,
-                text: "Cetak",
-              ),
-              GButton(
-                icon: Icons.account_circle,
-                text: "Biodata",
-              ),
-            ],
-            selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
+        child: Stack(
+          children: [Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: GNav(
+              gap: 8,
+              backgroundColor: Colors.white,
+              color: const Color(0xFF1E3B78),
+              activeColor: const Color(0xFF1E3B78),
+              tabBackgroundColor: Colors.grey.shade200,
+              padding: const EdgeInsets.all(16),
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: "Home",
+                ),
+                GButton(
+                  icon: Icons.print,
+                  text: "Cetak",
+                ),
+                GButton(
+                  icon: Icons.account_circle,
+                  text: "Biodata",
+                ),
+              ],
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
           ),
+          ]
         ),
       ),
       body: Center(child: _navScreen.elementAt(_selectedIndex)),

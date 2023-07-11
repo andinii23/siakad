@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
+import 'package:timer_builder/timer_builder.dart';
 import '../../../api/model/home_dosen_model.dart';
 import '../../../api/model/mhs_bimbingan_dosen_model.dart';
 import '../../../utilites/constants.dart';
@@ -28,7 +29,7 @@ class _ChatMhsBimbinganState extends State<ChatMhsBimbingan> {
       return MhsBimbinganModel.fromJson(data);
     }
   }
-
+int _counter = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,62 +61,62 @@ class _ChatMhsBimbinganState extends State<ChatMhsBimbingan> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Container(
-                         padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(color: mainWhiteColor),
-                        child: ListView.builder(
-                            itemCount: snapshot.data!.data.list.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        _chatMhs( snapshot.data!.data.list[index].idMhsPt
-                                            .toString(),
-                                        snapshot
-                                            .data!.data.list[index].namaMahasiswa
-                                            .toString());
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width:
-                                                MediaQuery.of(context).size.width /
-                                                    2,
-                                            child: Text(
-                                              snapshot.data!.data.list[index]
-                                                  .namaMahasiswa,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: mainOrange2Color),
-                                            ),
-                                          ),
-                                          Text(
-                                            snapshot
-                                                .data!.data.list[index].noMahasiswa,
+                       padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(color: mainWhiteColor),
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.data.list.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _chatMhs( snapshot.data!.data.list[index].idMhsPt
+                                          .toString(),
+                                      snapshot
+                                          .data!.data.list[index].namaMahasiswa
+                                          .toString());
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width /
+                                                  2,
+                                          child: Text(
+                                            snapshot.data!.data.list[index]
+                                                .namaMahasiswa,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: mainBlueColor),
+                                                color: mainBlackColor),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Text(
+                                          snapshot
+                                              .data!.data.list[index].noMahasiswa,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: mainBlueColor),
+                                        ),
+                                      ],
                                     ),
-                                    Divider(
-                                      color: mainBlackColor,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                  ),
+                                  Divider(
+                                    color: mainBlackColor,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                       );
                     } else {
                       return const Center(

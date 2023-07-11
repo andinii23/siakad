@@ -79,7 +79,7 @@ class _KrsOutboundState extends State<KrsOutbound> {
                       "Authorization": "Bearer ${SpUtil.getString("token")}"
                     };
                     var response = await http.get(
-                        "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/perguruan-tinggi?nama_pt=&per_page=10000",
+                        "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/perguruan-tinggi?nama_pt=&per_page=5000",
                         headers: header);
                     if (response.statusCode != 200) {
                       return [];
@@ -138,189 +138,174 @@ class _KrsOutboundState extends State<KrsOutbound> {
                           namaJenjangPendidikan:
                               element["nama_jenjang_pendidikan"]));
                     }
-                    setState(() {
-                      getListMkOutboundProdi();
-                    });
                     return allProdi;
                   },
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
+                InkWell(
+                  onTap: () {
+                    getListMkOutboundProdi();
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: mainOrangeColor),
+                    child: Text(
+                      "Get Matakuliah Konversi",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: mainWhiteColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF1E3B78).withOpacity(0.1),
-                        spreadRadius: 5,
-                        blurRadius: 4,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
                   ),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Pilih Matakuliah Yang Akan Dikonversi",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: mainOrange2Color,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Stack(
-                        children: [
-                          Positioned(
-                              child: FutureBuilder<ListMkOutboundProdiModel>(
-                                  future: getListMkOutboundProdi(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              snapshot.data!.data.list.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Stack(
+                  children: [
+                    Positioned(
+                        child: FutureBuilder<ListMkOutboundProdiModel>(
+                            future: getListMkOutboundProdi(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        snapshot.data!.data.list.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: const Color(
+                                                            0xFF1E3B78)
+                                                        .withOpacity(0.1),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 4,
+                                                    offset: const Offset(
+                                                        0,
+                                                        3), // changes position of shadow
+                                                  ),
+                                                ],
+                                              ),
                                               padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
+                                                  const EdgeInsets.all(
+                                                      20),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: const Color(
-                                                                  0xFF1E3B78)
-                                                              .withOpacity(0.1),
-                                                          spreadRadius: 5,
-                                                          blurRadius: 4,
-                                                          offset: const Offset(
-                                                              0,
-                                                              3), // changes position of shadow
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                    child: Row(
+                                                  SizedBox(
+                                                    width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width /
+                                                        2,
+                                                    child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .spaceBetween,
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        SizedBox(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              2,
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                snapshot
-                                                                    .data!
-                                                                    .data
-                                                                    .list[index]
-                                                                    .namaMatakuliah.toUpperCase(),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start,
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlueColor,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              // Text("Prodi : ${snapshot
-                                                              //     .data!
-                                                              //     .data
-                                                              //     .list[index]
-                                                              //     .prodi
-                                                              //     .namaProdi}"),
-                                                            ],
+                                                        Text(
+                                                          snapshot
+                                                              .data!
+                                                              .data
+                                                              .list[index]
+                                                              .namaMatakuliah
+                                                              .toUpperCase(),
+                                                          textAlign:
+                                                              TextAlign
+                                                                  .start,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  mainBlueColor,
+                                                              fontSize:
+                                                                  14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        // Text("Prodi : ${snapshot
+                                                        //     .data!
+                                                        //     .data
+                                                        //     .list[index]
+                                                        //     .prodi
+                                                        //     .namaProdi}"),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets
+                                                            .all(8),
+                                                    decoration:
+                                                        BoxDecoration(
+                                                      color:
+                                                          mainOrange2Color,
+                                                      borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                                  5),
+                                                    ),
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        _idMatakuliah(snapshot
+                                                            .data!
+                                                            .data
+                                                            .list[index]
+                                                            .idMatakuliah
+                                                            .toString());
+                                                      },
+                                                      child: SizedBox(
+                                                        width: 40,
+                                                        child: Text(
+                                                          "Pilih",
+                                                          textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                          style:
+                                                              TextStyle(
+                                                            color:
+                                                                mainWhiteColor,
+                                                            fontSize: 14,
                                                           ),
                                                         ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color:
-                                                                mainOrange2Color,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                          ),
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              _idMatakuliah(snapshot
-                                                                  .data!
-                                                                  .data
-                                                                  .list[index]
-                                                                  .idMatakuliah
-                                                                  .toString());
-                                                            },
-                                                            child: SizedBox(
-                                                              width: 40,
-                                                              child: Text(
-                                                                "Pilih",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    TextStyle(
-                                                                  color:
-                                                                      mainWhiteColor,
-                                                                  fontSize: 14,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
+                                                      ),
                                                     ),
                                                   )
                                                 ],
                                               ),
-                                            );
-                                          });
-                                    } else {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
+                                            )
+                                          ],
+                                        ),
                                       );
-                                    }
-                                  }))
-                        ],
-                      ),
-                    ],
-                  ),
+                                    });
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }))
+                  ],
                 )
               ],
             ),

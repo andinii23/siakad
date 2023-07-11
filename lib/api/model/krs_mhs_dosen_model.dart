@@ -205,10 +205,10 @@ class ListMatakuliah {
 }
 
 class Krs {
-    DateTime awalKrs;
-    DateTime akhirKrs;
-    DateTime awalKprs;
-    DateTime akhirKprs;
+    String awalKrs;
+    String akhirKrs;
+    String awalKprs;
+    String akhirKprs;
     int maxSks;
     String statusKrs;
     String statusKrsText;
@@ -226,10 +226,10 @@ class Krs {
     });
 
     factory Krs.fromJson(Map<String, dynamic> json) => Krs(
-        awalKrs: DateTime.parse(json["awal_krs"]),
-        akhirKrs: DateTime.parse(json["akhir_krs"]),
-        awalKprs: DateTime.parse(json["awal_kprs"]),
-        akhirKprs: DateTime.parse(json["akhir_kprs"]),
+        awalKrs: json["awal_krs"],
+        akhirKrs: json["akhir_krs"],
+        awalKprs: json["awal_kprs"],
+        akhirKprs: json["akhir_kprs"],
         maxSks: json["max_sks"],
         statusKrs: json["status_krs"],
         statusKrsText: json["status_krs_text"],
@@ -237,10 +237,10 @@ class Krs {
     );
 
     Map<String, dynamic> toJson() => {
-        "awal_krs": "${awalKrs.year.toString().padLeft(4, '0')}-${awalKrs.month.toString().padLeft(2, '0')}-${awalKrs.day.toString().padLeft(2, '0')}",
-        "akhir_krs": "${akhirKrs.year.toString().padLeft(4, '0')}-${akhirKrs.month.toString().padLeft(2, '0')}-${akhirKrs.day.toString().padLeft(2, '0')}",
-        "awal_kprs": "${awalKprs.year.toString().padLeft(4, '0')}-${awalKprs.month.toString().padLeft(2, '0')}-${awalKprs.day.toString().padLeft(2, '0')}",
-        "akhir_kprs": "${akhirKprs.year.toString().padLeft(4, '0')}-${akhirKprs.month.toString().padLeft(2, '0')}-${akhirKprs.day.toString().padLeft(2, '0')}",
+        "awal_krs": awalKrs,
+        "akhir_krs": akhirKrs,
+        "awal_kprs": awalKprs,
+        "akhir_kprs": akhirKprs,
         "max_sks": maxSks,
         "status_krs": statusKrs,
         "status_krs_text": statusKrsText,

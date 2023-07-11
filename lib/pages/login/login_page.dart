@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -17,6 +18,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final _formState = GlobalKey<FormState>();
+  String? _usernameError;
+  String? _passwordError;
 
   @override
   void dispose() {
@@ -67,55 +71,94 @@ class _LoginPageState extends State<LoginPage> {
                   height: MediaQuery.of(context).size.height * 0.08,
                 ),
                 Form(
+                    key: _formState,
                     child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.person_outline_outlined),
-                            labelText: "Username",
-                            hintText: "Username",
-                            border: OutlineInputBorder()),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            labelText: "Password",
-                            hintText: "Password",
-                            border: OutlineInputBorder(),
-                            suffixIcon: IconButton(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            controller: _usernameController,
+                            validator: (value) {
+                              if (value == '') {
+                                return "username tidak boleh kosong";
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.person_outline_outlined),
+                              labelText: "Username",
+                              hintText: "Username",
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          if (_usernameError != null)
+                            Text(
+                              _usernameError!,
+                              style: const TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          TextFormField(
+                            controller: _passwordController,
+                            validator: (value) {
+                              if (value == '') {
+                                return "password tidak boleh kosong";
+                              }
+                            },
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              labelText: "Password",
+                              hintText: "Password",
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
                                 onPressed: null,
-                                icon: Icon(Icons.remove_red_eye_sharp))),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _loginToApp();
-                          },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(mainOrange2Color),
+                                icon: Icon(Icons.remove_red_eye_sharp),
+                              ),
+                            ),
                           ),
-                         child: const Text(
-                            "Login",
-                            style: TextStyle(fontSize: 18),
+                          const SizedBox(
+                            height: 5,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ))
+                          if (_passwordError != null)
+                            Text(
+                              _passwordError!,
+                              style: const TextStyle(
+                                color: Colors.red,
+                              ),
+                            ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_formState.currentState!.validate()) {
+                                  _loginToApp();
+                                } else {
+                                  print("validasi gagal");
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(mainOrange2Color),
+                              ),
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ))
               ],
             ),
           ),
@@ -129,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
       "username": _usernameController.text,
       "password": _passwordController.text,
     });
- 
+
     if (response.statusCode == 200) {
       // print(response.body);
       final loginModel = loginModelFromJson(response.body);
@@ -140,11 +183,29 @@ class _LoginPageState extends State<LoginPage> {
       SpUtil.putString("usertype", loginModel.data.list.user.usertype);
       SpUtil.putBool("isLogin", true);
       Navigator.pushNamed(context, 'HomePage');
-      
     } else {
       print("login gagal");
       var body = jsonDecode(response.body);
-      print(body["error_message"]);
+      if (body.containsKey("error_message")) {
+        String errorMessage = body["error_message"];
+        if (errorMessage.toLowerCase().contains("username")) {
+          // Menyimpan pesan kesalahan username
+          setState(() {
+            _usernameError = "username salah!!";
+            _passwordError = null; // Menghapus pesan kesalahan password
+          });
+        } else if (errorMessage.toLowerCase().contains("password")) {
+          // Menyimpan pesan kesalahan password
+          setState(() {
+            _passwordError = "password salah!!";
+            _usernameError = null; // Menghapus pesan kesalahan username
+          });
+        } else {
+          // Menampilkan pesan kesalahan umum jika bukan kesalahan username atau password
+          print("Terjadi kesalahan: $errorMessage");
+        }
+        print(body["error_message"]);
+      }
     }
   }
 }

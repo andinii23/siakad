@@ -37,7 +37,7 @@ class _WelcomePageState extends State<WelcomePage> {
         actions: <Widget>[
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, 'Login');
+              Navigator.pushNamed(context, 'gerbang');
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20, top: 20),

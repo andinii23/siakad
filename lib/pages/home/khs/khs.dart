@@ -94,11 +94,30 @@ class _KhsMhsState extends State<KhsMhs> {
                           idSemester: element["id_semester"],
                           semesterText: element["semester_text"]));
                     }
-                    setState(() {
-                      getDetailKhs();
-                    });
                     return allSemester;
                   },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                InkWell(
+                  onTap: () {
+                    getDetailKhs();
+                    setState(() {});
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(color: mainOrangeColor),
+                    child: Text(
+                      "Get KHS",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: mainWhiteColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

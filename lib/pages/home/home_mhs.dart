@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:siakad/api/model/home_model.dart';
 import 'package:siakad/pages/home/chat/chat_mhs.dart';
+import 'package:siakad/utilites/config.dart';
 import 'package:siakad/utilites/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -32,8 +33,6 @@ class _HomeMhsState extends State<HomeMhs> {
     }
   }
 
-   
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +40,11 @@ class _HomeMhsState extends State<HomeMhs> {
             future: getHomeData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Stack(
-                  children: [
-                    SingleChildScrollView(
-                      physics: ScrollPhysics(),
-                      child: ClipPath(
+                return SingleChildScrollView(
+                  physics: ScrollPhysics(),
+                  child: Stack(
+                    children: [
+                      ClipPath(
                         clipper: ClipPathClass(),
                         child: Container(
                           height: 300,
@@ -60,8 +59,8 @@ class _HomeMhsState extends State<HomeMhs> {
                                   Navigator.pushNamed(context, "HomePage");
                                 },
                                 child: Container(
-                                    margin:
-                                        const EdgeInsets.only(top: 69, left: 29),
+                                    margin: const EdgeInsets.only(
+                                        top: 69, left: 29),
                                     child: Icon(
                                       Icons.arrow_back_ios,
                                       color: mainWhiteColor,
@@ -90,304 +89,317 @@ class _HomeMhsState extends State<HomeMhs> {
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 110),
-                      child: Column(
-                        children: [
-                          Column(
-                            children: [
-                              ClipPath(
-                                clipper: ClipInfoClass(),
-                                child: Container(
-                                  padding: const EdgeInsets.all(15),
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 25),
-                                  // height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(5),
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5),
-                                      topRight: Radius.circular(5),
+                      Container(
+                        margin: const EdgeInsets.only(top: 110),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                ClipPath(
+                                  clipper: ClipInfoClass(),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(15),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 25),
+                                    // height: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(5),
+                                        topRight: Radius.circular(5),
+                                      ),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          const Color(0xff005689)
+                                              .withOpacity(0.9),
+                                          const Color(0xFF1E3B78),
+                                        ],
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.centerRight,
+                                      ),
                                     ),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        const Color(0xff005689)
-                                            .withOpacity(0.9),
-                                        const Color(0xFF1E3B78),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    snapshot.data!.data.list
+                                                        .noMahasiswa,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: mainWhiteColor),
+                                                  ),
+                                                  Text(
+                                                    snapshot
+                                                        .data!
+                                                        .data
+                                                        .list
+                                                        .prodi
+                                                        .fakultas
+                                                        .namaFakultas,
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: mainWhiteColor),
+                                                  ),
+                                                  Text(
+                                                    "Prodi : ${snapshot.data!.data.list.prodi.namaProdi}",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: mainWhiteColor),
+                                                  ),
+                                                  Text(
+                                                    "Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: mainWhiteColor),
+                                                  ),
+                                                  Text(
+                                                    "Angkatan : ${snapshot.data!.data.list.angkatan}",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: mainWhiteColor),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                width: 100,
+                                                height: 100,
+                                                child: Image.network(snapshot
+                                                    .data!.data.list.foto)),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        const Divider(
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Dosen Pembimbing Akademik",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: mainWhiteColor),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        if (snapshot.data!.data.list.dosenPa
+                                                .gelarDepan !=
+                                            null)
+                                          (Text(
+                                            "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: mainWhiteColor),
+                                          )),
+                                        if (snapshot.data!.data.list.dosenPa
+                                                .gelarDepan ==
+                                            null)
+                                          (Text(
+                                            "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: mainWhiteColor),
+                                          )),
                                       ],
-                                      begin: Alignment.bottomLeft,
-                                      end: Alignment.centerRight,
                                     ),
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                2,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  snapshot.data!.data.list
-                                                      .noMahasiswa,
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: mainWhiteColor),
-                                                ),
-                                                Text(
-                                                  snapshot.data!.data.list.prodi
-                                                      .fakultas.namaFakultas,
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: mainWhiteColor),
-                                                ),
-                                                Text(
-                                                  "Prodi : ${snapshot.data!.data.list.prodi.namaProdi}",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: mainWhiteColor),
-                                                ),
-                                                Text(
-                                                  "Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: mainWhiteColor),
-                                                ),
-                                                Text(
-                                                  "Angkatan : ${snapshot.data!.data.list.angkatan}",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: mainWhiteColor),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              width: 100,
-                                              height: 100,
-                                              child: Image.network(snapshot
-                                                  .data!.data.list.foto)),
-                                        ],
+                                      StatusCard(
+                                        title: "IPK",
+                                        data: snapshot.data!.data.list.ipk
+                                            .toString(),
                                       ),
-                                      const SizedBox(
-                                        height: 20,
+                                      StatusCard(
+                                        title: "IP Semester\nSebelumnya",
+                                        data: snapshot
+                                            .data!.data.list.ipSebelumnya
+                                            .toString(),
                                       ),
-                                      const Divider(
-                                        color: Colors.white,
+                                      StatusCard(
+                                        title: "Semester Saat Ini",
+                                        data: snapshot.data!.data.list.semester
+                                            .toString(),
                                       ),
-                                      Text(
-                                        "Dosen Pembimbing Akademik",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: mainWhiteColor),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      if (snapshot.data!.data.list.dosenPa
-                                              .gelarDepan !=
-                                          null)
-                                        (Text(
-                                          "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: mainWhiteColor),
-                                        )),
-                                      if (snapshot.data!.data.list.dosenPa
-                                              .gelarDepan ==
-                                          null)
-                                        (Text(
-                                          "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: mainWhiteColor),
-                                        )),
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 25),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    StatusCard(
-                                      title: "IPK",
-                                      data: snapshot.data!.data.list.ipk
-                                          .toString(),
-                                    ),
-                                    StatusCard(
-                                      title: "IP Semester\nSebelumnya",
-                                      data: snapshot
-                                          .data!.data.list.ipSebelumnya
-                                          .toString(),
-                                    ),
-                                    StatusCard(
-                                      title: "Semester Saat Ini",
-                                      data: snapshot.data!.data.list.semester
-                                          .toString(),
-                                    ),
-                                  ],
+                                const SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 7,
-                            color: Colors.grey[300],
-                          ),
-                          Expanded(
-                            child: Container(
-                              // color: Colors.blue,
-                              child: Column(children: [
-                                //body
-                                Expanded(
-                                    child: ListView(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25),
-                                  children: [
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      "Akademik",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: mainOrange2Color),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'RegisterPage');
-                                          },
-                                          child: const menuAkademik(
-                                            image:
-                                                "assets/img/transaction-history.png",
-                                            title: "Riwayat\nRegistrasi",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'KhsMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/academy.png",
-                                            title: "KHS",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'KrsMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/contract.png",
-                                            title: "KRS",
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'KurikulumMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/resume.png",
-                                            title: "Kurikulum",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'PresensiMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/kehadiran.png",
-                                            title: "Presensi",
-                                          ),
-                                        ),
-                                        // const SizedBox(
-                                        //   width: 60,
-                                        // ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, 'TagihanMhs');
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/money.png",
-                                            title: "Tagihan",
-                                          ),
-                                        ),
-                                        // const SizedBox(
-                                        //   width: 60,
-                                        // ),
-                                        InkWell(
-                                          onTap: () {
-                                            _chatDosen(
-                                                snapshot.data!.data.list.dosenPa
-                                                    .idPegawai
-                                                    .toString(),
-                                                snapshot.data!.data.list.dosenPa
-                                                    .namaPegawai
-                                                    .toString());
-                                          },
-                                          child: const menuAkademik(
-                                            image: "assets/img/chat.png",
-                                            title: "Chat",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )),
-                                //Navigation
-                              ]),
+                              ],
                             ),
-                          )
-                        ],
+                            Container(
+                              height: 7,
+                              color: Colors.grey[300],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // const SizedBox(
+                                  //   height: 20,
+                                  // ),
+                                  Text(
+                                    "Akademik",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: mainOrange2Color),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.screenWidth,
+                                    child: Wrap(
+                                      runSpacing: 20.0,
+                                      spacing: 10.0,
+                                      alignment: WrapAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'RegisterPage');
+                                            },
+                                            child: const menuAkademik(
+                                              image:
+                                                  "assets/img/transaction-history.png",
+                                              title: "Riwayat\nRegistrasi",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'KhsMhs');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/academy.png",
+                                              title: "KHS",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'KrsMhs');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/contract.png",
+                                              title: "KRS",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'KurikulumMhs');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/resume.png",
+                                              title: "Kurikulum",
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'PresensiMhs');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/kehadiran.png",
+                                              title: "Presensi",
+                                            ),
+                                          ),
+                                        ),
+                                        // const SizedBox(
+                                        //   width: 60,
+                                        // ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, 'TagihanMhs');
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/money.png",
+                                              title: "Tagihan",
+                                            ),
+                                          ),
+                                        ),
+                                        // const SizedBox(
+                                        //   width: 60,
+                                        // ),
+                                        SizedBox(
+                                          width: 70,
+                                          child: InkWell(
+                                            onTap: () {
+                                              _chatDosen(
+                                                  snapshot.data!.data.list.dosenPa
+                                                      .idPegawai
+                                                      .toString(),
+                                                  snapshot.data!.data.list.dosenPa
+                                                      .namaPegawai
+                                                      .toString());
+                                            },
+                                            child: const menuAkademik(
+                                              image: "assets/img/chat.png",
+                                              title: "Chat",
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               } else {
                 return const Center(

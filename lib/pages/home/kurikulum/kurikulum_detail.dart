@@ -60,30 +60,30 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                 if (snapshot.hasData) {
                   return Column(
                     children: [
-                      // Container(
-                      //   width: MediaQuery.of(context).size.width,
-                      //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.start,
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       const SizedBox(
-                      //         height: 20,
-                      //       ),
-                      //       Text(
-                      //         "Daftar Kurikulum Semester ${snapshot.data!.data.list.listMataKuliah[0].semester}",
-                      //         textAlign: TextAlign.start,
-                      //         style: TextStyle(
-                      //             color: mainBlueColor,
-                      //             fontSize: 16,
-                      //             fontWeight: FontWeight.bold),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      const SizedBox(
-                        height: 10,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Daftar Kurikulum Semester ${snapshot.data!.data.list.listMataKuliah.first.semester}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainBlueColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                       Expanded(
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,

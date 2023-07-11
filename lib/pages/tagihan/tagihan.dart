@@ -17,7 +17,7 @@ class Tagihan extends StatefulWidget {
 
 class _TagihanState extends State<Tagihan> {
   Future<TagihanModel> getTagihanData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(tagihan, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -60,27 +60,6 @@ class _TagihanState extends State<Tagihan> {
                     if (snapshot.hasData) {
                       return Column(
                         children: [
-                          // const SizedBox(
-                          //   height: 20,
-                          // ),
-                          // Container(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                          //   child: Column(
-                          //     mainAxisAlignment: MainAxisAlignment.start,
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       Text(
-                          //         "Daftar Tagihan Mahasiswa",
-                          //         textAlign: TextAlign.start,
-                          //         style: TextStyle(
-                          //             color: mainBlueColor,
-                          //             fontSize: 18,
-                          //             fontWeight: FontWeight.bold),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                           Expanded(
                               child: ListView.builder(
                                   scrollDirection: Axis.vertical,
@@ -196,7 +175,7 @@ class _TagihanState extends State<Tagihan> {
                                                                 .data!
                                                                 .data
                                                                 .list[index]
-                                                                .bank,
+                                                                .bank.toString(),
                                                             style: const TextStyle(
                                                                 color: Color(
                                                                     0xFF1E3B78)),
@@ -206,7 +185,7 @@ class _TagihanState extends State<Tagihan> {
                                                                   .data!
                                                                   .data
                                                                   .list[index]
-                                                                  .bankRef,
+                                                                  .bankRef.toString(),
                                                               style: const TextStyle(
                                                                   color: Color(
                                                                       0xFF1E3B78))),
@@ -256,13 +235,13 @@ class _TagihanState extends State<Tagihan> {
                                                                 .data!
                                                                 .data
                                                                 .list[index]
-                                                                .idTagihan,
+                                                                .idTagihan.toString(),
                                                             style: const TextStyle(
                                                                 color: Color(
                                                                     0xFF1E3B78)),
                                                           ),
                                                           Text(
-                                                              "Rp. ${snapshot.data!.data.list[index].nominal}",
+                                                              "Rp. ${snapshot.data!.data.list[index].nominal.toString()}",
                                                               style: const TextStyle(
                                                                   color: Color(
                                                                       0xFF1E3B78))),

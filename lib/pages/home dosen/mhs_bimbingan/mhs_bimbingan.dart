@@ -48,7 +48,7 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
             color: Colors.black,
           ),
           onTap: () {
-            Navigator.pop(context);
+             Navigator.pushNamed(context, 'HomeDosen');
           },
         ),
       ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
@@ -20,10 +21,12 @@ class _HomePageState extends State<HomePage> {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(userId, headers: header);
     var data = jsonDecode(response.body.toString());
+
     if (response.statusCode == 200) {
       // print(response.body);
       final userIdModel = userIdModelFromJson(response.body);
       SpUtil.putString("id_mhss_pt", userIdModel.data.list.idMhsPt.toString());
+
       return UserIdModel.fromJson(data);
     } else {
       return UserIdModel.fromJson(data);
@@ -33,6 +36,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void setState(VoidCallback fn) async {
+    final fcmtoken = await FirebaseMessaging.instance.getToken();
+    SpUtil.putString("fcm_token", fcmtoken);
+    print('Token Data: $fcmtoken');
+    
+    // TODO: implement setState
+    super.setState(fn);
   }
 
   @override
@@ -46,12 +59,28 @@ class _HomePageState extends State<HomePage> {
             children: [
               Row(
                 children: [
-                  const Text(
-                    "SuperApps",
-                    style: TextStyle(
-                        fontSize: 28,
-                        color: Color(0xFF1E3B78),
-                        fontWeight: FontWeight.w700),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Mastris ",
+                        style: TextStyle(
+                            fontSize: 28,
+                            color: Color(0xFF1E3B78),
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.5,
+                        child: const Text(
+                          "Manajemen Sistem Informasi Terintegrasi Universitas Jambi",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF1E3B78),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
                   ),
                   Expanded(child: Container()),
                   // const Text(
@@ -234,6 +263,10 @@ class _HomePageState extends State<HomePage> {
                   // padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Column(
                     children: [
+                      // Text(
+                      //   SpUtil.getString("fcm_token"),
+                      //   style: TextStyle(color: mainBlackColor),
+                      // ),
                       SizedBox(
                         width: SizeConfig.screenWidth,
                         child: Wrap(
@@ -250,9 +283,13 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(context, 'Navbar');
                                   setState(() {
                                     getUserId();
+                                    _kirimFcm();
                                   });
                                 } else {
                                   Navigator.pushNamed(context, 'HomeDosen');
+                                  setState(() {
+                                    _kirimFcm();
+                                  });
                                 }
                               },
                             ),
@@ -260,7 +297,19 @@ class _HomePageState extends State<HomePage> {
                               icon: 'assets/img/unja.png',
                               label: 'Elista',
                               onTap: () {
-                                Navigator.pushNamed(context, 'Navbar');
+                                if (SpUtil.getString("usertype") ==
+                                    "mahasiswa") {
+                                  Navigator.pushNamed(context, 'Navbar');
+                                  setState(() {
+                                    getUserId();
+                                    _kirimFcm();
+                                  });
+                                } else {
+                                  Navigator.pushNamed(context, 'homedosenelista');
+                                  setState(() {
+                                    _kirimFcm();
+                                  });
+                                }
                               },
                             ),
                           ],
@@ -275,5 +324,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Future _kirimFcm() async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.post(fcmtoken,
+        headers: header, body: {"fcm_token": SpUtil.getString("fcm_token")});
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print("gagal menambahkan kelas");
+      var body = jsonDecode(response.body);
+      print(body["error_message"]);
+    }
   }
 }
