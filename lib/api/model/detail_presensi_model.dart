@@ -74,7 +74,7 @@ class ListElement {
 
     int idMonitoringPerkuliahan;
     int idKelas;
-    DateTime tanggal;
+    String tanggal;
     String jamMulai;
     String jamSelesai;
     String materi;
@@ -84,7 +84,7 @@ class ListElement {
     factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         idMonitoringPerkuliahan: json["id_monitoring_perkuliahan"],
         idKelas: json["id_kelas"],
-        tanggal: DateTime.parse(json["tanggal"]),
+        tanggal: json["tanggal"],
         jamMulai: json["jam_mulai"],
         jamSelesai: json["jam_selesai"],
         materi: json["materi"],
@@ -95,7 +95,7 @@ class ListElement {
     Map<String, dynamic> toJson() => {
         "id_monitoring_perkuliahan": idMonitoringPerkuliahan,
         "id_kelas": idKelas,
-        "tanggal": "${tanggal.year.toString().padLeft(4, '0')}-${tanggal.month.toString().padLeft(2, '0')}-${tanggal.day.toString().padLeft(2, '0')}",
+        "tanggal": tanggal,
         "jam_mulai": jamMulai,
         "jam_selesai": jamSelesai,
         "materi": materi,

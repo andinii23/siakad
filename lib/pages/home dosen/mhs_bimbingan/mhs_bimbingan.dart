@@ -1,11 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
-import '../../../api/model/home_dosen_model.dart';
 import '../../../api/model/mhs_bimbingan_dosen_model.dart';
 import '../../../utilites/constants.dart';
 
@@ -18,7 +17,7 @@ class MhsBimbingan extends StatefulWidget {
 
 class _MhsBimbinganState extends State<MhsBimbingan> {
   Future<MhsBimbinganModel> getHomeDosenData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(mhs_bimbingan, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -48,7 +47,7 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
             color: Colors.black,
           ),
           onTap: () {
-             Navigator.pushNamed(context, 'HomeDosen');
+            Navigator.pushNamed(context, 'HomeDosen');
           },
         ),
       ),
@@ -62,22 +61,6 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
                       return Container(
                         margin: const EdgeInsets.all(10),
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF1E3B78).withOpacity(0.1),
-                              spreadRadius: 5,
-                              blurRadius: 4,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
                         child: ListView.builder(
                             itemCount: snapshot.data!.data.list.length,
                             itemBuilder: (context, index) {
@@ -217,9 +200,8 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
                                             ),
                                           ),
                                         )),
-                                        if (snapshot
-                                              .data!.data.list[index].statusKrs
-                                               ==
+                                      if (snapshot.data!.data.list[index]
+                                              .statusKrs ==
                                           null)
                                         (InkWell(
                                           onTap: () {
@@ -238,8 +220,8 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
                                               "-",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  color: mainWhiteColor
-                                                  , fontSize: 24),
+                                                  color: mainWhiteColor,
+                                                  fontSize: 24),
                                             ),
                                           ),
                                         )),
@@ -247,6 +229,7 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
                                   ),
                                   Divider(
                                     color: mainBlackColor,
+                                    thickness: 1,
                                   ),
                                   const SizedBox(
                                     height: 10,
@@ -266,8 +249,8 @@ class _MhsBimbinganState extends State<MhsBimbingan> {
     );
   }
 
-  Future _krsMhs(String id_mhs_pt) async {
-    SpUtil.putString("id_mhs_pt", id_mhs_pt);
+  Future _krsMhs(String idMhsPt) async {
+    SpUtil.putString("id_mhs_pt", idMhsPt);
     Navigator.pushNamed(context, 'KrsMhsDosen');
   }
 }

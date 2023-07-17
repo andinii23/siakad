@@ -1,8 +1,7 @@
-import 'dart:convert';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:siakad/api/model/home_dosen_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -19,7 +18,7 @@ class HomeDosen extends StatefulWidget {
 
 class _HomeDosenState extends State<HomeDosen> {
   Future<HomeDosenModel> getHomeDosenData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(home, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -38,7 +37,7 @@ class _HomeDosenState extends State<HomeDosen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 child: Stack(
                   children: [
                     ClipPath(
@@ -49,31 +48,32 @@ class _HomeDosenState extends State<HomeDosen> {
                         color: const Color(0xffE9561B),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(context, "HomePage");
-                                },
-                                child: Container(
-                                    margin:
-                                        const EdgeInsets.only(top: 69, left: 29),
-                                    child: Icon(
-                                      Icons.arrow_back_ios,
-                                      color: mainWhiteColor,
-                                    )),
-                              ),
+                              onTap: () {
+                                Navigator.pushNamed(context, "HomePage");
+                              },
+                              child: Container(
+                                  margin:
+                                      const EdgeInsets.only(top: 69, left: 29),
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: mainWhiteColor,
+                                  )),
+                            ),
                             Container(
                               margin: const EdgeInsets.only(
-                                  top: 70,
-                                ),
+                                top: 70,
+                              ),
                               child: RichText(
                                 text: TextSpan(
                                     text: "Haii, ",
                                     style: const TextStyle(fontSize: 18),
                                     children: [
                                       TextSpan(
-                                        text: snapshot.data!.data.list.namaDosen,
+                                        text:
+                                            snapshot.data!.data.list.namaDosen,
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
@@ -95,8 +95,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                 clipper: ClipInfoClass(),
                                 child: Container(
                                   padding: const EdgeInsets.all(15),
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 25),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 25),
                                   // height: 200,
                                   decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.only(
@@ -107,7 +107,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                     ),
                                     gradient: LinearGradient(
                                       colors: [
-                                        const Color(0xff005689).withOpacity(0.9),
+                                        const Color(0xff005689)
+                                            .withOpacity(0.9),
                                         const Color(0xFF1E3B78),
                                       ],
                                       begin: Alignment.bottomLeft,
@@ -115,7 +116,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                     ),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
@@ -134,7 +136,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                                   "${snapshot.data!.data.list.namaDosen} ${snapshot.data!.data.list.gelarBelakang}",
                                                   style: TextStyle(
                                                       fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: mainWhiteColor),
                                                 ),
                                                 Text(
@@ -164,8 +167,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                           SizedBox(
                                               width: 100,
                                               height: 100,
-                                              child: Image.network(
-                                                  snapshot.data!.data.list.foto)),
+                                              child: Image.network(snapshot
+                                                  .data!.data.list.foto)),
                                         ],
                                       ),
                                       const SizedBox(
@@ -223,68 +226,69 @@ class _HomeDosenState extends State<HomeDosen> {
                                       height: 20,
                                     ),
                                     SizedBox(
-                                    width: SizeConfig.screenWidth,
-                                    child: Wrap(
-                                      runSpacing: 20.0,
-                                      spacing: 10.0,
-                                      alignment: WrapAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: 80,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, 'MahasiswaBimbingan');
-                                            },
-                                            child: const menuAkademik(
-                                              image: "assets/img/education.png",
-                                              title: "Mahasiswa\nBimbingan",
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 80,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, 'SemMonitor');
-                                            },
-                                            child: const menuAkademik(
-                                              image:
-                                                  "assets/img/pie-chart.png",
-                                              title: "Monitoring\nPerkuliahan",
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 80,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, 'SemAjar');
-                                            },
-                                            child: const menuAkademik(
-                                              image:
-                                                  "assets/img/lecture.png",
-                                              title: "Matakuliah\nPengampu",
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 80,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, 'chtdosen');
-                                            },
-                                             child: const menuAkademik(
-                                                image: "assets/img/chat.png",
-                                                title: "Chat",
+                                      width: SizeConfig.screenWidth,
+                                      child: Wrap(
+                                          runSpacing: 20.0,
+                                          spacing: 10.0,
+                                          alignment: WrapAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: 80,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(context,
+                                                      'MahasiswaBimbingan');
+                                                },
+                                                child: const menuAkademik(
+                                                  image:
+                                                      "assets/img/education.png",
+                                                  title: "Mahasiswa\nBimbingan",
+                                                ),
                                               ),
-                                          ),
-                                        ),
-                                      ]
-                                    ),
+                                            ),
+                                            SizedBox(
+                                              width: 80,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                      context, 'SemMonitor');
+                                                },
+                                                child: const menuAkademik(
+                                                  image:
+                                                      "assets/img/pie-chart.png",
+                                                  title:
+                                                      "Monitoring\nPerkuliahan",
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 80,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                      context, 'SemAjar');
+                                                },
+                                                child: const menuAkademik(
+                                                  image:
+                                                      "assets/img/lecture.png",
+                                                  title: "Matakuliah\nPengampu",
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 80,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pushNamed(
+                                                      context, 'chtdosen');
+                                                },
+                                                child: const menuAkademik(
+                                                  image: "assets/img/chat.png",
+                                                  title: "Chat",
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
                                     ),
                                   ],
                                 ),
@@ -298,18 +302,12 @@ class _HomeDosenState extends State<HomeDosen> {
                 ),
               );
             } else {
-               return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           }),
     );
-  }
-
-   Future _chatDosen(String id_dosen, String nama_pegawai) async {
-    SpUtil.putString("id_dosen", id_dosen);
-    SpUtil.putString("nama_pegawai", nama_pegawai);
-    Navigator.pushNamed(context, 'ChatMhs');
   }
 }
 
@@ -346,6 +344,7 @@ class ClipPathClass extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
 
+// ignore: camel_case_types
 class menuAkademik extends StatelessWidget {
   const menuAkademik({
     super.key,

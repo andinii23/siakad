@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class cardApp extends StatefulWidget {
@@ -11,8 +13,6 @@ class cardApp extends StatefulWidget {
   @override
   State<cardApp> createState() => _cardAppState();
 }
-
-// ignore: camel_case_types
 class _cardAppState extends State<cardApp> {
   @override
   Widget build(BuildContext context) {

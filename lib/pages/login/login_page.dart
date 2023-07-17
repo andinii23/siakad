@@ -1,10 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_final_fields, avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
-
 import '../../api/model/login_model.dart';
 import '../../utilites/constants.dart';
 
@@ -35,9 +35,29 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
+        ),
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        leading: InkWell(
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onTap: () {
+            Navigator.pushNamed(context, 'gerbang');
+          },
+        ),
+      ),
         body: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.only(top: 30),
+            // margin: const EdgeInsets.only(top: 20),
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,10 +137,10 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: "Password",
                               hintText: "Password",
                               border: OutlineInputBorder(),
-                              suffixIcon: IconButton(
-                                onPressed: null,
-                                icon: Icon(Icons.remove_red_eye_sharp),
-                              ),
+                              // suffixIcon: IconButton(
+                              //   onPressed: null,
+                              //   icon: Icon(Icons.remove_red_eye_sharp),
+                              // ),
                             ),
                           ),
                           const SizedBox(

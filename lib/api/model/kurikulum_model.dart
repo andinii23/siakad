@@ -9,15 +9,15 @@ KurikulumModel kurikulumModelFromJson(String str) => KurikulumModel.fromJson(jso
 String kurikulumModelToJson(KurikulumModel data) => json.encode(data.toJson());
 
 class KurikulumModel {
+    int code;
+    String errorMessage;
+    Data data;
+
     KurikulumModel({
         required this.code,
         required this.errorMessage,
         required this.data,
     });
-
-    int code;
-    String errorMessage;
-    Data data;
 
     factory KurikulumModel.fromJson(Map<String, dynamic> json) => KurikulumModel(
         code: json["code"],
@@ -33,17 +33,17 @@ class KurikulumModel {
 }
 
 class Data {
+    int total;
+    int perPage;
+    int page;
+    ListClass list;
+
     Data({
         required this.total,
         required this.perPage,
         required this.page,
         required this.list,
     });
-
-    int total;
-    int perPage;
-    int page;
-    ListClass list;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         total: json["total"],
@@ -61,6 +61,15 @@ class Data {
 }
 
 class ListClass {
+    int idKurikulum;
+    String namaKurikulum;
+    int jumlahSemesterNormal;
+    String jumlahSksWajib;
+    String jumlahSksPilihan;
+    String totalSks;
+    int sksSelesai;
+    List<ListMataKuliah> listMataKuliah;
+
     ListClass({
         required this.idKurikulum,
         required this.namaKurikulum,
@@ -71,15 +80,6 @@ class ListClass {
         required this.sksSelesai,
         required this.listMataKuliah,
     });
-
-    int idKurikulum;
-    String namaKurikulum;
-    int jumlahSemesterNormal;
-    String jumlahSksWajib;
-    String jumlahSksPilihan;
-    String totalSks;
-    int sksSelesai; 
-    List<ListMataKuliah> listMataKuliah;
 
     factory ListClass.fromJson(Map<String, dynamic> json) => ListClass(
         idKurikulum: json["id_kurikulum"],
@@ -105,6 +105,19 @@ class ListClass {
 }
 
 class ListMataKuliah {
+    int wajib;
+    int semester;
+    int idMatakuliah;
+    String kodeMatakuliah;
+    String namaMatakuliah;
+    String? oldNamaMatakuliah;
+    String sksTotal;
+    String sksTatapMuka;
+    String sksPraktek;
+    String sksLapangan;
+    String sksSimulasi;
+    String? nilaiTertinggi;
+
     ListMataKuliah({
         required this.wajib,
         required this.semester,
@@ -114,22 +127,11 @@ class ListMataKuliah {
         this.oldNamaMatakuliah,
         required this.sksTotal,
         required this.sksTatapMuka,
-        this.sksPraktek,
-        this.sksLapangan,
-        this.sksSimulasi,
+        required this.sksPraktek,
+        required this.sksLapangan,
+        required this.sksSimulasi,
+        this.nilaiTertinggi,
     });
-
-    String wajib;
-    int semester;
-    int idMatakuliah;
-    String kodeMatakuliah;
-    String namaMatakuliah;
-    String? oldNamaMatakuliah;
-    String sksTotal;
-    String sksTatapMuka;
-    String? sksPraktek;
-    String? sksLapangan;
-    String? sksSimulasi;
 
     factory ListMataKuliah.fromJson(Map<String, dynamic> json) => ListMataKuliah(
         wajib: json["wajib"],
@@ -143,6 +145,7 @@ class ListMataKuliah {
         sksPraktek: json["sks_praktek"],
         sksLapangan: json["sks_lapangan"],
         sksSimulasi: json["sks_simulasi"],
+        nilaiTertinggi: json["nilai_tertinggi"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -157,6 +160,9 @@ class ListMataKuliah {
         "sks_praktek": sksPraktek,
         "sks_lapangan": sksLapangan,
         "sks_simulasi": sksSimulasi,
+        "nilai_tertinggi": nilaiTertinggi,
     };
-    
 }
+
+
+

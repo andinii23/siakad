@@ -1,14 +1,10 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:siakad/api/model/krs_model.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
-import '../../../api/model/dafkelas_krs_model.dart';
 import '../../../api/model/dafkls_krsinbound.dart';
-import '../../../api/model/kelas_model.dart';
 import '../../../utilites/constants.dart';
 
 class DaftarKelasKrsInbound extends StatefulWidget {
@@ -20,7 +16,7 @@ class DaftarKelasKrsInbound extends StatefulWidget {
 
 class _DaftarKelasKrsInboundState extends State<DaftarKelasKrsInbound> {
   Future<DaftarKelasInboundKrsModel> getKelasKrsInboundData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get("$krs_kelas_inbound${SpUtil.getString("id_matakuliah")}&kelas_mbkm=1", headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -231,8 +227,8 @@ class _DaftarKelasKrsInboundState extends State<DaftarKelasKrsInbound> {
     );
   }
 
-  Future _idKelas(String id_kelas) async {
-    SpUtil.putString("id_kelas", id_kelas);
+  Future _idKelas(String idKelas) async {
+    SpUtil.putString("id_kelas", idKelas);
     Navigator.pushNamed(context, 'detailruangkelas');
   }
 }

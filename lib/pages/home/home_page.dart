@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, avoid_print
+
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -44,7 +46,6 @@ class _HomePageState extends State<HomePage> {
     SpUtil.putString("fcm_token", fcmtoken);
     print('Token Data: $fcmtoken');
     
-    // TODO: implement setState
     super.setState(fn);
   }
 
@@ -299,13 +300,14 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 if (SpUtil.getString("usertype") ==
                                     "mahasiswa") {
-                                  Navigator.pushNamed(context, 'Navbar');
+                                  Navigator.pushNamed(context, 'develop');
                                   setState(() {
                                     getUserId();
                                     _kirimFcm();
                                   });
                                 } else {
-                                  Navigator.pushNamed(context, 'homedosenelista');
+                                  // Navigator.pushNamed(context, 'homedosenelista');
+                                  Navigator.pushNamed(context, 'develop');
                                   setState(() {
                                     _kirimFcm();
                                   });

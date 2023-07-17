@@ -65,6 +65,8 @@ final cetakkrs = main_url + "api/siakad/krs/cetak";
 final cetakkhs = main_url + "api/siakad/khs/cetak";
 final cetaktranskip = main_url + "api/siakad/cetak-transkrip";
 
+final berita = main_url + "https://unja.ac.id/wp-json/wp/v2/posts";
+
 //elista
 final mhsbimelista = main_url + "api/elista/mahasiswa-bimbingan";
 

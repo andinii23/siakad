@@ -1,12 +1,9 @@
-import 'dart:convert';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
-import 'package:timer_builder/timer_builder.dart';
-import '../../../api/model/home_dosen_model.dart';
 import '../../../api/model/mhs_bimbingan_dosen_model.dart';
 import '../../../utilites/constants.dart';
 
@@ -19,7 +16,7 @@ class ChatMhsBimbingan extends StatefulWidget {
 
 class _ChatMhsBimbinganState extends State<ChatMhsBimbingan> {
   Future<MhsBimbinganModel> getHomeDosenData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(mhs_bimbingan, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -29,7 +26,6 @@ class _ChatMhsBimbinganState extends State<ChatMhsBimbingan> {
       return MhsBimbinganModel.fromJson(data);
     }
   }
-int _counter = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,8 +125,8 @@ int _counter = 0;
     );
   }
 
-  Future _chatMhs(String id_mhs_pt, String namaMahasiswa) async {
-    SpUtil.putString("id_mhs_pt", id_mhs_pt);
+  Future _chatMhs(String idMhsPt, String namaMahasiswa) async {
+    SpUtil.putString("id_mhs_pt", idMhsPt);
    SpUtil.putString("nama_mahasiswa", namaMahasiswa);
     Navigator.pushNamed(context, 'ChatDosen');
   }

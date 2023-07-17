@@ -1,10 +1,9 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:siakad/pages/home/krs/kurikulum_outbound_konf.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
 import '../../../api/model/krs_outbound_model.dart';

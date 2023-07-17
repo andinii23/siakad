@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import '../../api/model/biomhs_model.dart';
 import '../../utilites/constants.dart';
@@ -17,7 +17,7 @@ class BiodataMhs extends StatefulWidget {
 
 class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
   Future<BioMhsModel> getBioMhsData() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(biodata, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -32,6 +32,7 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     TabController _tabController = TabController(length: 2, vsync: this);
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +57,7 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             child: TabBar(
                 controller: _tabController,
                 labelColor: mainBlackColor,
@@ -1389,7 +1390,9 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Container(
+                                        if(snapshot.data!.data.list.teleponIbu
+                                                .toString() != "null")
+                                        (Container(
                                           margin: const EdgeInsets.only(
                                               left: 10, right: 10, bottom: 10),
                                           padding: const EdgeInsets.all(10),
@@ -1418,7 +1421,38 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                               fontSize: 14,
                                             ),
                                           ),
-                                        ),
+                                        )),
+                                        if(snapshot.data!.data.list.teleponIbu
+                                                .toString() == "null")
+                                        (Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 10, right: 10, bottom: 10),
+                                          padding: const EdgeInsets.all(10),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFF1E3B78)
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 5,
+                                                blurRadius: 4,
+                                                offset: const Offset(0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Text(
+                                            "-",
+                                            style: TextStyle(
+                                              color: mainBlackColor,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        )),
                                       ],
                                     ),
                                     Column(
@@ -1649,7 +1683,9 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Container(
+                                        if(snapshot.data!.data.list.namaWali
+                                                .toString() != "null")
+                                        (Container(
                                           margin: const EdgeInsets.only(
                                               left: 10, right: 10, bottom: 10),
                                           padding: const EdgeInsets.all(10),
@@ -1678,7 +1714,38 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                               fontSize: 14,
                                             ),
                                           ),
-                                        ),
+                                        )),
+                                        if(snapshot.data!.data.list.namaWali
+                                                .toString() == "null")
+                                        (Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 10, right: 10, bottom: 10),
+                                          padding: const EdgeInsets.all(10),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFF1E3B78)
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 5,
+                                                blurRadius: 4,
+                                                offset: const Offset(0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Text(
+                                            "-",
+                                            style: TextStyle(
+                                              color: mainBlackColor,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        )),
                                       ],
                                     ),
                                     Column(
@@ -1756,7 +1823,10 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Container(
+                                        if(snapshot.data!.data.list
+                                                .pekerjaanWali.namaPekerjaan
+                                                .toString() != "null")
+                                        (Container(
                                           margin: const EdgeInsets.only(
                                               left: 10, right: 10, bottom: 10),
                                           padding: const EdgeInsets.all(10),
@@ -1786,7 +1856,39 @@ class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
                                               fontSize: 14,
                                             ),
                                           ),
-                                        ),
+                                        )),
+                                        if(snapshot.data!.data.list
+                                                .pekerjaanWali.namaPekerjaan
+                                                .toString() == "null")
+                                        (Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 10, right: 10, bottom: 10),
+                                          padding: const EdgeInsets.all(10),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFF1E3B78)
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 5,
+                                                blurRadius: 4,
+                                                offset: const Offset(0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                          ),
+                                          child: Text(
+                                            "-",
+                                            style: TextStyle(
+                                              color: mainBlackColor,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        )),
                                       ],
                                     ),
                                     Column(

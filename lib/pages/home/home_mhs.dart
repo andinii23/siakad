@@ -1,17 +1,14 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, camel_case_types
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:siakad/api/model/home_model.dart';
-import 'package:siakad/pages/home/chat/chat_mhs.dart';
 import 'package:siakad/utilites/config.dart';
 import 'package:siakad/utilites/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 
-import '../../api/model/userid_model.dart';
 
 class HomeMhs extends StatefulWidget {
   const HomeMhs({super.key});
@@ -41,7 +38,7 @@ class _HomeMhsState extends State<HomeMhs> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return SingleChildScrollView(
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   child: Stack(
                     children: [
                       ClipPath(
@@ -233,17 +230,36 @@ class _HomeMhsState extends State<HomeMhs> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      StatusCard(
-                                        title: "IPK",
-                                        data: snapshot.data!.data.list.ipk
-                                            .toString(),
-                                      ),
-                                      StatusCard(
-                                        title: "IP Semester\nSebelumnya",
-                                        data: snapshot
-                                            .data!.data.list.ipSebelumnya
-                                            .toString(),
-                                      ),
+                                      if (snapshot.data!.data.list.ipk
+                                              .toString() ==
+                                          "null")
+                                        (const StatusCard(
+                                          title: "IPK",
+                                          data: "-",
+                                        )),
+                                      if (snapshot.data!.data.list.ipk
+                                              .toString() !=
+                                          "null")
+                                        (StatusCard(
+                                          title: "IPK",
+                                          data: snapshot.data!.data.list.ipk
+                                              .toString(),
+                                        )),
+                                      if (snapshot.data!.data.list.ipSebelumnya
+                                              .toString() ==
+                                          "null")
+                                        (const StatusCard(
+                                          title: "IP Semester\nSebelumnya",
+                                          data: "-",
+                                        )),
+                                      if (snapshot.data!.data.list.ipSebelumnya
+                                              .toString() !=
+                                          "null")
+                                        (StatusCard( 
+                                          title: "IP Semester\nSebelumnya",
+                                          data: snapshot.data!.data.list.ipSebelumnya
+                                              .toString(),
+                                        )),
                                       StatusCard(
                                         title: "Semester Saat Ini",
                                         data: snapshot.data!.data.list.semester
@@ -376,11 +392,11 @@ class _HomeMhsState extends State<HomeMhs> {
                                           child: InkWell(
                                             onTap: () {
                                               _chatDosen(
-                                                  snapshot.data!.data.list.dosenPa
-                                                      .idPegawai
+                                                  snapshot.data!.data.list
+                                                      .dosenPa.idPegawai
                                                       .toString(),
-                                                  snapshot.data!.data.list.dosenPa
-                                                      .namaPegawai
+                                                  snapshot.data!.data.list
+                                                      .dosenPa.namaPegawai
                                                       .toString());
                                             },
                                             child: const menuAkademik(
@@ -409,9 +425,9 @@ class _HomeMhsState extends State<HomeMhs> {
             }));
   }
 
-  Future _chatDosen(String id_dosen, String nama_pegawai) async {
-    SpUtil.putString("id_dosen", id_dosen);
-    SpUtil.putString("nama_pegawai", nama_pegawai);
+  Future _chatDosen(String idDosen, String namaPegawai) async {
+    SpUtil.putString("id_dosen", idDosen);
+    SpUtil.putString("nama_pegawai", namaPegawai);
     Navigator.pushNamed(context, 'ChatMhs');
   }
 }

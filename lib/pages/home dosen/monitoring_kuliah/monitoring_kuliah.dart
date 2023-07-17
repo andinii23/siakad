@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:siakad/api/model/monitor_kuliah_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
@@ -414,8 +414,8 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
     );
   }
 
-  Future _detailMonitor(String id_kelas) async {
-    SpUtil.putString("id_kelas", id_kelas);
+  Future _detailMonitor(String idKelas) async {
+    SpUtil.putString("id_kelas", idKelas);
     Navigator.pushNamed(context, 'monitorperkelas');
   }
 }

@@ -1,39 +1,28 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_final_fields, avoid_print
+// ignore_for_file: prefer_final_fields, import_of_legacy_library_into_null_safe, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:siakad/api/model/detail_monitor.dart';
 import 'package:sp_util/sp_util.dart';
-import '../../../api/model/detail_monitor.dart';
 import '../../../api/model/dosen_monitor_model.dart';
-import '../../../api/model/mhsmonitormodel.dart';
 import '../../../utilites/constants.dart';
 
-class TambahPertemuan extends StatefulWidget {
-  const TambahPertemuan({super.key});
+class EditMonitoKulian extends StatefulWidget {
+  const EditMonitoKulian({super.key});
 
   @override
-  State<TambahPertemuan> createState() => _TambahPertemuanState();
+  State<EditMonitoKulian> createState() => _EditMonitoKulianState();
 }
 
-class _TambahPertemuanState extends State<TambahPertemuan> {
+class _EditMonitoKulianState extends State<EditMonitoKulian> {
   final _formState = GlobalKey<FormState>();
-
-  Future<DetailMonitoringKuliahModel> getMonitorData() async {
-    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(mhsmonitor, headers: header);
-    var data = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      // print(response.body);
-      return DetailMonitoringKuliahModel.fromJson(data);
-    } else {
-      return DetailMonitoringKuliahModel.fromJson(data);
-    }
-  }
-
   final selectedIndex = [];
   final selectedIndex2 = [];
+  List<int> selectedDosenIDs = [];
+  List<int> selectedMahasiswaIDs = [];
 
   bool selectAllMahasiswa = false;
   String dsn = "";
@@ -43,7 +32,51 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
   TextEditingController _mulaiController = TextEditingController();
   TextEditingController _selesaiController = TextEditingController();
   TextEditingController _materiController = TextEditingController();
-  TextEditingController _ketController = TextEditingController();
+  // TextEditingController _ketController = TextEditingController();
+
+  Future<DetailMonitoringKuliahModel> getDetailMonitor() async {
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
+    var response = await http.get(
+        monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahann"),
+        headers: header);
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      // print(response.body);
+      return DetailMonitoringKuliahModel.fromJson(data);
+    } else {
+      return DetailMonitoringKuliahModel.fromJson(data);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch and populate the data when the widget is first created
+    getDetailMonitor().then((detailData) {
+      for (var mhs in detailData.data.list.mahasiswa) {
+        if (mhs.kehadiran == 1) {
+          selectedIndex2.add(mhs.idMhsPt);
+        }
+      }
+
+      for (var dsn in detailData.data.list.dosen) {
+      if (dsn.kehadiran == 1) {
+        selectedIndex.add(dsn.idDosen); // Add Dosen's ID to selectedIndex
+      }
+    }
+
+      String tgl = detailData.data.list.tanggal;
+      DateTime tanggal = DateTime.parse(tgl);
+      DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
+      String tanggalFormatted = dateFormat.format(tanggal);
+
+      _tanggalController.text = tanggalFormatted;
+      _mulaiController.text = detailData.data.list.jamMulai;
+      _selesaiController.text = detailData.data.list.jamSelesai;
+      _materiController.text = detailData.data.list.materi;
+    });
+  }
 
   @override
   void dispose() {
@@ -92,7 +125,7 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Tambah Pertemuan",
+          "Edit Monitoring Kuliah",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -112,7 +145,7 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: FutureBuilder(
-            future: getMonitorData(),
+            future: getDetailMonitor(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Container(
@@ -269,17 +302,16 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
                                       snapshot.data!.data.list.dosen[dsn];
 
                                   return CheckboxListTile(
-                                    title: Text(
-                                        "${idDosen.namaDosen.toString()} ${idDosen.gelarBelakang.toString()}"),
-                                    value:
-                                        selectedIndex.contains(idDosen.idDosen),
-                                    onChanged: (val) {
-                                      setState(() {
-                                        selectIndexWithID(idDosen.idDosen);
-                                        print(selectedIndex);
+                                      title: Text(
+                                          "${idDosen.namaDosen.toString()} ${idDosen.gelarBelakang.toString()}"),
+                                      value: selectedIndex
+                                          .contains(idDosen.idDosen),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectIndexWithID(idDosen.idDosen);
+                                          print(selectedIndex);
+                                        });
                                       });
-                                    },
-                                  );
                                 }),
 
                             const SizedBox(
@@ -384,7 +416,7 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (_formState.currentState!.validate()) {
-                                    postData();
+                                    updateData();
                                   } else {
                                     print("validasi gagal");
                                   }
@@ -394,7 +426,7 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
                                       MaterialStateProperty.all(mainBlueColor),
                                 ),
                                 child: const Text(
-                                  "Tambah",
+                                  "Update",
                                   style: TextStyle(fontSize: 18),
                                 ),
                               ),
@@ -413,35 +445,57 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
     );
   }
 
-  Future<void> postData() async {
+  Future<void> updateData() async {
+    var header = {
+      "Authorization": "Bearer ${SpUtil.getString("token")}",
+      "Content-Type": "application/json"
+    };
+
+    List<int> dosenIDs = []; // List to store selected Dosen IDs
+    List<int> mahasiswaIDs = []; // List to store selected Mahasiswa IDs
+
+    for (var dosenID in selectedIndex) {
+      // Add each selected Dosen ID to the list
+      dosenIDs.add(dosenID);
+    }
+
+    for (var mhsID in selectedIndex2) {
+      // Add each selected Mahasiswa ID to the list
+      mahasiswaIDs.add(mhsID);
+    }
+
     Map<String, dynamic> data = {
+      "id_monitoring_perkuliahan":
+          SpUtil.getString("id_monitoring_perkuliahann"),
       'tanggal': _tanggalController.text,
       'jam_mulai': _mulaiController.text,
       'jam_selesai': _selesaiController.text,
-      'dosen': selectedIndex,
+      'dosen': dosenIDs,
       'materi': _materiController.text,
-      'keterangan': _ketController.text,
-      'mahasiswa': selectedIndex2,
+      'mahasiswa': mahasiswaIDs,
     };
 
-    final response = await http.post(
-      Uri.parse(tambah + SpUtil.getString("id_kelass")),
-      headers: <String, String>{
-        'Authorization': 'Bearer ${SpUtil.getString("token")}',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
+    var body = jsonEncode(data);
 
-    if (response.statusCode == 200) {
-      // Data berhasil terkirim
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamed(context, 'monitorperkelas');
-      print('Data berhasil terkirim');
-      print(response.body);
-    } else {
-      // Terjadi kesalahan saat mengirim data
-      print('Error: ${response.statusCode}');
+    try {
+      var response = await http.patch(
+        Uri.parse(
+            "https://ws.unja.ac.id/api/siakad/monitoring-perkuliahan/${SpUtil.getString("id_monitoring_perkuliahann")}"),
+        headers: header,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        // Data berhasil terkirim
+        Navigator.pushNamed(context, 'monitorperkelas');
+        print('Data berhasil terkirim');
+        print(response.body);
+      } else {
+        // Terjadi kesalahan saat mengirim data
+        print('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
     }
   }
 }

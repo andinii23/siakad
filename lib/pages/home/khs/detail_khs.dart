@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/khs_detail_model.dart';
 import 'package:sp_util/sp_util.dart';
@@ -17,7 +17,7 @@ class KhsDetailMhs extends StatefulWidget {
 
 class _KhsDetailMhsState extends State<KhsDetailMhs> {
   Future<KhsDetailModel> getDetailKhs() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response =
         await http.get(dkhs + SpUtil.getString("id_semester"), headers: header);
     var data = jsonDecode(response.body.toString());

@@ -1,15 +1,12 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/semester_model.dart';
 import 'package:sp_util/sp_util.dart';
-import '../../../api/model/khs_model.dart';
 import '../../../api/model/monitor_kuliah_model.dart';
 import '../../../utilites/constants.dart';
 
@@ -107,7 +104,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: mainOrangeColor),
                     child: Text(
-                      "Get Monitoring",
+                      "Tampilkan Monitoring",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: mainWhiteColor,
@@ -127,7 +124,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return ListView.builder(
-                                physics: ScrollPhysics(),
+                                physics: const ScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount:

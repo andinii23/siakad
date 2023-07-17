@@ -1,9 +1,9 @@
-import 'dart:convert';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../api/model/detail_presensi_model.dart';
 import '../../utilites/constants.dart';
@@ -22,7 +22,7 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       return DetailPresensiModel.fromJson(data);
     } else {
       return DetailPresensiModel.fromJson(data);
@@ -69,6 +69,17 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data.list.length,
                               itemBuilder: (context, index) {
+                                String tgl = snapshot
+                                    .data!.data.list[index].tanggal
+                                    .toString();
+
+                                DateTime tanggal = DateTime.parse(tgl);
+
+                                DateFormat dateFormat =
+                                    DateFormat('dd-MM-yyyy');
+
+                                String tanggalFormatted =
+                                    dateFormat.format(tanggal);
                                 return Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Container(
@@ -155,7 +166,14 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
                                         ),
-
+                                        Text(
+                                          "Tanggal : $tanggalFormatted ",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: mainBlueColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -214,6 +232,7 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
                                         ),
                                         Divider(
                                           color: mainBlackColor,
+                                          thickness: 1,
                                         ),
 
                                         // mahasiswa
@@ -393,6 +412,5 @@ class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
         ],
       ),
     );
-    ;
   }
 }

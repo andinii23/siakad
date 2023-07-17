@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:siakad/pages/home/kurikulum/semestercard.dart';
 import 'package:siakad/utilites/config.dart';
@@ -58,7 +58,7 @@ class _KurikulumMhsState extends State<KurikulumMhs> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 child: Column(
                   children: [
                     Container(

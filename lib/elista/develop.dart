@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+
 import '../utilites/constants.dart';
 
-class HomeDosenElista extends StatefulWidget {
-  const HomeDosenElista({super.key});
+class DevelopPage extends StatefulWidget {
+  const DevelopPage({super.key});
 
   @override
-  State<HomeDosenElista> createState() => _HomeDosenElistaState();
+  State<DevelopPage> createState() => _DevelopPageState();
 }
 
-class _HomeDosenElistaState extends State<HomeDosenElista> {
+class _DevelopPageState extends State<DevelopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Home Dosen Elista",
+          "",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -32,14 +33,11 @@ class _HomeDosenElistaState extends State<HomeDosenElista> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, 'mhsbimbinganelista');
-            },
-            child: const Text("Daftar Mahasiswa Bimbingan")),
-        ],
+      body: const Center(
+        child: Text("Masih Dalam Tahap Pengembanagn", style: TextStyle(
+          fontSize: 16, 
+          fontWeight: FontWeight.bold,
+        ),),
       ),
     );
   }

@@ -1,7 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/detail_kur_model.dart';
 import 'package:sp_util/sp_util.dart';
@@ -178,18 +178,18 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               children: [
-                                                // SizedBox(
-                                                //   width: 60,
-                                                //   child: Text(
-                                                //     "Nilai\nTertinggi",
-                                                //     textAlign: TextAlign.center,
-                                                //     style: TextStyle(
-                                                //         fontSize: 14,
-                                                //         fontWeight:
-                                                //             FontWeight.bold,
-                                                //         color: mainOrange2Color),
-                                                //   ),
-                                                // ),
+                                                SizedBox(
+                                                  width: 60,
+                                                  child: Text(
+                                                    "Ket.",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: mainOrange2Color),
+                                                  ),
+                                                ),
                                                 if (snapshot
                                                         .data!
                                                         .data

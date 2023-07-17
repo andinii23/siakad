@@ -1,13 +1,12 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/semester_model.dart';
 import 'package:sp_util/sp_util.dart';
-import '../../../api/model/khs_model.dart';
 import '../../../api/model/mkajar_model.dart';
 import '../../../utilites/constants.dart';
 
@@ -87,32 +86,32 @@ class _SemesterMkState extends State<SemesterMk> {
                         idSemester: element["id_semester"],
                         semesterText: element["semester_text"]));
                   }
-                
+
                   return allSemester;
                 },
               ),
               const SizedBox(
-                  height: 15,
-                ),
-                InkWell(
-                  onTap: () {
-                    getMkAjar();
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(color: mainOrangeColor),
-                    child: Text(
-                      "Get Matakuliah Ajar",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: mainWhiteColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
+                height: 15,
+              ),
+              InkWell(
+                onTap: () {
+                  getMkAjar();
+                  setState(() {});
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(color: mainOrangeColor),
+                  child: Text(
+                    "Tampilkan Matakuliah Ajar",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: mainWhiteColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -123,7 +122,7 @@ class _SemesterMkState extends State<SemesterMk> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
-                              physics: ScrollPhysics(),
+                              physics: const ScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data.list.length,
@@ -178,7 +177,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                         Column(
                                           children: [
                                             ListView.builder(
-                                              physics: ScrollPhysics(),
+                                                physics: const ScrollPhysics(),
                                                 scrollDirection: Axis.vertical,
                                                 shrinkWrap: true,
                                                 itemCount: snapshot
@@ -320,6 +319,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                                           Divider(
                                                             color:
                                                                 mainBlackColor,
+                                                            thickness: 1,
                                                           ),
                                                           const SizedBox(
                                                             height: 5,
@@ -393,10 +393,17 @@ class _SemesterMkState extends State<SemesterMk> {
                                                                   ),
                                                                   child:
                                                                       InkWell(
-                                                                    onTap:
-                                                                        () {
-                                                                          _detailAjar(snapshot.data!.data.list[index].listKelas[kls].idKelas.toString());
-                                                                        },
+                                                                    onTap: () {
+                                                                      _detailAjar(snapshot
+                                                                          .data!
+                                                                          .data
+                                                                          .list[
+                                                                              index]
+                                                                          .listKelas[
+                                                                              kls]
+                                                                          .idKelas
+                                                                          .toString());
+                                                                    },
                                                                     child: Row(
                                                                       crossAxisAlignment:
                                                                           CrossAxisAlignment
@@ -454,7 +461,7 @@ class _SemesterMkState extends State<SemesterMk> {
     );
   }
 
- Future _detailAjar(String idKelas) async {
+  Future _detailAjar(String idKelas) async {
     SpUtil.putString("id_kelas", idKelas);
     Navigator.pushNamed(context, 'detailmkajar');
   }

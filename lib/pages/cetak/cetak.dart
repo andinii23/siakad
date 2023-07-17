@@ -1,10 +1,15 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../api/model/cetakkhsmodel.dart';
@@ -28,7 +33,7 @@ class _CetakPageState extends State<CetakPage> {
 
   Future<CetakKtmModel> getKtm() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(ktm, headers: header);
+    var response = await http.post(ktm, headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

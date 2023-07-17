@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:siakad/utilites/constants.dart';
 
-import '../helpers/colors.dart';
 import '../helpers/strings.dart';
 
 class WelcomePage extends StatefulWidget {

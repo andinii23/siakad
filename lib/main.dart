@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:siakad/elista/develop.dart';
 import 'package:siakad/elista/home_dosen.dart';
 import 'package:siakad/elista/mhsbimbingan.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:siakad/navbar/nav.dart';
 import 'package:siakad/navbar/navbar_dosen.dart';
+import 'package:siakad/pages/berita/berita.dart';
+import 'package:siakad/pages/berita/detailberita.dart';
 import 'package:siakad/pages/cetak/cetak.dart';
 import 'package:siakad/pages/gerbang.dart';
 import 'package:siakad/pages/home%20dosen/home_dosen.dart';
@@ -16,6 +19,7 @@ import 'package:siakad/pages/home%20dosen/mk_pengampu/detail_mkajar.dart';
 import 'package:siakad/pages/home%20dosen/mk_pengampu/mkajar.dart';
 import 'package:siakad/pages/home%20dosen/mk_pengampu/semester_mk.dart';
 import 'package:siakad/pages/home%20dosen/monitoring_kuliah/detailmonitor_kuliah.dart';
+import 'package:siakad/pages/home%20dosen/monitoring_kuliah/editmonitor.dart';
 import 'package:siakad/pages/home%20dosen/monitoring_kuliah/monitor_kelas.dart';
 import 'package:siakad/pages/home%20dosen/monitoring_kuliah/monitoring_kuliah.dart';
 import 'package:siakad/pages/home%20dosen/monitoring_kuliah/sem_monitoring.dart';
@@ -45,6 +49,7 @@ import 'package:siakad/pages/presensi/detail_presensi.dart';
 import 'package:siakad/pages/presensi/presensi_page.dart';
 import 'package:siakad/pages/splashscreen.dart';
 import 'package:siakad/pages/tagihan/tagihan.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -53,6 +58,7 @@ import 'pages/home/krs/krs_inboundkelas.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+  // ignore: avoid_print
   print('Handling a background message ${message.messageId}');
 }
 
@@ -72,10 +78,6 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await FlutterDownloader.initialize();
-  // final fcmtoken = await FirebaseMessaging.instance.getToken();
-  // SpUtil.putString("fcm_token", fcmtoken);
-  // print('Token Data: $fcmtoken');
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -136,6 +138,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // ignore: avoid_print
       print('A new onMessageOpenedApp event was published!');
       // Navigation to page
     });
@@ -198,6 +201,10 @@ class _MyAppState extends State<MyApp> {
         'gerbang': (context) => const Gerbang(),
         'homedosenelista': (context) => const HomeDosenElista(),
         'mhsbimbinganelista': (context) => const MhsBimbinganElista(),
+        'detailberita': (context) => const DetailBerita(),
+        'berita': (context) => const BeritaPage(),
+        'develop': (context) => const DevelopPage(),
+        'editpertemuan': (context) => const EditMonitoKulian(),
       },
     );
   }

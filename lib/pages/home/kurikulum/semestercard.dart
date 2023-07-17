@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 import '../../../utilites/constants.dart';
@@ -11,8 +13,6 @@ class semesterCard extends StatefulWidget {
   @override
   State<semesterCard> createState() => _semesterCardState();
 }
-
-// ignore: camel_case_types
 class _semesterCardState extends State<semesterCard> {
   @override
   Widget build(BuildContext context) {

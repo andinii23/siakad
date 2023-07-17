@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_final_fields, use_build_context_synchronously, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 import '../../utilites/constants.dart';
@@ -151,7 +151,7 @@ class _GantiPasswordState extends State<GantiPassword> {
   }
 
   Future _gantiPass() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.post(gantipass, headers: header, body: {
       "password_lama": _passwordlamaController.text,
       "password_baru": _passwordbaruController.text,

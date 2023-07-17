@@ -1,18 +1,13 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
-import 'package:siakad/api/model/semester_model.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../../api/model/daftarsem_model.dart';
-import '../../../api/model/detail_kelas_model.dart';
 import '../../../api/model/khs_detail_model.dart';
-import '../../../api/model/khs_model.dart';
-import '../../../api/model/semester_mhs_model.dart';
 import '../../../utilites/constants.dart';
-import 'detail_khs.dart';
 
 class KhsMhs extends StatefulWidget {
   const KhsMhs({super.key});
@@ -25,7 +20,7 @@ class _KhsMhsState extends State<KhsMhs> {
   String? idSem;
 
   Future<KhsDetailModel> getDetailKhs() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
         "https://ws.unja.ac.id/api/siakad/khs?id_semester=$idSem",
         headers: header);
@@ -110,7 +105,7 @@ class _KhsMhsState extends State<KhsMhs> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: mainOrangeColor),
                     child: Text(
-                      "Get KHS",
+                      "Tampilkan KHS",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: mainWhiteColor,
@@ -129,6 +124,7 @@ class _KhsMhsState extends State<KhsMhs> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return ListView.builder(
+                                  physics: const ScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: snapshot.data!.data.list.length,
@@ -212,6 +208,7 @@ class _KhsMhsState extends State<KhsMhs> {
                                           Column(
                                             children: [
                                               ListView.builder(
+                                                physics: const ScrollPhysics(),
                                                   scrollDirection:
                                                       Axis.vertical,
                                                   shrinkWrap: true,

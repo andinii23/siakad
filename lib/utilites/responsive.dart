@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 class Responsive extends StatelessWidget {

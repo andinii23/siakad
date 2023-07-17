@@ -1,7 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:siakad/api/model/krs_model.dart';
@@ -66,38 +66,13 @@ class _KrsMhsState extends State<KrsMhs> {
             String tanggalAwalFormatted = dateFormat.format(tanggalAwal);
             String tanggalAkhirFormatted = dateFormat.format(tanggalAkhir);
             return SingleChildScrollView(
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 20,
-                  ),
-                  if (DateTime.now().isBefore(tanggalAkhir))
-                    (Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Colors.red,
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        "Jadwal KRS Tutup",
-                        style: TextStyle(
-                            color: mainWhiteColor, fontWeight: FontWeight.bold),
-                      ),
-                    )),
-                  const SizedBox(
-                    height: 10,
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(
@@ -107,20 +82,49 @@ class _KrsMhsState extends State<KrsMhs> {
                         horizontal: 10, vertical: 10),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      color: Colors.lightBlue.withOpacity(0.4),
+                      color: mainWhiteColor,
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 70, 159, 233),
-                        width: 1,
-                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1E3B78).withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
                     child: Text(
                       "Jadwal Kontrak KRS : $tanggalAwalFormatted - $tanggalAkhirFormatted",
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 129, 235),
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: mainBlackColor, fontWeight: FontWeight.bold),
                     ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (DateTime.now().isAfter(tanggalAkhir))
+                    (Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: Colors.red,
+                          width: 0.5,
+                        ),
+                      ),
+                      child: const Text(
+                        "Jadwal KRS Tutup",
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    )),
                   const SizedBox(
                     height: 10,
                   ),
@@ -133,7 +137,7 @@ class _KrsMhsState extends State<KrsMhs> {
                           horizontal: 10, vertical: 10),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: Colors.red.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
                           color: Colors.red,
@@ -142,8 +146,8 @@ class _KrsMhsState extends State<KrsMhs> {
                       ),
                       child: Text(
                         snapshot.data!.data.list.statusText,
-                        style: TextStyle(
-                            color: mainWhiteColor, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold),
                       ),
                     )),
                   if (snapshot.data!.data.list.status.toString() == "1" ||
@@ -177,7 +181,7 @@ class _KrsMhsState extends State<KrsMhs> {
                           "Menunggu Persetujuan Dosen PA" &&
                       snapshot.data!.data.list.statusText.toString() !=
                           "Telah di Acc Dosen PA" &&
-                      DateTime.now().isAfter(tanggalAkhir))
+                      DateTime.now().isBefore(tanggalAkhir))
                     if (snapshot.data!.data.list.jumlahSksKontrak != 24)
                       (Column(
                         children: [
@@ -353,7 +357,7 @@ class _KrsMhsState extends State<KrsMhs> {
                           ),
                           child: ListView.builder(
                               scrollDirection: Axis.vertical,
-                              physics: ScrollPhysics(),
+                              physics: const ScrollPhysics(),
                               shrinkWrap: true,
                               itemCount:
                                   snapshot.data!.data.list.listKrs.length,
@@ -606,7 +610,7 @@ class _KrsMhsState extends State<KrsMhs> {
                                                               TextAlign.center,
                                                           style: TextStyle(
                                                               color:
-                                                                 mainBlackColor,
+                                                                  mainBlackColor,
                                                               fontSize: 18),
                                                         ),
                                                       ),
@@ -725,7 +729,7 @@ class _KrsMhsState extends State<KrsMhs> {
                               "Menunggu Persetujuan Dosen PA" &&
                           snapshot.data!.data.list.statusText.toString() !=
                               "Telah di Acc Dosen PA" &&
-                          DateTime.now().isAfter(tanggalAkhir))
+                          DateTime.now().isBefore(tanggalAkhir))
                         (GestureDetector(
                           onTap: () {
                             _ajukanKrs();
@@ -777,7 +781,6 @@ class _KrsMhsState extends State<KrsMhs> {
     var response = await http.get(hapus_kelas + idKrs, headers: header);
     if (response.statusCode == 200) {
       // print(response.body);
-      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, 'KrsMhs');
     } else {
       print("gagal menambahkan kelas");

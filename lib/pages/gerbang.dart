@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:siakad/pages/tagihan/slideimage.dart';
 import 'package:siakad/utilites/constants.dart';
-
-import '../api/model/cardwelcomemodel.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:http/http.dart' as http;
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:sp_util/sp_util.dart';
 
 class Gerbang extends StatefulWidget {
   const Gerbang({super.key});
@@ -15,19 +14,21 @@ class Gerbang extends StatefulWidget {
 }
 
 class _GerbangState extends State<Gerbang> {
-  List<CardInfo> infocard = CardInfoList;
-  final List<String> imgList = [
-    'https://correcto.id/content/images/th1_2020112302384838982.jpg',
-    'https://correcto.id/content/images/th1_2020112302384838982.jpg',
-    'https://correcto.id/content/images/th1_2020112302384838982.jpg',
-  ];
-  int _currentIndex = 0;
+  List _data = [];
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mainWhiteColor,
       appBar: AppBar(
-        backgroundColor: mainBlueColor,
+        backgroundColor: Colors.transparent,
         elevation: 0.0,
         automaticallyImplyLeading: false,
         title: Row(
@@ -37,9 +38,9 @@ class _GerbangState extends State<Gerbang> {
               onTap: () {
                 Navigator.pushNamed(context, 'Login');
               },
-              child: const Text(
+              child: Text(
                 "Login",
-                style: TextStyle(fontSize: 14),
+                style: TextStyle(fontSize: 14, color: mainBlackColor),
               ),
             ),
             InkWell(
@@ -48,193 +49,201 @@ class _GerbangState extends State<Gerbang> {
               },
               child: Icon(
                 Icons.login,
-                color: mainWhiteColor,
+                color: mainBlackColor,
               ),
             )
           ],
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        physics: const ScrollPhysics(),
+        child: Stack(
           children: [
-            Stack(
+            Center(
+              child: Container(
+                alignment: Alignment.center,
+                height: MediaQuery.of(context).size.height / 2.6,
+                width: double.maxFinite,
+                decoration: BoxDecoration(color: mainWhiteColor),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      width: 150,
+                      child: const Image(
+                          image: AssetImage("assets/img/logomastris.png"),
+                          fit: BoxFit.cover),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        "Selamat Datang Di Aplikasi Manajemen Sistem Informasi Terintegrasi (MASTRIS) Universitas Jambi",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: mainBlackColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.28,
+                ),
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    alignment: Alignment.center,
-                    height: MediaQuery.of(context).size.height / 2.7,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(color: mainBlueColor),
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1E3B78).withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 4,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      cursorHeight: 20,
+                      autofocus: false,
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Cari..",
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: mainBlueColor, width: 2),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
+                const SizedBox(
+                  height: 40,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Berita Terkini UNJA",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, 'berita');
+                          },
+                          child: const Text(
+                            "Selengkapnya >>",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 14, color: Colors.blue),
+                          ),
+                        ),
+                      ],
                     ),
-                    CarouselSlider.builder(
-                      itemCount: infocard.length,
-                      itemBuilder: (context, itemIndex, realIndex) {
-                        CardInfo listcard = CardInfoList[itemIndex];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Container(
-                            width: double.maxFinite,
-                            height: MediaQuery.of(context).size.height * 0.25,
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:
-                                        const Color.fromARGB(255, 255, 255, 255)
-                                            .withOpacity(0.1),
-                                    spreadRadius: 3,
-                                    blurRadius: 2,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                                color: const Color.fromARGB(255, 61, 185, 243)
-                                    .withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Stack(
-                              children: [
-                              
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      width: 200,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _data.length,
+                      itemBuilder: (context, index) {
+                        final title =
+                            _data[index]["title"]["rendered"].toString();
+                        // Check if the search query is empty or the title contains the search query
+                        if (searchQuery.isEmpty ||
+                            title
+                                .toLowerCase()
+                                .contains(searchQuery.toLowerCase())) {
+                          return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            child: InkWell(
+                              onTap: () {
+                                _detailBerita(_data[index]["id"].toString());
+                              },
+                              child: Container(
+                                width: 150,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                      image: NetworkImage(_data[index]
+                                                  ["yoast_head_json"]
+                                              ["og_image"][0]["url"]
+                                          .toString()),
+                                      fit: BoxFit.cover),
+                                  color: Colors.black,
+                                  // borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.5),
+                                      ),
                                       child: Text(
-                                        listcard.judul,
-                                        style: TextStyle(
-                                            color: mainWhiteColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                        _data[index]["title"]["rendered"]
+                                            .toString(),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: SizedBox(
-                                      width: 110,
-                                      height: 90,
-                                      child: Image.asset(
-                                          "assets/img/${listcard.gambar}")),
-                                ),
-                                
-                              ],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
+                        return const SizedBox
+                            .shrink(); // Return an empty widget if not matching the search query
                       },
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.0,
-                        enlargeCenterPage: true,
-                      ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF1E3B78).withOpacity(0.1),
-                              spreadRadius: 5,
-                              blurRadius: 4,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          cursorHeight: 20,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              hintText: "Cari..",
-                              prefixIcon: const Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: mainBlueColor, width: 2),
-                                borderRadius: BorderRadius.circular(30),
-                              )),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
-                              "Berita Terkini UNJA",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Lihat lainnya >",
-                              textAlign: TextAlign.start,
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    //bagian selanjutnya
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          departmentCard(
-                            "Development",
-                            "assets/img/coding.jpg",
-                          ),
-                          departmentCard(
-                            "Development",
-                            "assets/img/coding.jpg",
-                          ),
-                          departmentCard(
-                            "Development",
-                            "assets/img/coding.jpg",
-                          ),
-                          departmentCard(
-                            "Development",
-                            "assets/img/coding.jpg",
-                          ),
-                          departmentCard(
-                            "Development",
-                            "assets/img/coding.jpg",
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                //bagian selanjutnya
               ],
             )
           ],
@@ -243,43 +252,25 @@ class _GerbangState extends State<Gerbang> {
     );
   }
 
-  Widget departmentCard(String name, String Img) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: Container(
-        width: 150,
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(Img), fit: BoxFit.cover),
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Text(
-                  name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+  Future _getData() async {
+    try {
+      final response = await http.get("https://unja.ac.id/wp-json/wp/v2/posts");
+      if (response.statusCode == 200) {
+        // print(response.body);
+        final data = json.decode(response.body);
+        setState(() {
+          _data = data;
+        });
+        // print("Data : $_data");
+      }
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+  }
+
+  Future _detailBerita(String idBerita) async {
+    SpUtil.putString("id_berita", idBerita);
+    Navigator.pushNamed(context, 'detailberita');
   }
 }

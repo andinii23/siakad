@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_final_fields, unused_local_variable, avoid_print, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
@@ -26,7 +26,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
   }
 
   Future<KrsMhsDosenModel> getDetailKrsMhs() async {
-    var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+    var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
         krs_mhs_bimbingan + SpUtil.getString("id_mhs_pt"),
         headers: header);
@@ -78,7 +78,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
               String tanggalAkhirFormatted = dateFormat.format(tanggalAkhir);
 
               return SingleChildScrollView(
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 child: Column(
                   children: [
                     const SizedBox(
@@ -326,12 +326,26 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                             width: 1,
                           ),
                         ),
-                        child: Text(
-                          snapshot.data!.data.list.krs.statusKrsText,
-                          style: TextStyle(
-                            color: mainWhiteColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Row(
+                          children: [
+                            Text(
+                              snapshot.data!.data.list.krs.statusKrsText,
+                              style: TextStyle(
+                                color: mainWhiteColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "(${snapshot.data!.data.list.krs.tanggal})",
+                              style: TextStyle(
+                                color: mainWhiteColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                     if (snapshot.data!.data.list.krs.statusKrs.toString() ==
@@ -426,7 +440,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                                               ),
                                             ),
                                             ListView.builder(
-                                              physics: ScrollPhysics(),
+                                              physics: const ScrollPhysics(),
                                                 scrollDirection:
                                                     Axis.vertical,
                                                 shrinkWrap: true,
@@ -697,7 +711,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                       )),
                     if (snapshot.data!.data.list.krs.statusKrs.toString() ==
                         "3")
-                      (Text(""))
+                      (const Text(""))
                   ],
                 ),
               );

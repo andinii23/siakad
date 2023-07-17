@@ -1,9 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:siakad/api/model/krs_model.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
 import '../../../api/model/kelas_model.dart';
@@ -229,8 +227,8 @@ class _KelasKontrakState extends State<KelasKontrak> {
     );
   }
 
-  Future _idMatakuliah(String id_matakuliah) async {
-    SpUtil.putString("id_matakuliah", id_matakuliah);
+  Future _idMatakuliah(String idMatakuliah) async {
+    SpUtil.putString("id_matakuliah", idMatakuliah);
     Navigator.pushNamed(context, 'detailkelas');
   }
 }

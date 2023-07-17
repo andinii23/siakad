@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 import '../../api/model/tagihan_model.dart';
@@ -175,7 +175,8 @@ class _TagihanState extends State<Tagihan> {
                                                                 .data!
                                                                 .data
                                                                 .list[index]
-                                                                .bank.toString(),
+                                                                .bank
+                                                                .toString(),
                                                             style: const TextStyle(
                                                                 color: Color(
                                                                     0xFF1E3B78)),
@@ -185,7 +186,8 @@ class _TagihanState extends State<Tagihan> {
                                                                   .data!
                                                                   .data
                                                                   .list[index]
-                                                                  .bankRef.toString(),
+                                                                  .bankRef
+                                                                  .toString(),
                                                               style: const TextStyle(
                                                                   color: Color(
                                                                       0xFF1E3B78))),
@@ -235,7 +237,8 @@ class _TagihanState extends State<Tagihan> {
                                                                 .data!
                                                                 .data
                                                                 .list[index]
-                                                                .idTagihan.toString(),
+                                                                .idTagihan
+                                                                .toString(),
                                                             style: const TextStyle(
                                                                 color: Color(
                                                                     0xFF1E3B78)),
@@ -250,7 +253,6 @@ class _TagihanState extends State<Tagihan> {
                                                       const SizedBox(
                                                         height: 15,
                                                       ),
-                                                      
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
@@ -340,35 +342,6 @@ class _TagihanState extends State<Tagihan> {
                                                           const SizedBox(
                                                             height: 10,
                                                           ),
-                                                          // Column(
-                                                          //   children: [
-                                                          //     const Text(
-                                                          //       "Keterangan Cicilan UKT",
-                                                          //       style: TextStyle(
-                                                          //           fontSize:
-                                                          //               18,
-                                                          //           fontWeight:
-                                                          //               FontWeight
-                                                          //                   .bold,
-                                                          //           color: Color(
-                                                          //               0xffE9561B)),
-                                                          //     ),
-                                                          //     const SizedBox(
-                                                          //       height: 5,
-                                                          //     ),
-                                                          //     Text(
-                                                          //         snapshot
-                                                          //             .data!
-                                                          //             .data
-                                                          //             .list[
-                                                          //                 index]
-                                                          //             .keteranganCicilanUkt
-                                                          //             .toString(),
-                                                          //         style: const TextStyle(
-                                                          //             color: Color(
-                                                          //                 0xFF1E3B78))),
-                                                          //   ],
-                                                          // ),
                                                         ],
                                                       ),
                                                     ],
@@ -384,9 +357,9 @@ class _TagihanState extends State<Tagihan> {
                         ],
                       );
                     } else {
-                       return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                   }))
         ],

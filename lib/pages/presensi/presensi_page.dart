@@ -1,13 +1,11 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, use_build_context_synchronously, avoid_print
+
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
-import '../../api/model/detail_presensi_model.dart';
 import '../../api/model/presensi_model.dart';
 import '../../utilites/constants.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -36,7 +34,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
     var cameraStatus = await Permission.camera.status;
     if (cameraStatus.isGranted) {
       String? qrdata = await scanner.scan();
-      var header = {"Authorization": "Bearer " + SpUtil.getString("token")};
+      var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
       var response = await http.post(presensi_mhs, headers: header, body: {
         "id_monitoring_perkuliahan": qrdata,
       });
@@ -228,6 +226,13 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                         fontSize: 14,
                                       ),
                                     ),
+                                     Text(
+                                      "Jumlah Pertemuan : ${snapshot.data!.data.list[index].jumlahPertemuan.toString()}",
+                                      style: TextStyle(
+                                        color: mainBlueColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(
@@ -235,6 +240,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
                                 ),
                                 Divider(
                                   color: mainBlackColor,
+                                  thickness: 1,
                                 ),
                                 const SizedBox(
                                   height: 10,

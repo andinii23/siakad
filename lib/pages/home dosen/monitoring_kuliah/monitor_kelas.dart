@@ -1,11 +1,11 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe, use_build_context_synchronously, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:siakad/api/model/detail_monitor.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../../api/model/monitorkuliah_perkelas_model.dart';
 import '../../../utilites/constants.dart';
@@ -38,7 +38,7 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Detail Monitoring",
+          "Monitoring Kuliah",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
@@ -59,34 +59,6 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Text(SpUtil.getString("id_sem"), style: TextStyle(color: mainBlackColor),),
-          // InkWell(
-          //   onTap: () {
-          //     Navigator.pushNamed(context, 'tambahpertemuan');
-          //   },
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       color: mainBlueColor,
-          //       borderRadius: BorderRadius.circular(5)
-          //     ),
-          //     padding: const EdgeInsets.all(5),
-          //     width: 170,
-          //     margin: const EdgeInsets.only(right: 10),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         Icon(
-          //           Icons.add,
-          //           color: mainWhiteColor,
-          //         ),
-          //         Text(
-          //           "Tambah Pertemuan",
-          //           style: TextStyle(color: mainWhiteColor),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: FutureBuilder<MonitorKuliahPerkelasModel>(
                 future: getDetailData(),
@@ -103,6 +75,14 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data.list.length,
                               itemBuilder: (context, index) {
+                                String tgl =
+                                    snapshot.data!.data.list[index].tanggal;
+                                DateTime tanggal = DateTime.parse(tgl);
+                                DateFormat dateFormat =
+                                    DateFormat('dd-MM-yyyy');
+
+                                String tanggalFormatted =
+                                    dateFormat.format(tanggal);
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container(
@@ -204,12 +184,29 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                             ],
                                           ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 5,
                                           ),
                                           // Divider(
                                           //   thickness: 1.5,
                                           //   color: mainBlackColor,
                                           // ),
+                                          Text(
+                                            "Tanggal : $tanggalFormatted",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: mainBlueColor,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+
+                                          Text(
+                                            "Jam : ${snapshot.data!.data.list[index].jamMulai.toString()} - ${snapshot.data!.data.list[index].jamSelesai.toString()}",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: mainBlueColor,
+                                              fontSize: 16,
+                                            ),
+                                          ),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -317,65 +314,103 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
+                                              if (snapshot.data!.data
+                                                      .list[index].statusSiremun
+                                                      .toString() ==
+                                                  "0")
+                                                (InkWell(
+                                                  onTap: () {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            title: SizedBox(
+                                                              child: Text(
+                                                                "Apakah anda yakin akan menghapus pertemuan ini?",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainBlackColor,
+                                                                    fontSize:
+                                                                        18),
+                                                              ),
+                                                            ),
+                                                            actions: [
+                                                              MaterialButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                  "Batal",
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          mainBlackColor),
+                                                                ),
+                                                              ),
+                                                              MaterialButton(
+                                                                onPressed: () {
+                                                                  deleteWithBody(snapshot
+                                                                      .data!
+                                                                      .data
+                                                                      .list[
+                                                                          index]
+                                                                      .idMonitoringPerkuliahan
+                                                                      .toString());
+                                                                },
+                                                                child: Text(
+                                                                  "OK",
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          mainBlackColor),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        });
+                                                  },
+                                                  child: Column(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.delete,
+                                                        color: mainBlueColor,
+                                                      ),
+                                                      Text(
+                                                        "Hapus",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainBlueColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
                                               InkWell(
                                                 onTap: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return AlertDialog(
-                                                          title: SizedBox(
-                                                            child: Text(
-                                                              "Apakah anda yakin akan menghapus pertemuan ini?",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      mainBlackColor,
-                                                                  fontSize: 18),
-                                                            ),
-                                                          ),
-                                                          actions: [
-                                                            MaterialButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                "Batal",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor),
-                                                              ),
-                                                            ),
-                                                            MaterialButton(
-                                                              onPressed: () {
-                                                                deleteWithBody(snapshot
-                                                                    .data!
-                                                                    .data
-                                                                    .list[index]
-                                                                    .idMonitoringPerkuliahan
-                                                                    .toString());
-                                                              },
-                                                              child: Text(
-                                                                "OK",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      });
+                                                  _editM(snapshot
+                                                      .data!
+                                                      .data
+                                                      .list[index]
+                                                      .idMonitoringPerkuliahan
+                                                      .toString());
                                                 },
                                                 child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
                                                   children: [
-                                                    Icon(
-                                                      Icons.delete,
-                                                      color: mainBlueColor,
-                                                    ),
+                                                    Icon(Icons.edit,
+                                                        color: mainBlueColor),
                                                     Text(
-                                                      "Hapus",
+                                                      "Edit",
+                                                      textAlign:
+                                                          TextAlign.center,
                                                       style: TextStyle(
                                                           color: mainBlueColor,
                                                           fontSize: 14,
@@ -452,6 +487,11 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
   Future _idMonitor(String idMonitoringPerkuliahan) async {
     SpUtil.putString("id_monitoring_perkuliahann", idMonitoringPerkuliahan);
     Navigator.pushNamed(context, 'detailmonitorkuliah');
+  }
+
+  Future _editM(String idMonitoringPerkuliahan) async {
+    SpUtil.putString("id_monitoring_perkuliahann", idMonitoringPerkuliahan);
+    Navigator.pushNamed(context, 'editpertemuan');
   }
 
   Future<void> deleteWithBody(String idMonitoringPerkuliahan) async {

@@ -138,6 +138,7 @@ class KelasProdi {
 
 class Mahasiswa {
     int idMhsPt;
+    String nilai;
     String noMhs;
     String angkatan;
     String namaMahasiswa;
@@ -146,6 +147,7 @@ class Mahasiswa {
 
     Mahasiswa({
         required this.idMhsPt,
+        required this.nilai,
         required this.noMhs,
         required this.angkatan,
         required this.namaMahasiswa,
@@ -155,6 +157,7 @@ class Mahasiswa {
 
     factory Mahasiswa.fromJson(Map<String, dynamic> json) => Mahasiswa(
         idMhsPt: json["id_mhs_pt"],
+        nilai: json["nilai"],
         noMhs: json["no_mhs"],
         angkatan: json["angkatan"],
         namaMahasiswa: json["nama_mahasiswa"],
@@ -164,6 +167,7 @@ class Mahasiswa {
 
     Map<String, dynamic> toJson() => {
         "id_mhs_pt": idMhsPt,
+        "nilai": nilai,
         "no_mhs": noMhs,
         "angkatan": angkatan,
         "nama_mahasiswa": namaMahasiswa,
@@ -178,14 +182,14 @@ class Matakuliah {
     int idMatakuliah;
     String namaMatakuliah;
     String kodeMatakuliah;
-    dynamic uploadNilai;
+    int uploadNilai;
     String sksTotal;
 
     Matakuliah({
         required this.idMatakuliah,
         required this.namaMatakuliah,
         required this.kodeMatakuliah,
-        this.uploadNilai,
+        required this.uploadNilai,
         required this.sksTotal,
     });
 
@@ -241,5 +245,4 @@ class RuangKuliah {
         "nama_ruang": namaRuang,
     };
 }
-
 

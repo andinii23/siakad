@@ -204,12 +204,14 @@ class ListMatakuliah {
     };
 }
 
+
 class Krs {
     String awalKrs;
     String akhirKrs;
     String awalKprs;
     String akhirKprs;
     int maxSks;
+    String tanggal;
     String statusKrs;
     String statusKrsText;
     List<ListKr> listKrs;
@@ -220,6 +222,7 @@ class Krs {
         required this.awalKprs,
         required this.akhirKprs,
         required this.maxSks,
+        required this.tanggal,
         required this.statusKrs,
         required this.statusKrsText,
         required this.listKrs,
@@ -231,6 +234,7 @@ class Krs {
         awalKprs: json["awal_kprs"],
         akhirKprs: json["akhir_kprs"],
         maxSks: json["max_sks"],
+        tanggal: json["tanggal"],
         statusKrs: json["status_krs"],
         statusKrsText: json["status_krs_text"],
         listKrs: List<ListKr>.from(json["list_krs"].map((x) => ListKr.fromJson(x))),
@@ -242,6 +246,7 @@ class Krs {
         "awal_kprs": awalKprs,
         "akhir_kprs": akhirKprs,
         "max_sks": maxSks,
+        "tanggal": tanggal,
         "status_krs": statusKrs,
         "status_krs_text": statusKrsText,
         "list_krs": List<dynamic>.from(listKrs.map((x) => x.toJson())),
@@ -375,5 +380,3 @@ class ListProdi {
         "nama_prodi": namaProdi,
     };
 }
-
-

@@ -1,8 +1,7 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 class SlideImage extends StatefulWidget {
   List<String> imgList;
 
@@ -16,9 +15,9 @@ class _SlideImageState extends State<SlideImage> {
   int _current = 0;
   @override
   Widget build(BuildContext context) {
-    final List<Widget> imageSliders = widget.imgList.map((item) => Container(
+    final List<Widget> imageSliders = widget.imgList.map((item) => SizedBox(
     child: ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(5)),
+      borderRadius: const BorderRadius.all(Radius.circular(5)),
       child: Stack(
         children: [
           Image.network(item, fit: BoxFit.cover, width: 1000,),
@@ -27,7 +26,7 @@ class _SlideImageState extends State<SlideImage> {
             left: 0.0,
             right: 0.0,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [
                   Color.fromARGB(200, 0, 0, 0),
                   Color.fromARGB(0, 0, 0, 0)
@@ -36,8 +35,8 @@ class _SlideImageState extends State<SlideImage> {
                 end: Alignment.topCenter,
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text('No. ${widget.imgList.indexOf(item)} image', style: TextStyle(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text('No. ${widget.imgList.indexOf(item)} image', style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -66,10 +65,10 @@ class _SlideImageState extends State<SlideImage> {
           return Container(
             width: 8,
             height: 8,
-            margin: EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: _current == index ? Color.fromRGBO(0, 0, 0, 0.9) : Color.fromRGBO(0, 0, 0, 0.4),
+              color: _current == index ? const Color.fromRGBO(0, 0, 0, 0.9) : const Color.fromRGBO(0, 0, 0, 0.4),
             ),
           );
         }).toList(),
