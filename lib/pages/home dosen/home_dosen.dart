@@ -19,7 +19,7 @@ class HomeDosen extends StatefulWidget {
 class _HomeDosenState extends State<HomeDosen> {
   Future<HomeDosenModel> getHomeDosenData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(home, headers: header);
+    var response = await http.get(Uri.parse(home), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       return HomeDosenModel.fromJson(data);
@@ -63,6 +63,7 @@ class _HomeDosenState extends State<HomeDosen> {
                                   )),
                             ),
                             Container(
+                              width: MediaQuery.of(context).size.width * 0.865,
                               margin: const EdgeInsets.only(
                                 top: 70,
                               ),

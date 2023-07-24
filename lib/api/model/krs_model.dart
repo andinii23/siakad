@@ -4,12 +4,9 @@
 
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
-
 KrsModel krsModelFromJson(String str) => KrsModel.fromJson(json.decode(str));
 
 String krsModelToJson(KrsModel data) => json.encode(data.toJson());
-final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
 class KrsModel {
     int code;
@@ -64,7 +61,7 @@ class Data {
 }
 
 class ListClass {
-    int idSemester;
+    String idSemester;
     int jumlahSksKontrak;
     String ipSebelumnya;
     String status;
@@ -162,7 +159,7 @@ class ListKr {
 class Dosen {
     int idDosen;
     String namaDosen;
-    String? gelarDepan;
+    dynamic gelarDepan;
     String gelarBelakang;
 
     Dosen({
@@ -267,12 +264,10 @@ class Matakuliah {
     };
 }
 
-
-
 class ListPesanKr {
     int idPengirim;
     int idPenerima;
-    DateTime tanggal;
+    String tanggal;
     String idSemester;
     String pesan;
 
@@ -287,7 +282,7 @@ class ListPesanKr {
     factory ListPesanKr.fromJson(Map<String, dynamic> json) => ListPesanKr(
         idPengirim: json["id_pengirim"],
         idPenerima: json["id_penerima"],
-        tanggal: DateTime.parse(json["tanggal"]),
+        tanggal: json["tanggal"],
         idSemester: json["id_semester"],
         pesan: json["pesan"],
     );
@@ -295,10 +290,8 @@ class ListPesanKr {
     Map<String, dynamic> toJson() => {
         "id_pengirim": idPengirim,
         "id_penerima": idPenerima,
-        "tanggal": tanggal.toIso8601String(),
+        "tanggal": tanggal,
         "id_semester": idSemester,
         "pesan": pesan,
     };
 }
-
-

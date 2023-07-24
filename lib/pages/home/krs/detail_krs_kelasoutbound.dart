@@ -19,7 +19,7 @@ class _DetailKrsKlsOutboundState extends State<DetailKrsKlsOutbound> {
   Future<DetailKrsKelasOutboundModel> getDetailKelas() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        "$detailkrs_kelasoutbound${SpUtil.getString("id_mk_asal")}/${SpUtil.getString("id_matakuliah")}",
+        Uri.parse("$detailkrs_kelasoutbound${SpUtil.getString("id_mk_asal")}/${SpUtil.getString("id_matakuliah")}"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -194,7 +194,7 @@ class _DetailKrsKlsOutboundState extends State<DetailKrsKlsOutbound> {
   Future _kontrakMk() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response =
-        await http.post(simpan_kelasoutbound, headers: header, body: {
+        await http.post(Uri.parse(simpan_kelasoutbound), headers: header, body: {
       "id_matakuliah_konversi": SpUtil.getString("id_matakuliah"),
       "id_matakuliah_asal": SpUtil.getString("id_mk_asal")
     });

@@ -18,7 +18,7 @@ class ChatDosen extends StatefulWidget {
 class _ChatDosenState extends State<ChatDosen> {
   Future<ListChatDosenModel> getListChat() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(chatdosen, headers: header);
+    var response = await http.get(Uri.parse(chatdosen), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

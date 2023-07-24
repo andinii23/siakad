@@ -19,7 +19,7 @@ class _KhsDetailMhsState extends State<KhsDetailMhs> {
   Future<KhsDetailModel> getDetailKhs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response =
-        await http.get(dkhs + SpUtil.getString("id_semester"), headers: header);
+        await http.get(Uri.parse(dkhs + SpUtil.getString("id_semester")), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -257,8 +257,8 @@ class _KhsDetailMhsState extends State<KhsDetailMhs> {
                                                                     .list[index]
                                                                     .listMataKuliah[
                                                                         mk]
-                                                                    .nilai !=
-                                                                null)
+                                                                    .nilai.toString() !=
+                                                                "null")
                                                               (Text(
                                                                 snapshot
                                                                     .data!
@@ -281,8 +281,8 @@ class _KhsDetailMhsState extends State<KhsDetailMhs> {
                                                                     .list[index]
                                                                     .listMataKuliah[
                                                                         mk]
-                                                                    .nilai ==
-                                                                null)
+                                                                    .nilai.toString() ==
+                                                                "null")
                                                               (Text(
                                                                 "-",
                                                                 style: TextStyle(

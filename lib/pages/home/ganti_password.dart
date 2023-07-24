@@ -152,7 +152,7 @@ class _GantiPasswordState extends State<GantiPassword> {
 
   Future _gantiPass() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(gantipass, headers: header, body: {
+    var response = await http.post(Uri.parse(gantipass), headers: header, body: {
       "password_lama": _passwordlamaController.text,
       "password_baru": _passwordbaruController.text,
       "password_confirmation": _confpasswordController.text,

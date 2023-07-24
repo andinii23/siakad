@@ -22,7 +22,7 @@ class _KhsMhsState extends State<KhsMhs> {
   Future<KhsDetailModel> getDetailKhs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        "https://ws.unja.ac.id/api/siakad/khs?id_semester=$idSem",
+        Uri.parse("https://ws.unja.ac.id/api/siakad/khs?id_semester=$idSem"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -75,7 +75,7 @@ class _KhsMhsState extends State<KhsMhs> {
                     var header = {
                       "Authorization": "Bearer ${SpUtil.getString("token")}"
                     };
-                    var response = await http.get(semestermhs, headers: header);
+                    var response = await http.get(Uri.parse(semestermhs), headers: header);
                     if (response.statusCode != 200) {
                       return [];
                     }

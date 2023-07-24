@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:siakad/elista/develop.dart';
 import 'package:siakad/elista/home_dosen.dart';
 import 'package:siakad/elista/mhsbimbingan.dart';
-// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:siakad/navbar/nav.dart';
 import 'package:siakad/navbar/navbar_dosen.dart';
 import 'package:siakad/pages/berita/berita.dart';

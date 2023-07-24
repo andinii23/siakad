@@ -64,6 +64,7 @@ class Data {
 class ListElement {
   ListElement({
     required this.idSemester,
+    required this.semesterText,
     this.statusReg,
     required this.tglDaftar,
     required this.ipk,
@@ -76,6 +77,7 @@ class ListElement {
   });
 
   String idSemester;
+  String semesterText;
   String? statusReg;
   DateTime tglDaftar;
   String ipk;
@@ -87,6 +89,7 @@ class ListElement {
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
         idSemester: json["id_semester"],
+        semesterText: json["semester_text"],
         statusReg: json["status_reg"],
         tglDaftar: DateTime.parse(json["tgl_daftar"]),
         ipk: json["ipk"],
@@ -99,6 +102,7 @@ class ListElement {
 
   Map<String, dynamic> toJson() => {
         "id_semester": idSemester,
+        "semester_text": semesterText,
         "status_reg": statusReg,
         "tgl_daftar": tglDaftar.toIso8601String(),
         "ipk": ipk,

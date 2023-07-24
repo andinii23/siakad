@@ -1,9 +1,9 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:siakad/utilites/constants.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 
 class Gerbang extends StatefulWidget {
@@ -37,6 +37,7 @@ class _GerbangState extends State<Gerbang> {
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, 'Login');
+               
               },
               child: Text(
                 "Login",
@@ -46,6 +47,7 @@ class _GerbangState extends State<Gerbang> {
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, 'Login');
+               
               },
               child: Icon(
                 Icons.login,
@@ -254,7 +256,7 @@ class _GerbangState extends State<Gerbang> {
 
   Future _getData() async {
     try {
-      final response = await http.get("https://unja.ac.id/wp-json/wp/v2/posts");
+      final response = await http.get(Uri.parse("https://unja.ac.id/wp-json/wp/v2/posts"));
       if (response.statusCode == 200) {
         // print(response.body);
         final data = json.decode(response.body);

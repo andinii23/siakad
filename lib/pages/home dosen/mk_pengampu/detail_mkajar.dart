@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
 
@@ -19,7 +19,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
     with TickerProviderStateMixin {
   Future<MkAjarDetailModel> getDetailMkAjar() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(detailmkajar + SpUtil.getString("id_kelas"),
+    var response = await http.get(Uri.parse(detailmkajar + SpUtil.getString("id_kelas")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -71,7 +71,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                 child: Column(
                                   children: [
                                     Text(
-                                      "PROGRAM STUDI ${snapshot.data!.data.list.prodi.namaProdi.toUpperCase()}",
+                                      "PROGRAM STUDI ${snapshot.data!.data.list.prodi.namaProdi.toUpperCase().toString()}",
                                       style: TextStyle(
                                         color: mainBlueColor,
                                         fontSize: 16,
@@ -125,7 +125,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                       .data
                                                       .list
                                                       .matakuliah
-                                                      .namaMatakuliah,
+                                                      .namaMatakuliah.toString(),
                                                   style: TextStyle(
                                                     color: mainBlackColor,
                                                     fontSize: 14,
@@ -172,7 +172,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                     3,
                                                 child: Text(
                                                   snapshot.data!.data.list
-                                                      .matakuliah.sksTotal,
+                                                      .matakuliah.sksTotal.toString(),
                                                   style: TextStyle(
                                                     color: mainBlackColor,
                                                     fontSize: 14,
@@ -218,7 +218,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                         .width /
                                                     2,
                                                 child: Text(
-                                                  "${snapshot.data!.data.list.hari}, ${snapshot.data!.data.list.jamMulai} - ${snapshot.data!.data.list.jamSelesai}",
+                                                  "${snapshot.data!.data.list.hari.toString()}, ${snapshot.data!.data.list.jamMulai.toString()} - ${snapshot.data!.data.list.jamSelesai.toString()}",
                                                   style: TextStyle(
                                                     color: mainBlackColor,
                                                     fontSize: 14,
@@ -265,7 +265,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                     2,
                                                 child: Text(
                                                   snapshot.data!.data.list
-                                                      .ruangKuliah.namaRuang,
+                                                      .ruangKuliah.namaRuang.toString(),
                                                   style: TextStyle(
                                                     color: mainBlackColor,
                                                     fontSize: 14,
@@ -398,7 +398,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                                   .mahasiswa[
                                                                       mhs]
                                                                   .namaMahasiswa
-                                                                  .toUpperCase(),
+                                                                  .toUpperCase().toString(),
                                                               style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -415,7 +415,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                                 .data
                                                                 .list
                                                                 .mahasiswa[mhs]
-                                                                .noMhs,
+                                                                .noMhs.toString(),
                                                             style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -524,7 +524,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                                       .mahasiswa[
                                                                           mhs]
                                                                       .namaMahasiswa
-                                                                      .toUpperCase(),
+                                                                      .toUpperCase().toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:
@@ -549,7 +549,7 @@ class _DetailMkAjarState extends State<DetailMkAjar>
                                                                       .list
                                                                       .mahasiswa[
                                                                           mhs]
-                                                                      .noMhs,
+                                                                      .noMhs.toString(),
                                                                   style:
                                                                       TextStyle(
                                                                     fontWeight:

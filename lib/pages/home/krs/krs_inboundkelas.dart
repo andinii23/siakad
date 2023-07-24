@@ -17,7 +17,7 @@ class DaftarKelasKrsInbound extends StatefulWidget {
 class _DaftarKelasKrsInboundState extends State<DaftarKelasKrsInbound> {
   Future<DaftarKelasInboundKrsModel> getKelasKrsInboundData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get("$krs_kelas_inbound${SpUtil.getString("id_matakuliah")}&kelas_mbkm=1", headers: header);
+    var response = await http.get(Uri.parse("$krs_kelas_inbound${SpUtil.getString("id_matakuliah")}&kelas_mbkm=1"), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

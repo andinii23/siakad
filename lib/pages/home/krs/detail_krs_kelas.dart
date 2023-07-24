@@ -19,7 +19,7 @@ class _DetailKelasKrsState extends State<DetailKelasKrs> {
   Future<DetailKelasModel> getDetailKelas() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
-        .get(detail_krs_kelas + SpUtil.getString("id_kelas"), headers: header);
+        .get(Uri.parse(detail_krs_kelas + SpUtil.getString("id_kelas")), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -114,6 +114,7 @@ class _DetailKelasKrsState extends State<DetailKelasKrs> {
                                           children: [
                                             Text(
                                               "${snapshot.data!.data.list.dosen[dsn].namaDosen} ${snapshot.data!.data.list.dosen[dsn].gelarBelakang}",
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: mainWhiteColor,
                                                 fontSize: 14,
@@ -230,7 +231,7 @@ class _DetailKelasKrsState extends State<DetailKelasKrs> {
 
   Future _kontrakMk() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(ambil_kelas, headers: header, body: {
+    var response = await http.post(Uri.parse(ambil_kelas), headers: header, body: {
       "id_kelas": SpUtil.getString("id_kelas"),
       "status_kontrak": "B",
     });

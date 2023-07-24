@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_declarations, prefer_interpolation_to_compose_strings, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 final mainWhiteColor =  Color(0xffffffff);
@@ -60,10 +62,11 @@ final ktm = main_url + "api/siakad/cetak-ktm";
 
 final detailmkajar = main_url + "api/siakad/matakuliah-ajar/";
 final fcmtoken = main_url + "api/siakad/fcm-token";
-final mhsmonitor = main_url + "api/siakad/monitoring-perkuliahan/detail-pertemuan/939820";
+final mhsmonitor = main_url + "api/siakad/monitoring-perkuliahan/detail-pertemuan/";
 final cetakkrs = main_url + "api/siakad/krs/cetak";
 final cetakkhs = main_url + "api/siakad/khs/cetak";
 final cetaktranskip = main_url + "api/siakad/cetak-transkrip";
+final versi = main_url + "api/version";
 
 final berita = main_url + "https://unja.ac.id/wp-json/wp/v2/posts";
 

@@ -21,7 +21,8 @@ class _SemMonitoringState extends State<SemMonitoring> {
   String? idSem;
   Future<MonitoringKuliahModel> getMonitor() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(monitorkuliah + idSem!, headers: header);
+    var response =
+        await http.get(Uri.parse(monitorkuliah + idSem!), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -51,7 +52,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
             color: Colors.black,
           ),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, 'HomeDosen');
           },
         ),
       ),
@@ -74,7 +75,8 @@ class _SemMonitoringState extends State<SemMonitoring> {
                     var header = {
                       "Authorization": "Bearer ${SpUtil.getString("token")}"
                     };
-                    var response = await http.get(semester, headers: header);
+                    var response =
+                        await http.get(Uri.parse(semester), headers: header);
                     if (response.statusCode != 200) {
                       return [];
                     }
@@ -124,7 +126,7 @@ class _SemMonitoringState extends State<SemMonitoring> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return ListView.builder(
-                                physics: const ScrollPhysics(),
+                                  physics: const ScrollPhysics(),
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount:
@@ -223,7 +225,8 @@ class _SemMonitoringState extends State<SemMonitoring> {
                                                         return Center(
                                                           child: Text(
                                                             "${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarDepan.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
-                                                            textAlign: TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                               color:
                                                                   mainBlueColor,
@@ -235,7 +238,8 @@ class _SemMonitoringState extends State<SemMonitoring> {
                                                         return Center(
                                                           child: Text(
                                                             "${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",
-                                                            textAlign: TextAlign.center,
+                                                            textAlign: TextAlign
+                                                                .center,
                                                             style: TextStyle(
                                                               color:
                                                                   mainBlueColor,
@@ -252,15 +256,42 @@ class _SemMonitoringState extends State<SemMonitoring> {
                                             ),
                                             Column(
                                               children: [
-                                                Text(
-                                                  "Ruang ${snapshot.data!.data.list.listKelas[index].kodeKelas.toString()} ${snapshot.data!.data.list.listKelas[index].kelasProdi.namaKelasProdi.toString()}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: mainBlueColor,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+                                                if (snapshot
+                                                        .data!
+                                                        .data
+                                                        .list
+                                                        .listKelas[index]
+                                                        .kelasProdi
+                                                        .namaKelasProdi
+                                                        .toString() !=
+                                                    "null")
+                                                  (Text(
+                                                    "Ruang ${snapshot.data!.data.list.listKelas[index].kodeKelas.toString()} ${snapshot.data!.data.list.listKelas[index].kelasProdi.namaKelasProdi.toString()}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: mainBlueColor,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )),
+                                                if (snapshot
+                                                        .data!
+                                                        .data
+                                                        .list
+                                                        .listKelas[index]
+                                                        .kelasProdi
+                                                        .namaKelasProdi
+                                                        .toString() ==
+                                                    "null")
+                                                  (Text(
+                                                    "Ruang ${snapshot.data!.data.list.listKelas[index].kodeKelas.toString()}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: mainBlueColor,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )),
                                                 Text(
                                                   snapshot
                                                       .data!

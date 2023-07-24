@@ -18,8 +18,9 @@ class MkAjar extends StatefulWidget {
 class _MkAjarState extends State<MkAjar> {
   Future<MkAjarModel> getMkAjar() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http
-        .get(matakuliahajar + SpUtil.getString("id_semester"), headers: header);
+    var response = await http.get(
+        Uri.parse(matakuliahajar + SpUtil.getString("id_semester")),
+        headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -96,7 +97,7 @@ class _MkAjarState extends State<MkAjar> {
                                       ),
                                     ),
                                     child: Text(
-                                      "JUMLAH KELAS : ${snapshot.data!.data.list[index].jumlahKelas}",
+                                      "JUMLAH KELAS : ${snapshot.data!.data.list[index].jumlahKelas.toString()}",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           color: mainWhiteColor,
@@ -200,18 +201,48 @@ class _MkAjarState extends State<MkAjar> {
                                                     ),
                                                     Column(
                                                       children: [
-                                                        Text(
-                                                          "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()} ${snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()}",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  mainBlueColor,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
+                                                        if (snapshot
+                                                                .data!
+                                                                .data
+                                                                .list[index]
+                                                                .listKelas[kls]
+                                                                .kelasProdi
+                                                                .namaKelasProdi
+                                                                .toString() !=
+                                                            "null")
+                                                          (Text(
+                                                            "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()} ${snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    mainBlueColor,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )),
+                                                        if (snapshot
+                                                                .data!
+                                                                .data
+                                                                .list[index]
+                                                                .listKelas[kls]
+                                                                .kelasProdi
+                                                                .namaKelasProdi
+                                                                .toString() ==
+                                                            "null")
+                                                          (Text(
+                                                            "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    mainBlueColor,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          )),
                                                         Text(
                                                           "Jumlah Mahasiswa : ${snapshot.data!.data.list[index].listKelas[kls].jumlahMahasiswa.toString()}",
                                                           style: TextStyle(

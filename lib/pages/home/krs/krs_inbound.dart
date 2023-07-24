@@ -17,7 +17,7 @@ class KrsInbound extends StatefulWidget {
 class _KrsInboundState extends State<KrsInbound> {
   Future<KrsInboundModel> getKrsInbound() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(krs_inbound, headers: header);
+    var response = await http.get(Uri.parse(krs_inbound), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

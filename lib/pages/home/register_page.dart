@@ -19,7 +19,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   Future<RegisterModel> getRegisData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(register, headers: header);
+    var response = await http.get(Uri.parse(register), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -123,14 +123,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        snapshot
-                                            .data!.data.list[index].idSemester,
+                                        snapshot.data!.data.list[index]
+                                            .semesterText,
                                         style: const TextStyle(
                                             color: Color(0xFF1E3B78)),
                                       ),
                                       Text(
-                                          snapshot
-                                              .data!.data.list[index].statusMahasiswaText
+                                          snapshot.data!.data.list[index]
+                                              .statusMahasiswaText
                                               .toString(),
                                           style: const TextStyle(
                                               color: Color(0xFF1E3B78))),
@@ -140,12 +140,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             LayoutBuilder(builder: (context, contraints) {
-                              return Flex (
+                              return Flex(
                                 direction: Axis.horizontal,
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: List.generate (
+                                children: List.generate(
                                   (contraints.constrainWidth() / 10).floor(),
                                   (index) => const SizedBox(
                                     height: 1,
@@ -196,9 +196,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       );
                     });
               } else {
-                 return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
             },
           ))

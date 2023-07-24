@@ -17,7 +17,7 @@ class ChatMhsBimbingan extends StatefulWidget {
 class _ChatMhsBimbinganState extends State<ChatMhsBimbingan> {
   Future<MhsBimbinganModel> getHomeDosenData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(mhs_bimbingan, headers: header);
+    var response = await http.get(Uri.parse(mhs_bimbingan), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

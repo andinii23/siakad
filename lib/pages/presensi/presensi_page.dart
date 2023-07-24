@@ -20,7 +20,7 @@ class PresensiMhs extends StatefulWidget {
 class _PresensiMhsState extends State<PresensiMhs> {
   Future<PresensiModel> getPresensiData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(presensi, headers: header);
+    var response = await http.get(Uri.parse(presensi), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -35,7 +35,7 @@ class _PresensiMhsState extends State<PresensiMhs> {
     if (cameraStatus.isGranted) {
       String? qrdata = await scanner.scan();
       var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-      var response = await http.post(presensi_mhs, headers: header, body: {
+      var response = await http.post(Uri.parse(presensi_mhs), headers: header, body: {
         "id_monitoring_perkuliahan": qrdata,
       });
       if (response.statusCode == 200) {

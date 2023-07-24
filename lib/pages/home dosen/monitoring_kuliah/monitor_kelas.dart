@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe, use_build_context_synchronously, avoid_print
+// ignore_for_file: import_of_legacy_library_into_null_safe, use_build_context_synchronously, avoid_print, prefer_const_declarations
 
 import 'dart:convert';
 
@@ -18,10 +18,11 @@ class MonitorPerkelas extends StatefulWidget {
 }
 
 class _MonitorPerkelasState extends State<MonitorPerkelas> {
+  String idMonitor = "";
   Future<MonitorKuliahPerkelasModel> getDetailData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
-        .get(monitorperkelas + SpUtil.getString("id_kelass"), headers: header);
+        .get(Uri.parse(monitorperkelas + SpUtil.getString("id_kelass")), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -51,7 +52,7 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
             color: Colors.black,
           ),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, 'SemMonitor');
           },
         ),
       ),
@@ -65,6 +66,8 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const SizedBox(
                           height: 10,
@@ -75,6 +78,9 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.data.list.length,
                               itemBuilder: (context, index) {
+                                idMonitor = snapshot.data!.data.list[index]
+                                    .idMonitoringPerkuliahan
+                                    .toString();
                                 String tgl =
                                     snapshot.data!.data.list[index].tanggal;
                                 DateTime tanggal = DateTime.parse(tgl);
@@ -316,8 +322,8 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                             children: [
                                               if (snapshot.data!.data
                                                       .list[index].statusSiremun
-                                                      .toString() ==
-                                                  "0")
+                                                      .toString() !=
+                                                  "1")
                                                 (InkWell(
                                                   onTap: () {
                                                     showDialog(
@@ -392,12 +398,22 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                                 )),
                                               InkWell(
                                                 onTap: () {
-                                                  _editM(snapshot
-                                                      .data!
-                                                      .data
-                                                      .list[index]
-                                                      .idMonitoringPerkuliahan
-                                                      .toString());
+                                                  _editM(
+                                                      snapshot
+                                                          .data!
+                                                          .data
+                                                          .list[index]
+                                                          .idMonitoringPerkuliahan
+                                                          .toString(),
+                                                      snapshot.data!.data
+                                                          .list[index].idKelas
+                                                          .toString(),
+                                                      snapshot
+                                                          .data!
+                                                          .data
+                                                          .list[index]
+                                                          .statusSiremun
+                                                          .toString());
                                                 },
                                                 child: Column(
                                                   crossAxisAlignment:
@@ -459,9 +475,19 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
                                 );
                               }),
                         ),
-                        const SizedBox(
-                          height: 60,
-                        ),
+                        if (snapshot.data!.data.list.length <= 16 &&
+                            snapshot.data!.data.list.length != 16)
+                          Container(
+                            margin: const EdgeInsets.all(10),
+                            child: (FloatingActionButton.extended(
+                              onPressed: () {
+                                _tambahMonitor(idMonitor);
+                              },
+                              label: const Text('Pertemuan'),
+                              icon: const Icon(Icons.add),
+                              backgroundColor: mainBlackColor,
+                            )),
+                          ),
                       ],
                     );
                   } else {
@@ -473,14 +499,6 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, 'tambahpertemuan');
-        },
-        label: const Text('Pertemuan'),
-        icon: const Icon(Icons.add),
-        backgroundColor: mainBlackColor,
-      ),
     );
   }
 
@@ -489,8 +507,16 @@ class _MonitorPerkelasState extends State<MonitorPerkelas> {
     Navigator.pushNamed(context, 'detailmonitorkuliah');
   }
 
-  Future _editM(String idMonitoringPerkuliahan) async {
+  Future _tambahMonitor(String idMonitoringPerkuliahan) async {
     SpUtil.putString("id_monitoring_perkuliahann", idMonitoringPerkuliahan);
+    Navigator.pushNamed(context, 'tambahpertemuan');
+  }
+
+  Future _editM(String idMonitoringPerkuliahan, String idKelas,
+      String statusSiremun) async {
+    SpUtil.putString("id_monitoring_perkuliahann", idMonitoringPerkuliahan);
+    SpUtil.putString("id_kelass", idKelas);
+    SpUtil.putString("status_siremun", statusSiremun);
     Navigator.pushNamed(context, 'editpertemuan');
   }
 

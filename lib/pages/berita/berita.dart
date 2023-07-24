@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 import '../../utilites/constants.dart';
 
@@ -124,7 +124,7 @@ class _BeritaPageState extends State<BeritaPage> {
 
   Future _getData() async {
     try {
-      final response = await http.get("https://unja.ac.id/wp-json/wp/v2/posts");
+      final response = await http.get(Uri.parse("https://unja.ac.id/wp-json/wp/v2/posts"));
       if (response.statusCode == 200) {
         // print(response.body);
         final data = json.decode(response.body);

@@ -1,12 +1,10 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import 'package:siakad/api/model/detailberitamodel.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 import '../../utilites/constants.dart';
 
@@ -23,7 +21,7 @@ class _DetailBeritaState extends State<DetailBerita> {
 
   Future<DetailBeritaModel> getDetailBerita() async {
     var response = await http.get(
-        "https://unja.ac.id/wp-json/wp/v2/posts/${SpUtil.getString("id_berita")}");
+        Uri.parse("https://unja.ac.id/wp-json/wp/v2/posts/${SpUtil.getString("id_berita")}"));
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // ignore: avoid_print

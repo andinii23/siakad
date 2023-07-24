@@ -17,7 +17,7 @@ class DetailKurikulumMhs extends StatefulWidget {
 class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
   Future<DetailKurikulum> getDetailKurikulum() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(dkurikulum + SpUtil.getString("semester"),
+    var response = await http.get(Uri.parse(dkurikulum + SpUtil.getString("semester")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -181,13 +181,14 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                                 SizedBox(
                                                   width: 60,
                                                   child: Text(
-                                                    "Ket.",
+                                                    "Ket. SKS",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: mainOrange2Color),
+                                                        color:
+                                                            mainOrange2Color),
                                                   ),
                                                 ),
                                                 if (snapshot
@@ -225,31 +226,32 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                                         color: mainBlueColor),
                                                   )),
                                                 const SizedBox(
-                                                  height: 5,
+                                                  height: 10,
                                                 ),
                                                 Column(
                                                   children: [
                                                     SizedBox(
-                                                  width: 60,
-                                                  child: Text(
-                                                    "Nilai\nTertinggi",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: mainOrange2Color),
-                                                  ),
-                                                ),
+                                                      width: 60,
+                                                      child: Text(
+                                                        "Nilai\nTertinggi",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                mainOrange2Color),
+                                                      ),
+                                                    ),
                                                     if (snapshot
                                                             .data!
                                                             .data
                                                             .list
                                                             .listMataKuliah[
                                                                 index]
-                                                            .nilaiTertinggi
-                                                             ==
-                                                        null)
+                                                            .nilaiTertinggi.toString() ==
+                                                        "null")
                                                       (Text(
                                                         "-",
                                                         textAlign:
@@ -267,9 +269,8 @@ class _DetailKurikulumMhsState extends State<DetailKurikulumMhs> {
                                                             .list
                                                             .listMataKuliah[
                                                                 index]
-                                                            .nilaiTertinggi
-                                                             !=
-                                                        null)
+                                                            .nilaiTertinggi.toString() !=
+                                                        "null")
                                                       (Text(
                                                         snapshot
                                                             .data!

@@ -28,11 +28,11 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
   Future<KrsMhsDosenModel> getDetailKrsMhs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        krs_mhs_bimbingan + SpUtil.getString("id_mhs_pt"),
+        Uri.parse(krs_mhs_bimbingan + SpUtil.getString("id_mhs_pt")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      // print(response.body);
+      print(response.body);
       return KrsMhsDosenModel.fromJson(data);
     } else {
       return KrsMhsDosenModel.fromJson(data);
@@ -69,13 +69,25 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
             if (snapshot.hasData) {
               String awalKprs = snapshot.data!.data.list.krs.awalKprs;
               String akhirKprs = snapshot.data!.data.list.krs.akhirKprs;
-              DateTime tanggalAwal = DateTime.parse(awalKprs);
-              DateTime tanggalAkhir = DateTime.parse(akhirKprs);
+              DateTime tanggalAwalKprs = DateTime.parse(awalKprs);
+              DateTime tanggalAkhirKprs = DateTime.parse(akhirKprs);
+
+              String awalKrs = snapshot.data!.data.list.krs.awalKrs;
+              String akhirKrs = snapshot.data!.data.list.krs.akhirKrs;
+              DateTime tanggalAwalKrs = DateTime.parse(awalKrs);
+              DateTime tanggalAkhirKrs = DateTime.parse(akhirKrs);
 
               DateFormat dateFormat = DateFormat('dd-MM-yyyy');
 
-              String tanggalAwalFormatted = dateFormat.format(tanggalAwal);
-              String tanggalAkhirFormatted = dateFormat.format(tanggalAkhir);
+              String tanggalAwalFormattedKprs =
+                  dateFormat.format(tanggalAwalKprs);
+              String tanggalAkhirFormattedKprs =
+                  dateFormat.format(tanggalAkhirKprs);
+
+              String tanggalAwalFormattedKrs =
+                  dateFormat.format(tanggalAwalKrs);
+              String tanggalAkhirFormattedKrs =
+                  dateFormat.format(tanggalAkhirKrs);
 
               return SingleChildScrollView(
                 physics: const ScrollPhysics(),
@@ -284,6 +296,35 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                     const SizedBox(
                       height: 10,
                     ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: mainWhiteColor,
+                        borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF1E3B78).withOpacity(0.1),
+                            spreadRadius: 5,
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        "Jadwal Kontrak KRS : $tanggalAwalFormattedKrs - $tanggalAkhirFormattedKrs",
+                        style: TextStyle(
+                            color: mainBlackColor, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     if (snapshot.data!.data.list.krs.statusKrs.toString() ==
                         "1")
                       (Container(
@@ -374,266 +415,235 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                         ),
                       )),
                     if (snapshot.data!.data.list.krs.statusKrs.toString() !=
-                        "3")(
-                          Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      topRight: Radius.circular(16),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xFF1E3B78)
-                                            .withOpacity(0.1),
-                                        spreadRadius: 5,
-                                        blurRadius: 4,
-                                        offset: const Offset(
-                                            0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: mainWhiteColor,
-                                          borderRadius:
-                                              const BorderRadius.only(
-                                            topLeft: Radius.circular(5),
-                                            topRight: Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              decoration: BoxDecoration(
-                                                color: mainOrange2Color,
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(16),
-                                                  topRight:
-                                                      Radius.circular(16),
-                                                ),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.all(10),
-                                              child: Text(
-                                                "List Matakuliah",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: mainWhiteColor,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            ListView.builder(
-                                              physics: const ScrollPhysics(),
-                                                scrollDirection:
-                                                    Axis.vertical,
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                    .data!
-                                                    .data
-                                                    .list
-                                                    .krs
-                                                    .listKrs
-                                                    .length,
-                                                itemBuilder: (context, mk) {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 8),
-                                                    child: Column(
-                                                      children: [
-                                                        Container(
-                                                          width:
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors
-                                                                .white,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: const Color(
-                                                                        0xFF1E3B78)
-                                                                    .withOpacity(
-                                                                        0.1),
-                                                                spreadRadius:
-                                                                    5,
-                                                                blurRadius:
-                                                                    4,
-                                                                offset: const Offset(
-                                                                    0,
-                                                                    3), // changes position of shadow
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(20),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.kodeMatakuliah} : ${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.namaMatakuliah}",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start,
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight.bold),
-                                                              ),
-                                                              Text(
-                                                                "Ruang ${snapshot.data!.data.list.krs.listKrs[mk].kelas.kodeKelas}",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor),
-                                                              ),
-                                                              Text(
-                                                                "Semester ${snapshot.data!.data.list.krs.listKrs[mk].kelas.semester}",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor),
-                                                              ),
-                                                              Text(
-                                                                "${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.sksTotal} SKS",
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        mainBlackColor),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  );
-                                                })
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                        ),
-                      if (snapshot.data!.data.list.krs.statusKrs.toString() ==
-                              "1" &&
-                          DateTime.now().isAfter(tanggalAwal))
-                        (Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: SizedBox(
-                                            child: TextFormField(
-                                              controller: _pesanController,
-                                              decoration: const InputDecoration(
-                                                  labelText: "Pesan",
-                                                  hintText: "Pesan",
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          actions: [
-                                            MaterialButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text(
-                                                "Batal",
-                                                style: TextStyle(
-                                                    color: mainOrange2Color),
-                                              ),
-                                            ),
-                                            MaterialButton(
-                                              onPressed: () {
-                                                _tolakMk();
-                                              },
-                                              child: Text(
-                                                "OK",
-                                                style: TextStyle(
-                                                    color: mainBlueColor),
-                                              ),
-                                            )
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: Container(
-                                    width: 80,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      "Refisi",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: mainBlackColor),
-                                    )),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  _terimaMk();
-                                },
-                                child: Container(
-                                    width: 80,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: mainBlueColor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      "Terima",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: mainWhiteColor),
-                                    )),
+                        "3")
+                      (Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF1E3B78).withOpacity(0.1),
+                                spreadRadius: 5,
+                                blurRadius: 4,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
                               ),
                             ],
                           ),
-                        )),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: mainWhiteColor,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(5),
+                                    topRight: Radius.circular(5),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: mainOrange2Color,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(16),
+                                          topRight: Radius.circular(16),
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        "List Matakuliah",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: mainWhiteColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                        physics: const ScrollPhysics(),
+                                        scrollDirection: Axis.vertical,
+                                        shrinkWrap: true,
+                                        itemCount: snapshot
+                                            .data!.data.list.krs.listKrs.length,
+                                        itemBuilder: (context, mk) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color(
+                                                                0xFF1E3B78)
+                                                            .withOpacity(0.1),
+                                                        spreadRadius: 5,
+                                                        blurRadius: 4,
+                                                        offset: const Offset(0,
+                                                            3), // changes position of shadow
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.all(20),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.kodeMatakuliah} : ${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.namaMatakuliah}",
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainBlackColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        "Ruang ${snapshot.data!.data.list.krs.listKrs[mk].kelas.kodeKelas}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainBlackColor),
+                                                      ),
+                                                      Text(
+                                                        "Semester ${snapshot.data!.data.list.krs.listKrs[mk].kelas.semester}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainBlackColor),
+                                                      ),
+                                                      Text(
+                                                        "${snapshot.data!.data.list.krs.listKrs[mk].matakuliah.sksTotal} SKS",
+                                                        style: TextStyle(
+                                                            color:
+                                                                mainBlackColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        })
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )),
+                    if (snapshot.data!.data.list.krs.statusKrs.toString() ==
+                            "1" &&
+                        DateTime.now().isBefore(tanggalAkhirKrs))
+                      (Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: SizedBox(
+                                          child: TextFormField(
+                                            controller: _pesanController,
+                                            decoration: const InputDecoration(
+                                                labelText: "Pesan",
+                                                hintText: "Pesan",
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        actions: [
+                                          MaterialButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "Batal",
+                                              style: TextStyle(
+                                                  color: mainOrange2Color),
+                                            ),
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () {
+                                              _tolakMk();
+                                            },
+                                            child: Text(
+                                              "OK",
+                                              style: TextStyle(
+                                                  color: mainBlueColor),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                  width: 80,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Text(
+                                    "Refisi",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: mainBlackColor),
+                                  )),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _terimaMk();
+                              },
+                              child: Container(
+                                  width: 80,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: mainBlueColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Text(
+                                    "Terima",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: mainWhiteColor),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      )),
                     if (snapshot.data!.data.list.krs.statusKrs.toString() ==
                             "2" &&
-                        DateTime.now().isBefore(tanggalAkhir))
+                        DateTime.now().isBefore(tanggalAkhirKprs))
                       (Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -671,7 +681,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
                                             child: Text(
                                               "Batal",
                                               style: TextStyle(
-                                                  color: mainOrange2Color),
+                                                  color: mainBlueColor),
                                             ),
                                           ),
                                           MaterialButton(
@@ -726,7 +736,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
 
   Future _terimaMk() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(terima_krs, headers: header, body: {
+    var response = await http.post(Uri.parse(terima_krs), headers: header, body: {
       "id_mhs_pt": SpUtil.getString("id_mhs_pt"),
       "status": "2",
     });
@@ -742,7 +752,7 @@ class _MhsKrsDosenState extends State<MhsKrsDosen> {
 
   Future _tolakMk() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(terima_krs, headers: header, body: {
+    var response = await http.post(Uri.parse(terima_krs), headers: header, body: {
       "id_mhs_pt": SpUtil.getString("id_mhs_pt"),
       "status": "3",
       "pesan": _pesanController.text,

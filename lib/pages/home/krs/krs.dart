@@ -19,7 +19,7 @@ class KrsMhs extends StatefulWidget {
 class _KrsMhsState extends State<KrsMhs> {
   Future<KrsModel> getKrsData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(krs, headers: header);
+    var response = await http.get(Uri.parse(krs), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -177,12 +177,11 @@ class _KrsMhsState extends State<KrsMhs> {
                   const SizedBox(
                     height: 10,
                   ),
-                  if (snapshot.data!.data.list.statusText.toString() !=
-                          "Menunggu Persetujuan Dosen PA" &&
-                      snapshot.data!.data.list.statusText.toString() !=
-                          "Telah di Acc Dosen PA" &&
+                  if (snapshot.data!.data.list.status.toString() != "1" &&
+                      snapshot.data!.data.list.status.toString() != "2" &&
                       DateTime.now().isBefore(tanggalAkhir))
-                    if (snapshot.data!.data.list.jumlahSksKontrak != 24)
+                    if (snapshot.data!.data.list.jumlahSksKontrak != 24 &&
+                        snapshot.data!.data.list.jumlahSksKontrak <= 24)
                       (Column(
                         children: [
                           (Row(
@@ -591,12 +590,12 @@ class _KrsMhsState extends State<KrsMhs> {
                                             ),
                                           ),
                                         ),
-                                        if (snapshot.data!.data.list.statusText
+                                        if (snapshot.data!.data.list.status
                                                     .toString() !=
-                                                "Menunggu Persetujuan Dosen PA" &&
-                                            snapshot.data!.data.list.statusText
+                                                "1" &&
+                                            snapshot.data!.data.list.status
                                                     .toString() !=
-                                                "Telah di Acc Dosen PA")
+                                                "2")
                                           (GestureDetector(
                                             onTap: () {
                                               showDialog(
@@ -725,14 +724,49 @@ class _KrsMhsState extends State<KrsMhs> {
                       ),
                       //tombol kirim
 
-                      if (snapshot.data!.data.list.statusText.toString() !=
-                              "Menunggu Persetujuan Dosen PA" &&
-                          snapshot.data!.data.list.statusText.toString() !=
-                              "Telah di Acc Dosen PA" &&
-                          DateTime.now().isBefore(tanggalAkhir))
+                      if (snapshot.data!.data.list.status.toString() != "1" &&
+                          snapshot.data!.data.list.status.toString() != "2" &&
+                          DateTime.now().isBefore(tanggalAkhir) &&
+                          snapshot.data!.data.list.listKrs.isNotEmpty)
                         (GestureDetector(
                           onTap: () {
-                            _ajukanKrs();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: SizedBox(
+                                      child: Text(
+                                        "Apakah anda yakin akan mengajukan KRS?",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: mainBlackColor,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                    actions: [
+                                      MaterialButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "Batal",
+                                          style:
+                                              TextStyle(color: mainBlueColor),
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        onPressed: () {
+                                          _ajukanKrs();
+                                        },
+                                        child: Text(
+                                          "OK",
+                                          style:
+                                              TextStyle(color: mainBlueColor),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -778,7 +812,7 @@ class _KrsMhsState extends State<KrsMhs> {
 
   Future _hapusKelas(String idKrs) async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(hapus_kelas + idKrs, headers: header);
+    var response = await http.get(Uri.parse(hapus_kelas + idKrs), headers: header);
     if (response.statusCode == 200) {
       // print(response.body);
       Navigator.pushNamed(context, 'KrsMhs');
@@ -792,7 +826,7 @@ class _KrsMhsState extends State<KrsMhs> {
   Future _ajukanKrs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.post(
-      ajukan_krs,
+      Uri.parse(ajukan_krs),
       headers: header,
     );
     if (response.statusCode == 200) {

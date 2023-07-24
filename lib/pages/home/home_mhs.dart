@@ -9,7 +9,6 @@ import 'package:siakad/utilites/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 
-
 class HomeMhs extends StatefulWidget {
   const HomeMhs({super.key});
 
@@ -20,7 +19,7 @@ class HomeMhs extends StatefulWidget {
 class _HomeMhsState extends State<HomeMhs> {
   Future<HomeModel> getHomeData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(home, headers: header);
+    var response = await http.get(Uri.parse(home), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -64,6 +63,8 @@ class _HomeMhsState extends State<HomeMhs> {
                                     )),
                               ),
                               Container(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.865,
                                 margin: const EdgeInsets.only(
                                   top: 70,
                                 ),
@@ -74,7 +75,8 @@ class _HomeMhsState extends State<HomeMhs> {
                                       children: [
                                         TextSpan(
                                           text: snapshot
-                                              .data!.data.list.namaMahasiswa,
+                                              .data!.data.list.namaMahasiswa
+                                              .toString(),
                                           style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
@@ -160,12 +162,38 @@ class _HomeMhsState extends State<HomeMhs> {
                                                         fontSize: 18,
                                                         color: mainWhiteColor),
                                                   ),
-                                                  Text(
-                                                    "Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: mainWhiteColor),
-                                                  ),
+                                                  if (snapshot
+                                                          .data!
+                                                          .data
+                                                          .list
+                                                          .prodi
+                                                          .jurusan
+                                                          .namaJurusan
+                                                          .toString() !=
+                                                      "null")
+                                                    (Text(
+                                                      "Jurusan : ${snapshot.data!.data.list.prodi.jurusan.namaJurusan}",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color:
+                                                              mainWhiteColor),
+                                                    )),
+                                                  if (snapshot
+                                                          .data!
+                                                          .data
+                                                          .list
+                                                          .prodi
+                                                          .jurusan
+                                                          .namaJurusan
+                                                          .toString() ==
+                                                      "null")
+                                                    (Text(
+                                                      "Jurusan : -",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color:
+                                                              mainWhiteColor),
+                                                    )),
                                                   Text(
                                                     "Angkatan : ${snapshot.data!.data.list.angkatan}",
                                                     style: TextStyle(
@@ -199,8 +227,9 @@ class _HomeMhsState extends State<HomeMhs> {
                                           height: 5,
                                         ),
                                         if (snapshot.data!.data.list.dosenPa
-                                                .gelarDepan !=
-                                            null)
+                                                .gelarDepan
+                                                .toString() !=
+                                            "null")
                                           (Text(
                                             "${snapshot.data!.data.list.dosenPa.gelarDepan} ${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
                                             style: TextStyle(
@@ -208,8 +237,9 @@ class _HomeMhsState extends State<HomeMhs> {
                                                 color: mainWhiteColor),
                                           )),
                                         if (snapshot.data!.data.list.dosenPa
-                                                .gelarDepan ==
-                                            null)
+                                                .gelarDepan
+                                                .toString() ==
+                                            "null")
                                           (Text(
                                             "${snapshot.data!.data.list.dosenPa.namaPegawai} ${snapshot.data!.data.list.dosenPa.gelarBelakang} ",
                                             style: TextStyle(
@@ -255,16 +285,30 @@ class _HomeMhsState extends State<HomeMhs> {
                                       if (snapshot.data!.data.list.ipSebelumnya
                                               .toString() !=
                                           "null")
-                                        (StatusCard( 
+                                        (StatusCard(
                                           title: "IP Semester\nSebelumnya",
-                                          data: snapshot.data!.data.list.ipSebelumnya
+                                          data: snapshot
+                                              .data!.data.list.ipSebelumnya
                                               .toString(),
                                         )),
-                                      StatusCard(
-                                        title: "Semester Saat Ini",
-                                        data: snapshot.data!.data.list.semester
-                                            .toString(),
-                                      ),
+                                      if (snapshot
+                                              .data!.data.list.statusMahasiswa
+                                              .toString() ==
+                                          "L")
+                                        (const StatusCard(
+                                          title: "Semester Saat Ini",
+                                          data: "Lulus",
+                                        )),
+                                      if (snapshot
+                                              .data!.data.list.statusMahasiswa
+                                              .toString() !=
+                                          "L")
+                                        (StatusCard(
+                                          title: "Semester Saat Ini",
+                                          data: snapshot
+                                              .data!.data.list.semester
+                                              .toString(),
+                                        )),
                                     ],
                                   ),
                                 ),
@@ -329,19 +373,25 @@ class _HomeMhsState extends State<HomeMhs> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 70,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, 'KrsMhs');
-                                            },
-                                            child: const menuAkademik(
-                                              image: "assets/img/contract.png",
-                                              title: "KRS",
+                                        if (snapshot
+                                                .data!.data.list.statusMahasiswa
+                                                .toString() !=
+                                            "L")
+                                          (SizedBox(
+                                            width: 70,
+                                            child: InkWell(
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                    context, 'KrsMhs');
+                                              },
+                                              child: const menuAkademik(
+                                                image:
+                                                    "assets/img/contract.png",
+                                                title: "KRS",
+                                              ),
                                             ),
-                                          ),
-                                        ),
+                                          )),
+
                                         SizedBox(
                                           width: 70,
                                           child: InkWell(

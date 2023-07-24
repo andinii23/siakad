@@ -9,15 +9,15 @@ HomeModel homeModelFromJson(String str) => HomeModel.fromJson(json.decode(str));
 String homeModelToJson(HomeModel data) => json.encode(data.toJson());
 
 class HomeModel {
+    int code;
+    String errorMessage;
+    Data data;
+
     HomeModel({
         required this.code,
         required this.errorMessage,
         required this.data,
     });
-
-    int code;
-    String errorMessage;
-    Data data;
 
     factory HomeModel.fromJson(Map<String, dynamic> json) => HomeModel(
         code: json["code"],
@@ -33,17 +33,17 @@ class HomeModel {
 }
 
 class Data {
+    int total;
+    int perPage;
+    int page;
+    ListClass list;
+
     Data({
         required this.total,
         required this.perPage,
         required this.page,
         required this.list,
     });
-
-    int total;
-    int perPage;
-    int page;
-    ListClass list;
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
         total: json["total"],
@@ -61,10 +61,25 @@ class Data {
 }
 
 class ListClass {
+    int idMhsPt;
+    String noMahasiswa;
+    String namaMahasiswa;
+    String statusMahasiswa;
+    String statusMahasiswaText;
+    String angkatan;
+    String ipk;
+    String ipSebelumnya;
+    String foto;
+    int semester;
+    Prodi prodi;
+    DosenPa dosenPa;
+
     ListClass({
         required this.idMhsPt,
         required this.noMahasiswa,
         required this.namaMahasiswa,
+        required this.statusMahasiswa,
+        required this.statusMahasiswaText,
         required this.angkatan,
         required this.ipk,
         required this.ipSebelumnya,
@@ -74,21 +89,12 @@ class ListClass {
         required this.dosenPa,
     });
 
-    int idMhsPt;
-    String noMahasiswa;
-    String namaMahasiswa;
-    String angkatan;
-    String ipk;
-    String ipSebelumnya;
-    String foto;
-    int semester;
-    Prodi prodi;
-    DosenPa dosenPa;
-
     factory ListClass.fromJson(Map<String, dynamic> json) => ListClass(
         idMhsPt: json["id_mhs_pt"],
         noMahasiswa: json["no_mahasiswa"],
         namaMahasiswa: json["nama_mahasiswa"],
+        statusMahasiswa: json["status_mahasiswa"],
+        statusMahasiswaText: json["status_mahasiswa_text"],
         angkatan: json["angkatan"],
         ipk: json["ipk"],
         ipSebelumnya: json["ip_sebelumnya"],
@@ -102,6 +108,8 @@ class ListClass {
         "id_mhs_pt": idMhsPt,
         "no_mahasiswa": noMahasiswa,
         "nama_mahasiswa": namaMahasiswa,
+        "status_mahasiswa": statusMahasiswa,
+        "status_mahasiswa_text": statusMahasiswaText,
         "angkatan": angkatan,
         "ipk": ipk,
         "ip_sebelumnya": ipSebelumnya,
@@ -113,17 +121,17 @@ class ListClass {
 }
 
 class DosenPa {
+    int idPegawai;
+    String namaPegawai;
+    String gelarDepan;
+    String gelarBelakang;
+
     DosenPa({
         required this.idPegawai,
         required this.namaPegawai,
-        this.gelarDepan,
+        required this.gelarDepan,
         required this.gelarBelakang,
     });
-
-    int idPegawai;
-    String namaPegawai;
-    dynamic gelarDepan;
-    String gelarBelakang;
 
     factory DosenPa.fromJson(Map<String, dynamic> json) => DosenPa(
         idPegawai: json["id_pegawai"],
@@ -141,6 +149,12 @@ class DosenPa {
 }
 
 class Prodi {
+    String idProdi;
+    String namaProdi;
+    String kelas;
+    Fakultas fakultas;
+    Jurusan jurusan;
+
     Prodi({
         required this.idProdi,
         required this.namaProdi,
@@ -148,12 +162,6 @@ class Prodi {
         required this.fakultas,
         required this.jurusan,
     });
-
-    String idProdi;
-    String namaProdi;
-    String kelas;
-    Fakultas fakultas;
-    Jurusan jurusan;
 
     factory Prodi.fromJson(Map<String, dynamic> json) => Prodi(
         idProdi: json["id_prodi"],
@@ -173,13 +181,13 @@ class Prodi {
 }
 
 class Fakultas {
+    int idFakultas;
+    String namaFakultas;
+
     Fakultas({
         required this.idFakultas,
         required this.namaFakultas,
     });
-
-    int idFakultas;
-    String namaFakultas;
 
     factory Fakultas.fromJson(Map<String, dynamic> json) => Fakultas(
         idFakultas: json["id_fakultas"],
@@ -193,13 +201,13 @@ class Fakultas {
 }
 
 class Jurusan {
+    int idJurusan;
+    String namaJurusan;
+
     Jurusan({
         required this.idJurusan,
         required this.namaJurusan,
     });
-
-    int idJurusan;
-    String namaJurusan;
 
     factory Jurusan.fromJson(Map<String, dynamic> json) => Jurusan(
         idJurusan: json["id_jurusan"],

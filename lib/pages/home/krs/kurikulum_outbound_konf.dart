@@ -19,7 +19,8 @@ class _KurikulumOutboundKonfState extends State<KurikulumOutboundKonf> {
   Future<MonitoringKuliahModel> getDetailKelas() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        "$detailkrs_kelasoutbound${SpUtil.getString("id_mk_asal")}/${SpUtil.getString("id_matakuliah")}",
+        Uri.parse(
+            "$detailkrs_kelasoutbound${SpUtil.getString("id_mk_asal")}/${SpUtil.getString("id_matakuliah")}"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -29,10 +30,11 @@ class _KurikulumOutboundKonfState extends State<KurikulumOutboundKonf> {
       return MonitoringKuliahModel.fromJson(data);
     }
   }
+
   Future<KurikulumOutboundKonfModel> getKonfOutbound() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        "https://ws.unja.ac.id/api/siakad/kurikulum-mahasiswa?exclude_krs=1",
+        Uri.parse("https://ws.unja.ac.id/api/siakad/kurikulum-mahasiswa?exclude_krs=1"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -68,7 +70,7 @@ class _KurikulumOutboundKonfState extends State<KurikulumOutboundKonf> {
       ),
       body: Column(
         children: [
-        //  Text(SpUtil.getString("id_mk_asal")),
+          //  Text(SpUtil.getString("id_mk_asal")),
           Expanded(
               child: FutureBuilder(
                   future: getKonfOutbound(),
@@ -172,7 +174,8 @@ class _KurikulumOutboundKonfState extends State<KurikulumOutboundKonf> {
                                                                 .list
                                                                 .listMataKuliah[
                                                                     index]
-                                                                .namaMatakuliah.toUpperCase(),
+                                                                .namaMatakuliah
+                                                                .toUpperCase(),
                                                             textAlign:
                                                                 TextAlign.start,
                                                             style: TextStyle(

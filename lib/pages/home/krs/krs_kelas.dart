@@ -17,7 +17,7 @@ class KelasKontrak extends StatefulWidget {
 class _KelasKontrakState extends State<KelasKontrak> {
   Future<KelasKontrakModel> getKrsData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(krs_kelas, headers: header);
+    var response = await http.get(Uri.parse(krs_kelas), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

@@ -30,7 +30,7 @@ class _ChatPageMhsState extends State<ChatPageMhs> {
     Future<ChatModel> getChatData() async {
       var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
       var response =
-          await http.get(chat + SpUtil.getString("id_dosen"), headers: header);
+          await http.get(Uri.parse(chat + SpUtil.getString("id_dosen")), headers: header);
       var data = jsonDecode(response.body.toString());
       if (response.statusCode == 200) {
         // print(response.body);
@@ -245,7 +245,7 @@ class _ChatPageMhsState extends State<ChatPageMhs> {
   Future _sendChat() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
-        .post(chat + SpUtil.getString("id_dosen"), headers: header, body: {
+        .post(Uri.parse(chat + SpUtil.getString("id_dosen")), headers: header, body: {
       "pesan": _chatController.text,
     });
     if (response.statusCode == 200) {

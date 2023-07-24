@@ -1,8 +1,8 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
 import '../api/model/elista/mhsbimbinganmodel.dart';
 import '../utilites/constants.dart';
@@ -17,7 +17,7 @@ class MhsBimbinganElista extends StatefulWidget {
 class _MhsBimbinganElistaState extends State<MhsBimbinganElista> {
   Future<MahasiswaBimbinganElista> getMhsBimbinganElista() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(mhsbimelista, headers: header);
+    var response = await http.get(Uri.parse(mhsbimelista), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);

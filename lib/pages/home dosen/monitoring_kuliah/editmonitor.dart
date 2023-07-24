@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:siakad/api/model/detail_monitor.dart';
 import 'package:sp_util/sp_util.dart';
-import '../../../api/model/dosen_monitor_model.dart';
 import '../../../utilites/constants.dart';
 
 class EditMonitoKulian extends StatefulWidget {
@@ -24,6 +23,8 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
   List<int> selectedDosenIDs = [];
   List<int> selectedMahasiswaIDs = [];
 
+  DateTime? _selectedDate;
+
   bool selectAllMahasiswa = false;
   String dsn = "";
   String idDosenn = "";
@@ -37,7 +38,8 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
   Future<DetailMonitoringKuliahModel> getDetailMonitor() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahann"),
+        Uri.parse(monitorperkelasdetail +
+            SpUtil.getString("id_monitoring_perkuliahann")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -60,11 +62,10 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
       }
 
       for (var dsn in detailData.data.list.dosen) {
-      if (dsn.kehadiran == 1) {
-        selectedIndex.add(dsn.idDosen); // Add Dosen's ID to selectedIndex
+        if (dsn.kehadiran == 1) {
+          selectedIndex.add(dsn.idDosen); // Add Dosen's ID to selectedIndex
+        }
       }
-    }
-
       String tgl = detailData.data.list.tanggal;
       DateTime tanggal = DateTime.parse(tgl);
       DateFormat dateFormat = DateFormat('dd-MM-yyyy');
@@ -75,6 +76,7 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
       _mulaiController.text = detailData.data.list.jamMulai;
       _selesaiController.text = detailData.data.list.jamSelesai;
       _materiController.text = detailData.data.list.materi;
+      setState(() {});
     });
   }
 
@@ -172,6 +174,7 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
                                 const SizedBox(
                                   height: 10,
                                 ),
+                                // Replace the current TextFormField for the date with the following code
                                 TextFormField(
                                   controller: _tanggalController,
                                   validator: (value) {
@@ -180,26 +183,31 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
                                     }
                                   },
                                   onTap: () async {
-                                    DateTime? pickeddate = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: DateTime(2000),
-                                        lastDate: DateTime(2101));
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          _selectedDate ?? DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2101),
+                                    );
 
-                                    if (pickeddate != null) {
+                                    if (pickedDate != null) {
                                       setState(() {
+                                        _selectedDate = pickedDate;
                                         _tanggalController.text =
-                                            DateFormat('dd-MM-yyyy')
-                                                .format(pickeddate);
+                                            DateFormat('yyyy-MM-dd')
+                                                .format(pickedDate);
                                       });
                                     }
                                   },
                                   decoration: const InputDecoration(
-                                      hintText: "Tanggal",
-                                      border: OutlineInputBorder(),
-                                      suffixIcon: IconButton(
-                                          onPressed: null,
-                                          icon: Icon(Icons.calendar_month))),
+                                    hintText: "Tanggal",
+                                    border: OutlineInputBorder(),
+                                    suffixIcon: IconButton(
+                                      onPressed: null,
+                                      icon: Icon(Icons.calendar_month),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -275,81 +283,77 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
                             const SizedBox(
                               height: 30,
                             ),
-
-                            // Text(
-                            //   idDosen,
-                            //   style: TextStyle(color: mainBlackColor),
-                            // ),
                             const SizedBox(
                               height: 10,
                             ),
-                            Text(
-                              "Pilih Dosen Hadir",
-                              style: TextStyle(
-                                color: mainBlackColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            ListView.builder(
-                                physics: const ScrollPhysics(),
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount:
-                                    snapshot.data!.data.list.dosen.length,
-                                itemBuilder: (context, dsn) {
-                                  final idDosen =
-                                      snapshot.data!.data.list.dosen[dsn];
+                            if (SpUtil.getString("status_siremun") != "1")
+                              (Text(
+                                "Pilih Dosen Hadir",
+                                style: TextStyle(
+                                  color: mainBlackColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              )),
+                            if (SpUtil.getString("status_siremun") != "1")
+                              (ListView.builder(
+                                  physics: const ScrollPhysics(),
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      snapshot.data!.data.list.dosen.length,
+                                  itemBuilder: (context, dsn) {
+                                    final idDosen =
+                                        snapshot.data!.data.list.dosen[dsn];
 
-                                  return CheckboxListTile(
-                                      title: Text(
-                                          "${idDosen.namaDosen.toString()} ${idDosen.gelarBelakang.toString()}"),
-                                      value: selectedIndex
-                                          .contains(idDosen.idDosen),
-                                      onChanged: (val) {
-                                        setState(() {
-                                          selectIndexWithID(idDosen.idDosen);
-                                          print(selectedIndex);
+                                    return CheckboxListTile(
+                                        title: Text(
+                                            "${idDosen.namaDosen.toString()} ${idDosen.gelarBelakang.toString()}"),
+                                        value: selectedIndex
+                                            .contains(idDosen.idDosen),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            selectIndexWithID(idDosen.idDosen);
+                                            print(selectedIndex);
+                                          });
                                         });
-                                      });
-                                }),
-
+                                  })),
                             const SizedBox(
                               height: 10,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Materi",
-                                  style: TextStyle(
-                                    color: mainBlackColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                            if (SpUtil.getString("status_siremun") != "1")
+                              (Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Materi",
+                                    style: TextStyle(
+                                      color: mainBlackColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: _materiController,
-                                  validator: (value) {
-                                    if (value == '') {
-                                      return "materi harus diisi!!";
-                                    }
-                                  },
-                                  decoration: const InputDecoration(
-                                    hintText: "Materi",
-                                    border: OutlineInputBorder(),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                ),
-                              ],
-                            ),
+                                  TextFormField(
+                                    controller: _materiController,
+                                    validator: (value) {
+                                      if (value == '') {
+                                        return "materi harus diisi!!";
+                                      }
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: "Materi",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ],
+                              )),
                             const SizedBox(
                               height: 30,
                             ),
-
                             Text(
                               "Daftar Mahasiswa",
                               style: TextStyle(
@@ -463,11 +467,12 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
       // Add each selected Mahasiswa ID to the list
       mahasiswaIDs.add(mhsID);
     }
-
     Map<String, dynamic> data = {
       "id_monitoring_perkuliahan":
           SpUtil.getString("id_monitoring_perkuliahann"),
-      'tanggal': _tanggalController.text,
+      "id_kelas": SpUtil.getString("id_kelass"),
+      'tanggal':
+          _tanggalController.text, // Update this line to use the new date value
       'jam_mulai': _mulaiController.text,
       'jam_selesai': _selesaiController.text,
       'dosen': dosenIDs,
@@ -479,8 +484,7 @@ class _EditMonitoKulianState extends State<EditMonitoKulian> {
 
     try {
       var response = await http.patch(
-        Uri.parse(
-            "https://ws.unja.ac.id/api/siakad/monitoring-perkuliahan/${SpUtil.getString("id_monitoring_perkuliahann")}"),
+        Uri.parse("https://ws.unja.ac.id/api/siakad/monitoring-perkuliahan"),
         headers: header,
         body: body,
       );

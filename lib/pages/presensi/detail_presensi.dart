@@ -18,7 +18,7 @@ class DetailPresensiMhs extends StatefulWidget {
 class _DetailPresensiMhsState extends State<DetailPresensiMhs> {
   Future<DetailPresensiModel> getDetailPresensi() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(detailpresensi + SpUtil.getString("id_kelas"),
+    var response = await http.get(Uri.parse(detailpresensi + SpUtil.getString("id_kelas")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {

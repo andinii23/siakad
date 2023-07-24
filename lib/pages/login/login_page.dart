@@ -4,8 +4,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../api/model/login_model.dart';
+import '../../api/model/versimodel.dart';
 import '../../utilites/constants.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,6 +23,71 @@ class _LoginPageState extends State<LoginPage> {
   final _formState = GlobalKey<FormState>();
   String? _usernameError;
   String? _passwordError;
+  // String expectedAppVersion = "1.0.0";
+
+  String urlVersi = "";
+
+  @override
+  void initState() {
+    super.initState();
+    // Check the app version before showing the login page
+    _checkAppVersion();
+  }
+
+
+  Future<VersiModel> _checkAppVersion() async {
+    var response = await http.get(Uri.parse(versi));
+    var data = jsonDecode(response.body.toString());
+    if (response.statusCode == 200) {
+      print(response.body);
+      final versiModel = versiModelFromJson(response.body);
+      urlVersi = versiModel.data.list.version;
+      // Retrieve the stored app version from SpUtil
+      String storedAppVersion = urlVersi;
+
+      // Retrieve the current app version from the device
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String currentVersion = packageInfo.version;
+      print("Current Version : $currentVersion");
+
+      if (storedAppVersion == currentVersion) {
+        // The stored app version matches the expected version, proceed with login
+        print("Versions match! Proceeding with login.");
+      } else {
+        // The stored app version does not match the expected version
+        // Show a dialog prompting the user to update the app
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text("Update Required"),
+            content: const Text(
+                "Please update the app to the latest version to continue."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  // Close the dialog and redirect the user to the app store for update
+                  Navigator.pop(context);
+                  _redirectToAppStore();
+                },
+                child: const Text("Update"),
+              ),
+            ],
+          ),
+        );
+      }
+      return VersiModel.fromJson(data);
+    } else {
+      return VersiModel.fromJson(data);
+    }
+  }
+
+  void _redirectToAppStore() {
+    // Implement the logic to redirect the user to the app store for update
+    // For Android, you can use the URL_launcher package to open the Google Play Store
+    // For iOS, you can use the iOS-specific method to open the App Store.
+    // Example: launch('https://play.google.com/store/apps/details?id=your_app_id');
+  }
 
   @override
   void dispose() {
@@ -36,25 +103,27 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 20, color: mainBlackColor, fontWeight: FontWeight.w700),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        leading: InkWell(
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          centerTitle: true,
+          title: Text(
+            "",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontSize: 20,
+                color: mainBlackColor,
+                fontWeight: FontWeight.w700),
           ),
-          onTap: () {
-            Navigator.pushNamed(context, 'gerbang');
-          },
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
+          leading: InkWell(
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, 'gerbang');
+            },
+          ),
         ),
-      ),
         body: SingleChildScrollView(
           child: Container(
             // margin: const EdgeInsets.only(top: 20),
@@ -188,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future _loginToApp() async {
-    var response = await http.post(login_url, body: {
+    var response = await http.post(Uri.parse(login_url), body: {
       "username": _usernameController.text,
       "password": _passwordController.text,
     });

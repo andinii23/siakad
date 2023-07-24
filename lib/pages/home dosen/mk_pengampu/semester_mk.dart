@@ -21,7 +21,7 @@ class _SemesterMkState extends State<SemesterMk> {
   String? idSem;
   Future<MkAjarModel> getMkAjar() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(matakuliahajar + idSem!, headers: header);
+    var response = await http.get(Uri.parse(matakuliahajar + idSem!), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -73,7 +73,7 @@ class _SemesterMkState extends State<SemesterMk> {
                   var header = {
                     "Authorization": "Bearer ${SpUtil.getString("token")}"
                   };
-                  var response = await http.get(semester, headers: header);
+                  var response = await http.get(Uri.parse(semester), headers: header);
                   if (response.statusCode != 200) {
                     return [];
                   }
@@ -163,7 +163,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                             ),
                                           ),
                                           child: Text(
-                                            "JUMLAH KELAS : ${snapshot.data!.data.list[index].jumlahKelas}",
+                                            "JUMLAH KELAS : ${snapshot.data!.data.list[index].jumlahKelas.toString()}",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 color: mainWhiteColor,
@@ -270,7 +270,8 @@ class _SemesterMkState extends State<SemesterMk> {
                                                           ),
                                                           Column(
                                                             children: [
-                                                              Text(
+                                                              if(snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()!="null")
+                                                              (Text(
                                                                 "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()} ${snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()}",
                                                                 textAlign:
                                                                     TextAlign
@@ -283,9 +284,25 @@ class _SemesterMkState extends State<SemesterMk> {
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold),
-                                                              ),
+                                                              )),
+                                                                if(snapshot.data!.data.list[index].listKelas[kls].kelasProdi.namaKelasProdi.toString()=="null")
+                                                              (Text(
+                                                                "Ruang ${snapshot.data!.data.list[index].listKelas[kls].kodeKelas.toString()}",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        mainBlueColor,
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )),
                                                               Text(
                                                                 "Jumlah Mahasiswa : ${snapshot.data!.data.list[index].listKelas[kls].jumlahMahasiswa.toString()}",
+                                                                 textAlign: TextAlign.center,
                                                                 style:
                                                                     TextStyle(
                                                                   color:
@@ -295,6 +312,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                                               ),
                                                               Text(
                                                                 "Jumlah SKS : ${snapshot.data!.data.list[index].listKelas[kls].matakuliah.sksTotal.toString()}",
+                                                                 textAlign: TextAlign.center,
                                                                 style:
                                                                     TextStyle(
                                                                   color:
@@ -304,6 +322,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                                               ),
                                                               Text(
                                                                 "Program Studi : ${snapshot.data!.data.list[index].listKelas[kls].prodi.namaProdi.toString()}",
+                                                                textAlign: TextAlign.center,
                                                                 style:
                                                                     TextStyle(
                                                                   color:
@@ -339,6 +358,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                                               ),
                                                               Text(
                                                                 "${snapshot.data!.data.list[index].listKelas[kls].hari.toString()}, ${snapshot.data!.data.list[index].listKelas[kls].jamMulai.toString()} - ${snapshot.data!.data.list[index].listKelas[kls].jamSelesai.toString()}",
+                                                                 textAlign: TextAlign.center,
                                                                 style:
                                                                     TextStyle(
                                                                   color:
@@ -356,6 +376,7 @@ class _SemesterMkState extends State<SemesterMk> {
                                                                     .ruangKuliah
                                                                     .namaRuang
                                                                     .toString(),
+                                                                 textAlign: TextAlign.center,
                                                                 style:
                                                                     TextStyle(
                                                                   color:

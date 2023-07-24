@@ -1,9 +1,9 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:sp_util/sp_util.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import '../../api/model/biomhs_model.dart';
 import '../../utilites/constants.dart';
@@ -18,7 +18,7 @@ class BiodataMhs extends StatefulWidget {
 class _BiodataMhsState extends State<BiodataMhs> with TickerProviderStateMixin {
   Future<BioMhsModel> getBioMhsData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(biodata, headers: header);
+    var response = await http.get(Uri.parse(biodata), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       final bioMhsModel = bioMhsModelFromJson(response.body);

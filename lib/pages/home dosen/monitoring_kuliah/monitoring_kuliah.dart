@@ -19,7 +19,7 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
   Future<MonitoringKuliahModel> getMonitor() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http
-        .get(monitorkuliah + SpUtil.getString("id_semester"), headers: header);
+        .get(Uri.parse(monitorkuliah + SpUtil.getString("id_semester")), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -171,8 +171,8 @@ class _MonitoringKuliahState extends State<MonitoringKuliah> {
                                                           .list
                                                           .listKelas[index]
                                                           .dosen[dosen]
-                                                          .gelarDepan !=
-                                                      null) {
+                                                          .gelarDepan.toString() !=
+                                                      "null") {
                                                     return Center(
                                                       child: Text(
                                                         "${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarDepan.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].namaPegawai.toString()} ${snapshot.data!.data.list.listKelas[index].dosen[dosen].gelarBelakang.toString()}",

@@ -24,7 +24,8 @@ class _KrsOutboundState extends State<KrsOutbound> {
   Future<ListMkOutboundProdiModel> getListMkOutboundProdi() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/matakuliah?id_prodi=$idProdi&per_page=100",
+        Uri.parse(
+            "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/matakuliah?id_prodi=$idProdi&per_page=100"),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
@@ -78,7 +79,8 @@ class _KrsOutboundState extends State<KrsOutbound> {
                       "Authorization": "Bearer ${SpUtil.getString("token")}"
                     };
                     var response = await http.get(
-                        "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/perguruan-tinggi?nama_pt=&per_page=5000",
+                        Uri.parse(
+                            "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/perguruan-tinggi?nama_pt=&per_page=5000"),
                         headers: header);
                     if (response.statusCode != 200) {
                       return [];
@@ -118,7 +120,8 @@ class _KrsOutboundState extends State<KrsOutbound> {
                       "Authorization": "Bearer ${SpUtil.getString("token")}"
                     };
                     var response = await http.get(
-                        "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/prodi?id_pt=$idPT&per_page=500",
+                        Uri.parse(
+                            "https://ws.unja.ac.id/api/siakad/pertukaran-pelajar/prodi?id_pt=$idPT&per_page=500"),
                         headers: header);
                     if (response.statusCode != 200) {
                       return [];
@@ -153,7 +156,7 @@ class _KrsOutboundState extends State<KrsOutbound> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: mainOrangeColor),
                     child: Text(
-                      "Get Matakuliah Konversi",
+                      "Tampilkan Matakuliah Konversi",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: mainWhiteColor,
@@ -175,47 +178,41 @@ class _KrsOutboundState extends State<KrsOutbound> {
                                 return ListView.builder(
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
-                                    itemCount:
-                                        snapshot.data!.data.list.length,
+                                    itemCount: snapshot.data!.data.list.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Column(
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        10),
+                                                    BorderRadius.circular(10),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color: const Color(
-                                                            0xFF1E3B78)
-                                                        .withOpacity(0.1),
+                                                    color:
+                                                        const Color(0xFF1E3B78)
+                                                            .withOpacity(0.1),
                                                     spreadRadius: 5,
                                                     blurRadius: 4,
-                                                    offset: const Offset(
-                                                        0,
+                                                    offset: const Offset(0,
                                                         3), // changes position of shadow
                                                   ),
                                                 ],
                                               ),
-                                              padding:
-                                                  const EdgeInsets.all(
-                                                      20),
+                                              padding: const EdgeInsets.all(20),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
                                                   SizedBox(
-                                                    width: MediaQuery.of(
-                                                                context)
-                                                            .size
-                                                            .width /
-                                                        2,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            2,
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -232,13 +229,11 @@ class _KrsOutboundState extends State<KrsOutbound> {
                                                               .namaMatakuliah
                                                               .toUpperCase(),
                                                           textAlign:
-                                                              TextAlign
-                                                                  .start,
+                                                              TextAlign.start,
                                                           style: TextStyle(
                                                               color:
                                                                   mainBlueColor,
-                                                              fontSize:
-                                                                  14,
+                                                              fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -254,16 +249,12 @@ class _KrsOutboundState extends State<KrsOutbound> {
                                                   ),
                                                   Container(
                                                     padding:
-                                                        const EdgeInsets
-                                                            .all(8),
-                                                    decoration:
-                                                        BoxDecoration(
-                                                      color:
-                                                          mainOrange2Color,
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: mainOrange2Color,
                                                       borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                                  5),
+                                                          BorderRadius.circular(
+                                                              5),
                                                     ),
                                                     child: InkWell(
                                                       onTap: () {
@@ -279,10 +270,8 @@ class _KrsOutboundState extends State<KrsOutbound> {
                                                         child: Text(
                                                           "Pilih",
                                                           textAlign:
-                                                              TextAlign
-                                                                  .center,
-                                                          style:
-                                                              TextStyle(
+                                                              TextAlign.center,
+                                                          style: TextStyle(
                                                             color:
                                                                 mainWhiteColor,
                                                             fontSize: 14,

@@ -33,7 +33,7 @@ class _CetakPageState extends State<CetakPage> {
 
   Future<CetakKtmModel> getKtm() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(ktm, headers: header);
+    var response = await http.post(Uri.parse(ktm), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -48,7 +48,7 @@ class _CetakPageState extends State<CetakPage> {
 
   Future<CetakKrsModel> getKrs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(cetakkrs, headers: header);
+    var response = await http.post(Uri.parse(cetakkrs), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -63,7 +63,7 @@ class _CetakPageState extends State<CetakPage> {
 
   Future<CetakKhsModel> getCetakKhs() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(cetakkhs, headers: header, body: {
+    var response = await http.post(Uri.parse(cetakkrs), headers: header, body: {
       "id_mhs_pt": SpUtil.getString("id_mhss_pt"),
       "id_semester": idSem,
     });
@@ -83,7 +83,7 @@ class _CetakPageState extends State<CetakPage> {
 
   Future<CetakTranskipModel> getTranskip() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.post(cetaktranskip, headers: header);
+    var response = await http.post(Uri.parse(cetaktranskip), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -368,7 +368,7 @@ class _CetakPageState extends State<CetakPage> {
                                       "Authorization":
                                           "Bearer ${SpUtil.getString("token")}"
                                     };
-                                    var response = await http.get(semestermhs,
+                                    var response = await http.get(Uri.parse(semestermhs),
                                         headers: header);
                                     if (response.statusCode != 200) {
                                       return [];

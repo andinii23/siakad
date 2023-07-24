@@ -19,7 +19,7 @@ class _DetailMonitorKuliahState extends State<DetailMonitorKuliah> {
   Future<DetailMonitoringKuliahModel> getDetailMonitor() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
     var response = await http.get(
-        monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahann"),
+        Uri.parse(monitorperkelasdetail + SpUtil.getString("id_monitoring_perkuliahann")),
         headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {

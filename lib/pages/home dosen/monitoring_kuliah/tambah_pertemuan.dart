@@ -6,13 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:sp_util/sp_util.dart';
 import '../../../api/model/detail_monitor.dart';
-import '../../../api/model/dosen_monitor_model.dart';
-import '../../../api/model/mhsmonitormodel.dart';
 import '../../../utilites/constants.dart';
 
 class TambahPertemuan extends StatefulWidget {
   const TambahPertemuan({super.key});
-
+  
   @override
   State<TambahPertemuan> createState() => _TambahPertemuanState();
 }
@@ -22,7 +20,9 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
 
   Future<DetailMonitoringKuliahModel> getMonitorData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(mhsmonitor, headers: header);
+    var response = await http.get(
+        Uri.parse(mhsmonitor + SpUtil.getString("id_monitoring_perkuliahann")),
+        headers: header);
     var data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       // print(response.body);
@@ -156,7 +156,7 @@ class _TambahPertemuanState extends State<TambahPertemuan> {
                                     if (pickeddate != null) {
                                       setState(() {
                                         _tanggalController.text =
-                                            DateFormat('dd-MM-yyyy')
+                                            DateFormat('yyyy-MM-dd')
                                                 .format(pickeddate);
                                       });
                                     }

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:sp_util/sp_util.dart';
 import '../../api/model/tagihan_model.dart';
 import '../../utilites/constants.dart';
@@ -18,7 +19,7 @@ class Tagihan extends StatefulWidget {
 class _TagihanState extends State<Tagihan> {
   Future<TagihanModel> getTagihanData() async {
     var header = {"Authorization": "Bearer ${SpUtil.getString("token")}"};
-    var response = await http.get(tagihan, headers: header);
+    var response = await http.get(Uri.parse(tagihan), headers: header);
     var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
       // print(response.body);
@@ -243,11 +244,41 @@ class _TagihanState extends State<Tagihan> {
                                                                 color: Color(
                                                                     0xFF1E3B78)),
                                                           ),
-                                                          Text(
-                                                              "Rp. ${snapshot.data!.data.list[index].nominal.toString()}",
-                                                              style: const TextStyle(
-                                                                  color: Color(
-                                                                      0xFF1E3B78))),
+                                                          if (snapshot
+                                                                  .data!
+                                                                  .data
+                                                                  .list[index]
+                                                                  .nominal
+                                                                  .toString() ==
+                                                              "null")
+                                                            (const Text("-")),
+                                                          if (snapshot
+                                                                  .data!
+                                                                  .data
+                                                                  .list[index]
+                                                                  .nominal
+                                                                  .toString() !=
+                                                              "null")
+                                                            (Text(
+                                                                NumberFormat
+                                                                    .currency(
+                                                                  locale:
+                                                                      'id_ID',
+                                                                  symbol:
+                                                                      'Rp. ',
+                                                                  decimalDigits:
+                                                                      2,
+                                                                ).format(double
+                                                                    .parse(snapshot
+                                                                        .data!
+                                                                        .data
+                                                                        .list[
+                                                                            index]
+                                                                        .nominal
+                                                                        .toString())),
+                                                                style: const TextStyle(
+                                                                    color: Color(
+                                                                        0xFF1E3B78)))),
                                                         ],
                                                       ),
                                                       const SizedBox(
